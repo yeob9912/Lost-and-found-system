@@ -1,0 +1,12 @@
+{
+  "name": "lost-and-found-system",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "client": "npm --prefix client run dev",
+    "server": "npm --prefix server run dev"
+  },
+  "dependencies": {
+    "react-router-dom": "^7.18.5"
+  }
+}

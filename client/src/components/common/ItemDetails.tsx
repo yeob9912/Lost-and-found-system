@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Tag,
   ClipboardList,
@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   Handshake
 } from 'lucide-react';
+import { getCurrentUser } from '../../services/authService';
 
 export const formatDisplayDate = (dateStr: string) => {
   if (!dateStr) return 'Not specified';
@@ -25,6 +26,21 @@ export const formatDisplayDate = (dateStr: string) => {
 };
 
 export default function ItemDetails({ item }: { item: any }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleAction = () => {
+    const user = getCurrentUser();
+    const mode = item.status?.toLowerCase() === 'lost' ? 'match' : 'claim';
+
+    if (!user) {
+      // If not authenticated, redirect to login first
+      navigate('/login', { state: { returnTo: location.pathname } });
+    } else {
+      // If authenticated, navigate to claim form
+      navigate('/claim', { state: { item, mode } });
+    }
+  };
   const getStatusBadge = (status: string) => {
     switch (status?.toLowerCase()) {
       case 'found':
@@ -123,13 +139,14 @@ export default function ItemDetails({ item }: { item: any }) {
 
       {/* Claim Button / Action */}
       <div className="mt-4 border-t border-gray-200/60 pt-3">
-        <Link
-          to="/registration"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-900 px-4 py-2.5 text-xs font-bold text-white transition duration-200 hover:bg-emerald-950 shadow-sm"
+        <button
+          type="button"
+          onClick={handleAction}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-900 px-4 py-2.5 text-xs font-bold text-white transition duration-200 hover:bg-emerald-950 shadow-sm cursor-pointer"
         >
           <Handshake size={15} />
           {item.status === 'Found' ? 'Claim this item' : 'Report Found Match'}
-        </Link>
+        </button>
       </div>
     </div>
   );

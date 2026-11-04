@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ShieldCheck,
   ArrowLeft,
@@ -6,10 +7,15 @@ import {
   FileText,
   Heart,
   CheckCircle2,
-  Scan
+  Scan,
+  Eye,
+  EyeOff,
+  Loader2,
 } from 'lucide-react';
+import { registerUser } from '../../services/authService';
 
 export default function Signup({ onSwitchToLogin }) {
+  const navigate = useNavigate();
   const [signupData, setSignupData] = useState({
     fullName: '',
     studentId: '',
@@ -19,9 +25,28 @@ export default function Signup({ onSwitchToLogin }) {
     agreeTerms: false,
   });
 
-  const handleSignupSubmit = (e) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const handleSignupSubmit = async (e) => {
     e.preventDefault();
-    console.log('Signup submitted:', signupData);
+    setError('');
+    setSuccess('');
+    setLoading(true);
+    try {
+      const data = await registerUser(signupData);
+      setSuccess(data.message || 'Account created successfully! Redirecting...');
+      setTimeout(() => {
+        navigate('/');
+      }, 800);
+    } catch (err: any) {
+      setError(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const passwordsMatch =
@@ -42,7 +67,7 @@ export default function Signup({ onSwitchToLogin }) {
               <div className="leading-tight">
                 <span className="font-bold text-base sm:text-lg text-[#1A362B] block">FindBack</span>
                 <span className="text-[9px] sm:text-[10px] tracking-wider uppercase text-[#4A6B5D] font-semibold block">
-                  UNIVERSITY LOST & FOUND
+                  UNIVERSITY LOST &amp; FOUND
                 </span>
               </div>
             </div>
@@ -102,6 +127,18 @@ export default function Signup({ onSwitchToLogin }) {
               Create your student account. Fields marked * are required.
             </p>
 
+            {/* Error / Success banners */}
+            {error && (
+              <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="mb-4 px-4 py-3 rounded-xl bg-green-50 border border-green-200 text-green-700 text-xs font-medium">
+                {success}
+              </div>
+            )}
+
             <form onSubmit={handleSignupSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                 <div>
@@ -123,7 +160,6 @@ export default function Signup({ onSwitchToLogin }) {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. NBU-241087"
                     value={signupData.studentId}
                     onChange={(e) => setSignupData({ ...signupData, studentId: e.target.value })}
                     required
@@ -154,28 +190,48 @@ export default function Signup({ onSwitchToLogin }) {
                   <label className="block text-xs font-semibold text-[#2D3748] mb-1">
                     Password *
                   </label>
-                  <input
-                    type="password"
-                    placeholder="Create password"
-                    value={signupData.password}
-                    onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
-                    required
-                    className="w-full px-3.5 py-2.5 sm:px-4 rounded-xl border border-[#D5E2D1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#2D5A46]/30 focus:border-[#2D5A46] transition-all duration-200"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Create password"
+                      value={signupData.password}
+                      onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
+                      required
+                      className="w-full px-3.5 py-2.5 sm:px-4 pr-10 rounded-xl border border-[#D5E2D1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#2D5A46]/30 focus:border-[#2D5A46] transition-all duration-200"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B8A7A] hover:text-[#2D5A46] transition-colors"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                   <p className="text-[11px] text-[#6B8A7A] mt-1">At least 8 characters.</p>
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-[#2D3748] mb-1">
                     Confirm password *
                   </label>
-                  <input
-                    type="password"
-                    placeholder="Confirm password"
-                    value={signupData.confirmPassword}
-                    onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })}
-                    required
-                    className="w-full px-3.5 py-2.5 sm:px-4 rounded-xl border border-[#D5E2D1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#2D5A46]/30 focus:border-[#2D5A46] transition-all duration-200"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      placeholder="Confirm password"
+                      value={signupData.confirmPassword}
+                      onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })}
+                      required
+                      className="w-full px-3.5 py-2.5 sm:px-4 pr-10 rounded-xl border border-[#D5E2D1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#2D5A46]/30 focus:border-[#2D5A46] transition-all duration-200"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B8A7A] hover:text-[#2D5A46] transition-colors"
+                      tabIndex={-1}
+                    >
+                      {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                   {passwordsMatch && (
                     <p className="text-[11px] text-[#2D5A46] mt-1 flex items-center gap-1 font-medium animate-pulse">
                       Passwords match <CheckCircle2 className="w-3 h-3" />
@@ -209,10 +265,20 @@ export default function Signup({ onSwitchToLogin }) {
 
               <button
                 type="submit"
-                className="w-full py-3 bg-[#2D5A46] hover:bg-[#234737] text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-sm transition-all duration-300 active:scale-[0.98] mt-4 group"
+                disabled={loading}
+                className="w-full py-3 bg-[#2D5A46] hover:bg-[#234737] disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-sm transition-all duration-300 active:scale-[0.98] mt-4 group"
               >
-                <span>Create student account</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Creating account...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Create student account</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                  </>
+                )}
               </button>
             </form>
 

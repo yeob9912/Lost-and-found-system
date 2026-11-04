@@ -31,6 +31,8 @@ export interface LoginData {
 const saveAuthentication = (data: AuthResponse) => {
     sessionStorage.setItem("findback_token", data.token);
     sessionStorage.setItem("findback_user", JSON.stringify(data.user));
+    sessionStorage.setItem("token", data.token);
+    sessionStorage.setItem("user", JSON.stringify(data.user));
 };
 
 export const registerUser = async (
@@ -82,7 +84,7 @@ export const getToken = (): string | null => {
 };
 
 export const getCurrentUser = (): AuthUser | null => {
-    const user = sessionStorage.getItem("findback_user");
+    const user = sessionStorage.getItem("findback_user") || sessionStorage.getItem("user");
 
     return user ? JSON.parse(user) as AuthUser : null;
 };
@@ -90,5 +92,7 @@ export const getCurrentUser = (): AuthUser | null => {
 export const logoutUser = (): void => {
     sessionStorage.removeItem("findback_token");
     sessionStorage.removeItem("findback_user");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
 };
 

@@ -50,7 +50,7 @@ export const register = async (req: Request, res: Response) => {
         // Validate student ID
         if (!studentIdRegex.test(studentId.trim())) {
             return res.status(400).json({
-                message: "Student ID must follow UGR/12345/26 format.",
+                message: "Incorrect student ID.",
             });
         }
 

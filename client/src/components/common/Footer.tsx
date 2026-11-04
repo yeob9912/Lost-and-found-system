@@ -1,7 +1,15 @@
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Search, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { getCurrentUser } from '../../services/authService';
 
 export default function Footer() {
+  const [user, setUser] = useState(() => getCurrentUser());
+  const location = useLocation();
+
+  useEffect(() => {
+    setUser(getCurrentUser());
+  }, [location.pathname]);
   return (
     <footer className="border-t border-emerald-900/50 bg-emerald-950 text-white">
       {/* Main Content */}
@@ -93,15 +101,17 @@ export default function Footer() {
               </li>
             </ul>
 
-            <div className="pt-4">
-              <Link
-                to="/registration"
-                className="inline-flex items-center gap-2 rounded-xl bg-emerald-800/80 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700 hover:shadow-md"
-              >
-                <span>Join ASTU Network</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
+            {!user && (
+              <div className="pt-4">
+                <Link
+                  to="/registration"
+                  className="inline-flex items-center gap-2 rounded-xl bg-emerald-800/80 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700 hover:shadow-md"
+                >
+                  <span>Join ASTU Network</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            )}
           </div>
 
         </div>

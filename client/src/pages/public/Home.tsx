@@ -246,12 +246,12 @@ export default function Home() {
                     {/* Hero Text */}
                     <div className="fb-fade-up relative z-10 space-y-6">
 
-                        <div className="inline-flex items-center gap-3 rounded-full bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-950 sm:text-sm">
-                            <GraduationCap className="h-5 w-5 text-emerald-900" />
+                        <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3.5 py-1.5 text-xs font-semibold text-emerald-950">
+                            <GraduationCap className="h-4 w-4 text-emerald-900" />
                             Adama Science and Technology University
                         </div>
 
-                        <h2 className="max-w-2xl text-4xl font-extrabold leading-[1.1] tracking-tight text-emerald-950 sm:text-5xl lg:text-6xl">
+                        <h2 className="max-w-2xl text-3xl font-extrabold leading-[1.15] tracking-tight text-emerald-950 sm:text-4xl lg:text-5xl">
                             Find What You Lost
                             <br />
                             or Help Someone
@@ -261,7 +261,7 @@ export default function Home() {
                             </span>
                         </h2>
 
-                        <p className="max-w-xl text-base leading-relaxed text-gray-600 sm:text-lg">
+                        <p className="max-w-xl text-sm leading-relaxed text-gray-600 sm:text-base">
                             University FindBack connects ASTU students to recover lost
                             items and return found belongings.
                         </p>
@@ -271,17 +271,17 @@ export default function Home() {
 
                             <a
                                 href="/lost-items"
-                                className="group inline-flex items-center gap-3 rounded-full bg-emerald-900 px-7 py-4 text-sm font-bold text-white shadow-md transition duration-300 hover:-translate-y-1 hover:bg-emerald-950 hover:shadow-xl"
+                                className="group inline-flex items-center gap-3 rounded-full bg-emerald-900 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-emerald-950 hover:shadow-md sm:px-6 sm:py-3"
                             >
-                                <Search className="h-5 w-5 transition-transform group-hover:scale-110" />
+                                <Search className="h-4 w-4 transition-transform group-hover:scale-110" />
                                 Search Items
                             </a>
 
                             <a
-                                href="/registration"
-                                className="inline-flex items-center gap-3 rounded-full border border-emerald-900 bg-white px-7 py-4 text-sm font-bold text-emerald-950 transition duration-300 hover:-translate-y-1 hover:bg-emerald-50"
+                                href="/report-item"
+                                className="inline-flex items-center gap-3 rounded-full border border-emerald-900 bg-white px-5 py-2.5 text-sm font-bold text-emerald-950 transition duration-300 hover:-translate-y-0.5 hover:bg-emerald-50 sm:px-6 sm:py-3"
                             >
-                                <Plus className="h-6 w-6" />
+                                <Plus className="h-4 w-4" />
                                 Report an Item
                             </a>
 
@@ -309,8 +309,8 @@ export default function Home() {
                         {/* Floating Message */}
                         <div className="fb-float absolute bottom-5 left-5 flex items-center gap-3 rounded-2xl border border-white bg-white/95 p-4 shadow-xl backdrop-blur-md sm:bottom-8 sm:left-8">
 
-                            <div className="rounded-full bg-emerald-100 p-3 text-emerald-900">
-                                <Heart className="h-5 w-5" />
+                            <div className="rounded-full bg-emerald-100 p-2 text-emerald-900">
+                                <Heart className="h-4 w-4" />
                             </div>
 
                             <div>
@@ -336,7 +336,7 @@ export default function Home() {
                     className="mx-auto mb-10 max-w-7xl px-6"
                 >
 
-                    <div className="grid grid-cols-1 gap-6 rounded-2xl bg-[#edf4ee] px-6 py-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+                    <div className="grid grid-cols-1 gap-6 rounded-2xl bg-[#edf4ee] px-5 py-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3.5">
 
                         {steps.map((step, index) => {
                             const Icon = step.icon;
@@ -344,15 +344,15 @@ export default function Home() {
                             return (
                                 <div
                                     key={step.title}
-                                    className="fb-fade-up group flex items-center gap-4"
+                                    className="fb-fade-up group flex items-center gap-3"
                                 >
 
-                                    <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-emerald-800 text-white shadow-md transition duration-300 group-hover:scale-110 group-hover:bg-emerald-950">
-                                        <Icon className="h-8 w-8" />
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-800 text-white shadow-sm transition duration-300 group-hover:scale-105 group-hover:bg-emerald-950">
+                                        <Icon className="h-5 w-5" />
                                     </div>
 
                                     <div className="min-w-0">
-                                        <h3 className="text-base font-bold text-gray-950">
+                                        <h3 className="text-sm font-bold text-gray-950">
                                             {step.title}
                                         </h3>
 
@@ -362,7 +362,7 @@ export default function Home() {
                                     </div>
 
                                     {index !== steps.length - 1 && (
-                                        <ArrowRight className="ml-auto hidden h-6 w-6 shrink-0 text-emerald-800 lg:block" />
+                                        <ArrowRight className="ml-auto hidden h-4 w-4 shrink-0 text-emerald-800/70 lg:block" />
                                     )}
 
                                 </div>
@@ -399,19 +399,19 @@ export default function Home() {
 
                         <a
                             href="/found-items"
-                            className="group inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-emerald-800 transition hover:text-emerald-950"
+                            className="group inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-emerald-800/20 bg-emerald-50/60 px-3.5 py-1.5 text-xs font-semibold text-emerald-900 transition hover:bg-emerald-100 sm:text-sm"
                         >
                             <span className="hidden sm:inline">View All Items</span>
                             <span className="sm:hidden">View All</span>
-                            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </a>
 
                     </div>
 
                     {/* Search Field */}
-                    <div className="mb-6 flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm transition focus-within:border-emerald-800 focus-within:ring-4 focus-within:ring-emerald-800/10">
+                    <div className="mb-6 flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 shadow-sm transition focus-within:border-emerald-800 focus-within:ring-2 focus-within:ring-emerald-800/15">
 
-                        <Search className="h-5 w-5 shrink-0 text-emerald-800" />
+                        <Search className="h-4 w-4 shrink-0 text-emerald-800" />
 
                         <input
                             type="search"
@@ -486,7 +486,7 @@ export default function Home() {
                                     <button
                                         onClick={() => toggleItemDetails(item.id)}
                                         aria-expanded={expandedItemId === item.id}
-                                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-emerald-800/30 bg-white px-4 py-2.5 text-xs font-bold text-emerald-900 transition duration-300 hover:bg-emerald-900 hover:text-white"
+                                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-emerald-800/30 bg-white px-3.5 py-2 text-xs font-semibold text-emerald-900 transition duration-300 hover:bg-emerald-900 hover:text-white"
                                     >
                                         <Eye className="h-4 w-4" />
 
@@ -638,7 +638,7 @@ export default function Home() {
 
                                             <button
                                                 onClick={() => handleClaimRequest(item)}
-                                                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-900 px-4 py-3 text-xs font-bold text-white shadow-sm transition duration-300 hover:bg-emerald-950 hover:shadow-md"
+                                                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-900 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition duration-300 hover:bg-emerald-950 hover:shadow-md"
                                             >
                                                 <Handshake className="h-4 w-4" />
                                                 Send Claim Request
@@ -699,8 +699,8 @@ export default function Home() {
 
                     <div className="flex flex-col gap-5 rounded-2xl border border-emerald-900/10 bg-[#edf4ee] p-6 sm:flex-row sm:items-center sm:p-8">
 
-                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-900">
-                            <ShieldCheck className="h-8 w-8" />
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-900">
+                            <ShieldCheck className="h-5 w-5" />
                         </div>
 
                         <div>

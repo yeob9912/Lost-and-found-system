@@ -111,34 +111,34 @@ export default function FoundItems() {
                     <div className="absolute -right-20 -top-28 h-80 w-80 rounded-full bg-emerald-600/30 blur-3xl" />
                     <div className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-emerald-500/20 blur-3xl" />
 
-                    <div className="relative mx-auto max-w-7xl px-5 py-16 md:py-20 lg:px-8">
+                    <div className="relative mx-auto max-w-7xl px-5 py-8 sm:py-10 md:py-8 sm:py-10 lg:px-8">
                         <div className="max-w-3xl">
-                            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-emerald-700 px-4 py-2 text-xs font-semibold text-emerald-100">
+                            <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-emerald-300/30 bg-emerald-700/80 px-3 py-1 text-xs font-semibold text-emerald-100">
                                 <AlertCircle size={15} />
                                 ASTU Found Items Registry
                             </div>
 
-                            <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+                            <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl lg:text-4xl">
                                 Found Belongings on Campus
                             </h1>
 
-                            <p className="mt-5 max-w-2xl text-sm leading-7 text-emerald-100 sm:text-base">
+                            <p className="mt-2.5 max-w-xl text-xs sm:text-sm leading-relaxed text-emerald-100/90">
                                 Recovered items handed over to university custody or reported by ASTU community members. Browse the records below to identify and claim your missing belongings.
                             </p>
 
-                            <div className="mt-8 flex flex-wrap gap-4">
+                            <div className="mt-5 flex flex-wrap items-center gap-2.5">
                                 <Link
                                     to="/report-item"
-                                    className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-emerald-900 shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-50"
+                                    className="inline-flex items-center gap-2 rounded-xl bg-white px-4.5 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-bold text-emerald-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-50"
                                 >
-                                    <PlusCircle size={18} />
+                                    <PlusCircle size={16} />
                                     Report a Found Item
                                 </Link>
                                 <a
                                     href="#found-items-list"
-                                    className="inline-flex items-center gap-2 rounded-xl border border-emerald-400/40 bg-emerald-700/60 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
+                                    className="inline-flex items-center gap-2 rounded-xl border border-emerald-400/40 bg-emerald-700/60 px-4.5 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold text-white transition hover:bg-emerald-700"
                                 >
-                                    <Search size={18} />
+                                    <Search size={16} />
                                     Search Found Items
                                 </a>
                             </div>
@@ -149,7 +149,7 @@ export default function FoundItems() {
                 {/* Main Content */}
                 <main id="found-items-list" className="mx-auto max-w-7xl px-5 py-12 lg:px-8">
                     {/* Search and Category Filters */}
-                    <div className="mb-10 space-y-5 rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm sm:p-7">
+                    <div className="mb-6 space-y-4 rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm sm:p-5">
                         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                             <div className="relative flex-1">
                                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={19} />
@@ -158,7 +158,7 @@ export default function FoundItems() {
                                     placeholder="Search by item name, brand, color, or location..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full rounded-xl border border-gray-200 py-3 pl-12 pr-4 text-sm outline-none transition focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
+                                    className="w-full rounded-xl border border-gray-200 py-2.5 pl-11 pr-4 text-xs sm:text-sm outline-none transition focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
                                 />
                             </div>
 
@@ -175,7 +175,7 @@ export default function FoundItems() {
                                 <button
                                     key={cat}
                                     onClick={() => setSelectedCategory(cat)}
-                                    className={`rounded-xl px-4 py-2 text-xs font-semibold transition ${
+                                    className={`rounded-xl px-3 py-1.5 text-xs font-semibold rounded-lg transition ${
                                         selectedCategory === cat
                                             ? "bg-emerald-800 text-white shadow-sm"
                                             : "border border-gray-200 bg-gray-50 text-gray-700 hover:bg-emerald-50 hover:border-emerald-200"

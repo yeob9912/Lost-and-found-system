@@ -191,43 +191,43 @@ const LostItems = () => {
                 <div className="absolute -right-20 -top-28 h-80 w-80 rounded-full bg-emerald-600/30 blur-3xl" />
                 <div className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-emerald-500/20 blur-3xl" />
 
-                <div className="relative mx-auto max-w-7xl px-5 py-16 md:py-20 lg:px-8">
+                <div className="relative mx-auto max-w-7xl px-5 py-8 sm:py-10 md:py-12 lg:px-8">
 
                     <div className="max-w-3xl">
 
-                        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-emerald-700 px-4 py-2 text-xs font-semibold text-emerald-100">
+                        <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-emerald-300/30 bg-emerald-700/80 px-3 py-1 text-xs font-semibold text-emerald-100">
                             <AlertCircle size={15} />
                             ASTU Lost Items Directory
                         </div>
 
-                        <h2 className="text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
+                        <h2 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl md:text-4xl">
                             Lost Something?
                             <span className="mt-2 block text-emerald-300">
                                 Let's Help You Find It.
                             </span>
                         </h2>
 
-                        <p className="mt-5 max-w-2xl text-sm leading-7 text-emerald-100 sm:text-base">
+                        <p className="mt-2.5 max-w-xl text-xs sm:text-sm leading-relaxed text-emerald-100/90">
                             Browse items reported missing within Adama Science and
                             Technology University. Your lost belongings might already
                             have been reported by someone.
                         </p>
 
-                        <div className="mt-8 flex flex-wrap gap-3">
+                        <div className="mt-5 flex flex-wrap items-center gap-2.5">
 
                             <a
                                 href="#browse-items"
-                                className="flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-bold text-emerald-800 transition hover:bg-emerald-50"
+                                className="flex items-center gap-2 rounded-lg bg-white px-4.5 py-2 sm:px-5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-emerald-900 transition hover:bg-emerald-50 shadow-sm"
                             >
-                                <Search size={18} />
+                                <Search size={16} />
                                 Search Items
                             </a>
 
                             <Link
                                 to="/report-item"
-                                className="flex items-center gap-2 rounded-lg border border-emerald-300/50 bg-emerald-700 px-6 py-3 font-semibold text-white transition hover:bg-emerald-600"
+                                className="flex items-center gap-2 rounded-lg border border-emerald-300/50 bg-emerald-700 px-4.5 py-2 sm:px-5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white transition hover:bg-emerald-600"
                             >
-                                <PlusCircle size={18} />
+                                <PlusCircle size={16} />
                                 Report an Item
                             </Link>
 
@@ -240,7 +240,7 @@ const LostItems = () => {
 
             <main
                 id="browse-items"
-                className="mx-auto max-w-7xl px-5 py-14 lg:px-8"
+                className="mx-auto max-w-7xl px-5 py-8 sm:py-10 lg:px-8"
             >
 
                 {/* Section Heading */}
@@ -261,7 +261,7 @@ const LostItems = () => {
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2 self-start rounded-lg border border-emerald-100 bg-white px-4 py-3 sm:self-auto">
+                    <div className="flex items-center gap-2 self-start rounded-lg border border-emerald-100 bg-white px-3.5 py-2 sm:self-auto">
                         <PackageSearch size={20} className="text-emerald-600" />
                         <span className="text-sm font-semibold text-gray-700">
                             {filteredItems.length} Items Found
@@ -271,7 +271,7 @@ const LostItems = () => {
 
                 {/* ================= SEARCH AND FILTER ================= */}
 
-                <div className="mb-9 rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm sm:p-6">
+                <div className="mb-6 rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm sm:p-5">
 
                     <div className="mb-5 flex items-center gap-2">
                         <Filter size={19} className="text-emerald-600" />
@@ -294,7 +294,7 @@ const LostItems = () => {
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 placeholder="Search by item name, brand, color, or location..."
-                                className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-sm outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
+                                className="w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-11 pr-4 text-xs sm:text-sm outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
                             />
                         </div>
 
@@ -303,7 +303,7 @@ const LostItems = () => {
                             <select
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm text-gray-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-xs sm:text-sm text-gray-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                             >
                                 {categories.map((category) => (
                                     <option key={category} value={category}>

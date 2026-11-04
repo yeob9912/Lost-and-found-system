@@ -1,16 +1,38 @@
 import React, { useState } from 'react';
-import { ShieldCheck, ArrowLeft, ArrowRight, Scan, UserPlus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ShieldCheck, ArrowLeft, ArrowRight, Scan, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { loginUser } from '../../services/authService';
 
 export default function Login({ onSwitchToSignup }) {
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
     rememberMe: false,
   });
 
-  const handleLoginSubmit = (e) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login submitted:', loginData);
+    setError('');
+    setLoading(true);
+
+    try {
+      await loginUser({
+        email: loginData.email,
+        password: loginData.password,
+      });
+
+      // Redirect to home page
+      navigate('/');
+    } catch (err: any) {
+      setError(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -20,14 +42,17 @@ export default function Login({ onSwitchToSignup }) {
         {/* Left Banner Panel */}
         <div className="w-full md:w-5/12 bg-[#E9F0E6] p-6 sm:p-8 lg:p-12 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#E0E7DC]">
           <div>
-            <div className="flex items-center gap-2 mb-6 sm:mb-8 group cursor-pointer">
+            <div
+              onClick={() => navigate('/')}
+              className="flex items-center gap-2 mb-6 sm:mb-8 group cursor-pointer"
+            >
               <div className="w-8 h-8 bg-[#2D5A46] rounded-lg flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <Scan className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
               </div>
               <div className="leading-tight">
                 <span className="font-bold text-base sm:text-lg text-[#1A362B] block">FindBack</span>
                 <span className="text-[9px] sm:text-[10px] tracking-wider uppercase text-[#4A6B5D] font-semibold block">
-                  UNIVERSITY LOST & FOUND
+                  UNIVERSITY LOST &amp; FOUND
                 </span>
               </div>
             </div>
@@ -66,17 +91,27 @@ export default function Login({ onSwitchToSignup }) {
           <div className="max-w-md mx-auto w-full flex-1 flex flex-col justify-center">
 
             <div className="flex items-center justify-between mb-6 sm:mb-8">
-              <button className="flex items-center gap-2 text-xs text-[#527063] hover:text-[#1A362B] transition-all group">
+              <button
+                type="button"
+                onClick={() => navigate('/')}
+                className="flex items-center gap-2 text-xs text-[#527063] hover:text-[#1A362B] transition-all group"
+              >
                 <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform duration-300" />
                 Back to FindBack
               </button>
             </div>
 
-
             <h2 className="text-2xl sm:text-3xl font-semibold text-[#1A362B] mb-1.5 sm:mb-2">Welcome back</h2>
             <p className="text-xs text-[#527063] mb-6 sm:mb-8">
               Log in to report, claim and reconnect with your belongings.
             </p>
+
+            {/* Error message banner */}
+            {error && (
+              <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium">
+                {error}
+              </div>
+            )}
 
             <form onSubmit={handleLoginSubmit} className="space-y-4 sm:space-y-5">
               <div>
@@ -97,14 +132,24 @@ export default function Login({ onSwitchToSignup }) {
                 <label className="block text-xs font-semibold text-[#2D3748] mb-1">
                   Password *
                 </label>
-                <input
-                  type="password"
-                  placeholder="Enter your password"
-                  value={loginData.password}
-                  onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                  required
-                  className="w-full px-3.5 py-2.5 sm:px-4 rounded-xl border border-[#D5E2D1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#2D5A46]/30 focus:border-[#2D5A46] transition-all duration-200"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Enter your password"
+                    value={loginData.password}
+                    onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                    required
+                    className="w-full px-3.5 py-2.5 sm:px-4 pr-10 rounded-xl border border-[#D5E2D1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#2D5A46]/30 focus:border-[#2D5A46] transition-all duration-200"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B8A7A] hover:text-[#2D5A46] transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
@@ -125,10 +170,20 @@ export default function Login({ onSwitchToSignup }) {
               {/* Main Submit Button */}
               <button
                 type="submit"
-                className="w-full py-3 bg-[#2D5A46] hover:bg-[#234737] text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-sm transition-all duration-300 active:scale-[0.98] group"
+                disabled={loading}
+                className="w-full py-3 bg-[#2D5A46] hover:bg-[#234737] disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-sm transition-all duration-300 active:scale-[0.98] group"
               >
-                <span>Log in</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Logging in...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Log in</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                  </>
+                )}
               </button>
             </form>
 

@@ -12,25 +12,54 @@ import {
   LogOut,
   Activity,
   PlusCircle,
+  ArrowRight,
 } from 'lucide-react';
 import { getCurrentUser, logoutUser, type AuthUser } from '../../services/authService';
+import {
+  getUnreadNotificationsCount,
+  getNotifications,
+  markAllNotificationsAsRead,
+  type AppNotification,
+} from '../../services/notificationService';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(() => getCurrentUser());
+  const [unreadCount, setUnreadCount] = useState(() => getCurrentUser() ? getUnreadNotificationsCount() : 0);
+  const [recentNotifs, setRecentNotifs] = useState<AppNotification[]>(() =>
+    getCurrentUser() ? getNotifications().slice(0, 5) : []
+  );
   const location = useLocation();
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notifDropdownRef = useRef<HTMLDivElement>(null);
 
   // Sync user state on route changes
   useEffect(() => {
-    setUser(getCurrentUser());
+    const currentUser = getCurrentUser();
+    setUser(currentUser);
     setDropdownOpen(false);
+    setNotifDropdownOpen(false);
     setMobileMenuOpen(false);
+    if (currentUser) {
+      setUnreadCount(getUnreadNotificationsCount());
+      setRecentNotifs(getNotifications().slice(0, 5));
+    }
   }, [location.pathname]);
 
-  // Close dropdown on click outside
+  // Listen for notification updates
+  useEffect(() => {
+    const handler = () => {
+      setUnreadCount(getUnreadNotificationsCount());
+      setRecentNotifs(getNotifications().slice(0, 5));
+    };
+    window.addEventListener('notifications_updated', handler);
+    return () => window.removeEventListener('notifications_updated', handler);
+  }, []);
+
+  // Close profile dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -41,10 +70,22 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Close notif dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notifDropdownRef.current && !notifDropdownRef.current.contains(event.target as Node)) {
+        setNotifDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const handleLogout = () => {
     logoutUser();
     setUser(null);
     setDropdownOpen(false);
+    setNotifDropdownOpen(false);
     setMobileMenuOpen(false);
     navigate('/login');
   };
@@ -102,117 +143,221 @@ export default function Navbar() {
         </nav>
 
         {/* User Profile / Join ASTU Toggle */}
-        <div className="hidden md:block">
+        <div className="hidden md:flex md:items-center md:gap-2">
           {user ? (
-            <div className="relative" ref={dropdownRef}>
-              <button
-                type="button"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex flex-col items-center justify-center rounded-xl border border-emerald-200/90 bg-emerald-50/80 px-2.5 py-1 text-emerald-950 transition duration-200 hover:border-emerald-300 hover:bg-emerald-100/70"
-              >
-                <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-emerald-800 text-xs font-bold text-white shadow-sm">
-                  {profileImage ? (
-                    <img src={profileImage} alt="Profile" className="h-full w-full object-cover" />
-                  ) : (
-                    userInitial
-                  )}
-                </div>
-                <div className="flex items-center gap-0.5 mt-0.5">
-                  <span className="max-w-[90px] truncate text-[11px] font-semibold leading-tight text-emerald-950">
-                    {user.fullName.split(' ')[0]}
-                  </span>
-                  <ChevronDown
-                    className={`h-3 w-3 text-emerald-800 transition-transform duration-200 ${
-                      dropdownOpen ? 'rotate-180' : ''
-                    }`}
-                  />
-                </div>
-              </button>
-
-              {/* Profile Dropdown Menu */}
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2.5 w-64 origin-top-right rounded-2xl border border-gray-100 bg-white p-2 shadow-xl ring-1 ring-black/5 animate-in fade-in zoom-in-95 duration-150 z-50">
-                  {/* User brief header */}
-                  <div className="border-b border-gray-100 px-3.5 py-3">
-                    <p className="truncate text-sm font-bold text-gray-900">{user.fullName}</p>
-                    <p className="truncate text-xs font-medium text-emerald-700">
-                      {user.studentId || user.email}
-                    </p>
-                  </div>
-
-                  <div className="py-1">
-                    {/* Direct Profile Link */}
-                    <Link
-                      to="/profile"
-                      onClick={() => setDropdownOpen(false)}
-                      className="flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
+            <>
+              {/* Notification Bell */}
+              <div className="relative" ref={notifDropdownRef}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNotifDropdownOpen(!notifDropdownOpen);
+                    setDropdownOpen(false);
+                  }}
+                  className="relative flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 transition-colors hover:text-emerald-800"
+                  aria-label="Notifications"
+                >
+                  <Bell className="h-5 w-5 bell-hover" />
+                  {unreadCount > 0 && (
+                    <span
+                      style={{ minWidth: '18px', height: '18px' }}
+                      className="absolute -right-1.5 -top-1.5 flex items-center justify-center rounded-full bg-red-500 ring-2 ring-white px-1 text-[10px] font-bold leading-none text-white shadow"
                     >
-                      <User className="h-4 w-4 text-emerald-700" />
-                      <span>My Profile</span>
-                    </Link>
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  )}
+                </button>
 
-                    {/* My Activity Group */}
-                    <div className="mt-2 border-t border-gray-100 pt-2">
-                      <div className="px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1.5">
-                        <Activity className="h-3.5 w-3.5 text-emerald-600" />
-                        <span>My Activity</span>
+                {notifDropdownOpen && (
+                  <div className="absolute right-0 mt-2.5 w-80 origin-top-right rounded-2xl border border-gray-100 bg-white shadow-xl ring-1 ring-black/5 z-50 animate-in fade-in zoom-in-95 duration-150">
+                    {/* Header */}
+                    <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <Bell className="h-4 w-4 text-emerald-700" />
+                        <span className="text-sm font-bold text-gray-900">Notifications</span>
+                        {unreadCount > 0 && (
+                          <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-red-600">
+                            {unreadCount} new
+                          </span>
+                        )}
                       </div>
-                      <Link
-                        to="/my-claims"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
-                      >
-                        <CheckCircle2 className="h-4 w-4 text-emerald-700" />
-                        <span>My Claims</span>
-                      </Link>
-                      <Link
-                        to="/my-reports"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
-                      >
-                        <FileText className="h-4 w-4 text-emerald-700" />
-                        <span>My Reports</span>
-                      </Link>
+                      {unreadCount > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            markAllNotificationsAsRead();
+                            setUnreadCount(0);
+                            setRecentNotifs(getNotifications().slice(0, 5));
+                          }}
+                          className="text-[10px] font-semibold text-emerald-700 hover:text-emerald-900"
+                        >
+                          Mark all read
+                        </button>
+                      )}
                     </div>
 
-                    {/* Other Navs */}
-                    <div className="mt-2 border-t border-gray-100 pt-2">
-                      <div className="px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-gray-400">
-                        Other
-                      </div>
+                    {/* Notification items */}
+                    <div className="max-h-72 overflow-y-auto py-1">
+                      {recentNotifs.length === 0 ? (
+                        <p className="py-6 text-center text-xs text-gray-400">No notifications yet</p>
+                      ) : (
+                        recentNotifs.map((notif) => (
+                          <Link
+                            key={notif.id}
+                            to={notif.link}
+                            onClick={() => setNotifDropdownOpen(false)}
+                            className={`flex items-start gap-3 px-4 py-2.5 text-xs transition hover:bg-gray-50 ${
+                              !notif.isRead ? 'bg-emerald-50/60' : ''
+                            }`}
+                          >
+                            {!notif.isRead && (
+                              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-red-500" />
+                            )}
+                            {notif.isRead && (
+                              <span className="mt-1.5 h-2 w-2 shrink-0" />
+                            )}
+                            <div className="min-w-0">
+                              <p className={`font-semibold ${!notif.isRead ? 'text-gray-900' : 'text-gray-600'}`}>
+                                {notif.title}
+                              </p>
+                              <p className="mt-0.5 text-gray-500 line-clamp-2">{notif.message}</p>
+                              <p className="mt-1 text-[10px] text-gray-400">
+                                {notif.date} · {notif.time}
+                              </p>
+                            </div>
+                          </Link>
+                        ))
+                      )}
+                    </div>
+
+                    {/* Footer */}
+                    <div className="border-t border-gray-100 px-4 py-2.5">
                       <Link
                         to="/notifications"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
+                        onClick={() => setNotifDropdownOpen(false)}
+                        className="flex items-center justify-center gap-1.5 text-xs font-semibold text-emerald-700 hover:text-emerald-900"
                       >
-                        <Bell className="h-4 w-4 text-emerald-700" />
-                        <span>Notifications</span>
+                        View all notifications <ArrowRight className="h-3 w-3" />
                       </Link>
-                      <Link
-                        to="/report-item"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
-                      >
-                        <PlusCircle className="h-4 w-4 text-emerald-700" />
-                        <span>Report an Item</span>
-                      </Link>
-                    </div>
-
-                    {/* Logout */}
-                    <div className="mt-2 border-t border-gray-100 pt-1">
-                      <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="flex w-full items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors"
-                      >
-                        <LogOut className="h-4 w-4" />
-                        <span>Log out</span>
-                      </button>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+
+              {/* Profile Button + Dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDropdownOpen(!dropdownOpen);
+                    setNotifDropdownOpen(false);
+                  }}
+                  className="flex flex-col items-center justify-center rounded-xl border border-emerald-200/90 bg-emerald-50/80 px-2.5 py-1 text-emerald-950 transition duration-200 hover:border-emerald-300 hover:bg-emerald-100/70"
+                >
+                  <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-emerald-800 text-xs font-bold text-white shadow-sm">
+                    {profileImage ? (
+                      <img src={profileImage} alt="Profile" className="h-full w-full object-cover" />
+                    ) : (
+                      userInitial
+                    )}
+                  </div>
+                  <div className="flex items-center gap-0.5 mt-0.5">
+                    <span className="max-w-[90px] truncate text-[11px] font-semibold leading-tight text-emerald-950">
+                      {user.fullName.split(' ')[0]}
+                    </span>
+                    <ChevronDown
+                      className={`h-3 w-3 text-emerald-800 transition-transform duration-200 ${
+                        dropdownOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </div>
+                </button>
+
+                {/* Profile Dropdown Menu */}
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-2.5 w-64 origin-top-right rounded-2xl border border-gray-100 bg-white p-2 shadow-xl ring-1 ring-black/5 animate-in fade-in zoom-in-95 duration-150 z-50">
+                    {/* User brief header */}
+                    <div className="border-b border-gray-100 px-3.5 py-3">
+                      <p className="truncate text-sm font-bold text-gray-900">{user.fullName}</p>
+                      <p className="truncate text-xs font-medium text-emerald-700">
+                        {user.studentId || user.email}
+                      </p>
+                    </div>
+
+                    <div className="py-1">
+                      {/* Direct Profile Link */}
+                      <Link
+                        to="/profile"
+                        onClick={() => setDropdownOpen(false)}
+                        className="flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
+                      >
+                        <User className="h-4 w-4 text-emerald-700" />
+                        <span>My Profile</span>
+                      </Link>
+
+                      {/* My Activity Group */}
+                      <div className="mt-2 border-t border-gray-100 pt-2">
+                        <div className="px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1.5">
+                          <Activity className="h-3.5 w-3.5 text-emerald-600" />
+                          <span>My Activity</span>
+                        </div>
+                        <Link
+                          to="/my-claims"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
+                        >
+                          <CheckCircle2 className="h-4 w-4 text-emerald-700" />
+                          <span>My Claims</span>
+                        </Link>
+                        <Link
+                          to="/my-reports"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
+                        >
+                          <FileText className="h-4 w-4 text-emerald-700" />
+                          <span>My Reports</span>
+                        </Link>
+                      </div>
+
+                      {/* Other Navs */}
+                      <div className="mt-2 border-t border-gray-100 pt-2">
+                        <div className="px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                          Other
+                        </div>
+                        <Link
+                          to="/notifications"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
+                        >
+                          <Bell className="h-4 w-4 text-emerald-700" />
+                          <span>Notifications</span>
+                        </Link>
+                        <Link
+                          to="/report-item"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
+                        >
+                          <PlusCircle className="h-4 w-4 text-emerald-700" />
+                          <span>Report an Item</span>
+                        </Link>
+                      </div>
+
+                      {/* Logout */}
+                      <div className="mt-2 border-t border-gray-100 pt-1">
+                        <button
+                          type="button"
+                          onClick={handleLogout}
+                          className="flex w-full items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          <span>Log out</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
           ) : (
             <Link
               to="/registration"
@@ -271,10 +416,24 @@ export default function Navbar() {
                         userInitial
                       )}
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-bold text-gray-900">{user.fullName}</p>
                       <p className="truncate text-xs font-medium text-emerald-700">{user.studentId || user.email}</p>
                     </div>
+                    {/* Mobile notification badge */}
+                    <Link
+                      to="/notifications"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600"
+                      aria-label="Notifications"
+                    >
+                      <Bell className="h-4 w-4" />
+                      {unreadCount > 0 && (
+                        <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white">
+                          {unreadCount > 9 ? '9+' : unreadCount}
+                        </span>
+                      )}
+                    </Link>
                   </div>
 
                   <Link

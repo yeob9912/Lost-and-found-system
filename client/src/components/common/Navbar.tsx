@@ -14,7 +14,7 @@ import {
   PlusCircle,
   ArrowRight,
 } from 'lucide-react';
-import { getCurrentUser, logoutUser, type AuthUser } from '../../services/authService';
+import { getCurrentUser, logoutUser, getUserProfileImage, type AuthUser } from '../../services/authService';
 import {
   getUnreadNotificationsCount,
   getNotifications,
@@ -27,6 +27,7 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(() => getCurrentUser());
+  const [profileImage, setProfileImage] = useState<string | null>(() => getUserProfileImage(getCurrentUser()));
   const [unreadCount, setUnreadCount] = useState(() => getCurrentUser() ? getUnreadNotificationsCount() : 0);
   const [recentNotifs, setRecentNotifs] = useState<AppNotification[]>(() =>
     getCurrentUser() ? getNotifications().slice(0, 5) : []
@@ -36,10 +37,11 @@ export default function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notifDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Sync user state on route changes
+  // Sync user state and profile image on route changes
   useEffect(() => {
     const currentUser = getCurrentUser();
     setUser(currentUser);
+    setProfileImage(getUserProfileImage(currentUser));
     setDropdownOpen(false);
     setNotifDropdownOpen(false);
     setMobileMenuOpen(false);
@@ -48,6 +50,17 @@ export default function Navbar() {
       setRecentNotifs(getNotifications().slice(0, 5));
     }
   }, [location.pathname]);
+
+  // Listen for account-specific profile picture changes
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      const currentUser = getCurrentUser();
+      setUser(currentUser);
+      setProfileImage(getUserProfileImage(currentUser));
+    };
+    window.addEventListener('profile_image_updated', handleProfileUpdate);
+    return () => window.removeEventListener('profile_image_updated', handleProfileUpdate);
+  }, []);
 
   // Listen for notification updates
   useEffect(() => {
@@ -103,7 +116,6 @@ export default function Navbar() {
     return location.pathname === path;
   };
 
-  const profileImage = localStorage.getItem('findback-profile-image');
   const userInitial = (user?.fullName || 'U').trim().charAt(0).toUpperCase();
 
   return (
@@ -244,7 +256,7 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Profile Button + Dropdown */}
+              {/* Profile Avatar Button + Dropdown */}
               <div className="relative" ref={dropdownRef}>
                 <button
                   type="button"
@@ -252,24 +264,15 @@ export default function Navbar() {
                     setDropdownOpen(!dropdownOpen);
                     setNotifDropdownOpen(false);
                   }}
-                  className="flex flex-col items-center justify-center rounded-xl border border-emerald-200/90 bg-emerald-50/80 px-2.5 py-1 text-emerald-950 transition duration-200 hover:border-emerald-300 hover:bg-emerald-100/70"
+                  className="flex items-center justify-center rounded-full p-0 transition-opacity hover:opacity-90 focus:outline-none"
+                  aria-label="User profile menu"
                 >
-                  <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-emerald-800 text-xs font-bold text-white shadow-sm">
+                  <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-emerald-800 text-xs font-bold text-white shadow-sm">
                     {profileImage ? (
                       <img src={profileImage} alt="Profile" className="h-full w-full object-cover" />
                     ) : (
                       userInitial
                     )}
-                  </div>
-                  <div className="flex items-center gap-0.5 mt-0.5">
-                    <span className="max-w-[90px] truncate text-[11px] font-semibold leading-tight text-emerald-950">
-                      {user.fullName.split(' ')[0]}
-                    </span>
-                    <ChevronDown
-                      className={`h-3 w-3 text-emerald-800 transition-transform duration-200 ${
-                        dropdownOpen ? 'rotate-180' : ''
-                      }`}
-                    />
                   </div>
                 </button>
 

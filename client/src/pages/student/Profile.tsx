@@ -33,8 +33,14 @@ import {
     Settings,
     ImagePlus,
 } from "lucide-react";
+import {
+    getUserProfileImage,
+    setUserProfileImage,
+    type AuthUser,
+} from "../../services/authService";
 
 type Student = {
+    id?: string;
     fullName?: string;
     studentId?: string;
     email?: string;
@@ -42,6 +48,7 @@ type Student = {
     department?: string;
     yearOfStudy?: string;
     role?: string;
+    profileImage?: string;
 };
 
 type Tab =
@@ -123,12 +130,38 @@ export default function Profile() {
     const [editing, setEditing] = useState(false);
     const [savedMessage, setSavedMessage] = useState("");
 
-    // Profile image
+    // Profile image linked uniquely to this authenticated user account
     const [profileImage, setProfileImage] = useState<string | null>(() => {
-        return localStorage.getItem("findback-profile-image");
+        return getUserProfileImage(getSavedUser() as AuthUser);
     });
 
     const profileImageInput = useRef<HTMLInputElement>(null);
+
+    // Sync profile and unique profile picture from server
+    useEffect(() => {
+        const token = sessionStorage.getItem("token") || sessionStorage.getItem("findback_token");
+        if (!token) return;
+
+        fetch("http://localhost:5000/api/users/profile", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => {
+                if (data?.user) {
+                    setStudent((prev) => ({
+                        ...prev,
+                        ...data.user,
+                    }));
+                    if (data.user.profileImage) {
+                        setProfileImage(data.user.profileImage);
+                        setUserProfileImage(data.user.profileImage, data.user);
+                    }
+                }
+            })
+            .catch(() => {});
+    }, []);
 
     // Notification preferences
     const [preferences, setPreferences] =
@@ -211,9 +244,22 @@ export default function Profile() {
             }
 
             try {
-                localStorage.setItem("findback-profile-image", imageData);
+                setUserProfileImage(imageData, student as AuthUser);
                 setProfileImage(imageData);
                 setSavedMessage("Profile picture updated successfully.");
+
+                // Persist image to backend specifically for this authenticated user account
+                const token = sessionStorage.getItem("token") || sessionStorage.getItem("findback_token");
+                if (token) {
+                    fetch("http://localhost:5000/api/users/profile", {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({ profileImage: imageData }),
+                    }).catch((err) => console.error("Failed to sync profile picture to server:", err));
+                }
 
                 window.setTimeout(() => setSavedMessage(""), 3000);
             } catch {
@@ -232,11 +278,24 @@ export default function Profile() {
 
     // Remove profile image
     const handleRemoveProfileImage = () => {
-        localStorage.removeItem("findback-profile-image");
+        setUserProfileImage(null, student as AuthUser);
         setProfileImage(null);
 
         if (profileImageInput.current) {
             profileImageInput.current.value = "";
+        }
+
+        // Remove image from backend specifically for this user
+        const token = sessionStorage.getItem("token") || sessionStorage.getItem("findback_token");
+        if (token) {
+            fetch("http://localhost:5000/api/users/profile", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ profileImage: "" }),
+            }).catch((err) => console.error("Failed to remove profile image from server:", err));
         }
 
         setSavedMessage("Profile picture removed successfully.");
@@ -244,11 +303,30 @@ export default function Profile() {
     };
 
     // Save profile information
-    const handleSaveProfile = (event: FormEvent<HTMLFormElement>) => {
+    const handleSaveProfile = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         try {
             sessionStorage.setItem("user", JSON.stringify(student));
+            sessionStorage.setItem("findback_user", JSON.stringify(student));
+
+            const token = sessionStorage.getItem("token") || sessionStorage.getItem("findback_token");
+            if (token) {
+                await fetch("http://localhost:5000/api/users/profile", {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        fullName: student.fullName,
+                        phone: student.phone,
+                        department: student.department,
+                        yearOfStudy: student.yearOfStudy,
+                    }),
+                });
+            }
+
             setEditing(false);
             setSavedMessage("Your profile information has been saved.");
             window.setTimeout(() => setSavedMessage(""), 3000);

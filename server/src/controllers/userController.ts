@@ -111,6 +111,10 @@ export const register = async (req: Request, res: Response) => {
                 studentId: user.studentId,
                 email: user.email,
                 role: user.role,
+                profileImage: user.profileImage || "",
+                phone: user.phone || "",
+                department: user.department || "",
+                yearOfStudy: user.yearOfStudy || "",
             },
         });
     } catch (error: any) {
@@ -169,6 +173,10 @@ export const login = async (req: Request, res: Response) => {
                 studentId: user.studentId,
                 email: user.email,
                 role: user.role,
+                profileImage: user.profileImage || "",
+                phone: user.phone || "",
+                department: user.department || "",
+                yearOfStudy: user.yearOfStudy || "",
             },
         });
     } catch (error) {

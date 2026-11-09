@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
+import FoundItemForm from '../../components/found-items/FoundItemForm';
 import { Link } from "react-router-dom";
 import {
     Search,
@@ -11,6 +12,8 @@ import {
     AlertCircle,
     Eye,
     Tag,
+    CheckCircle2,
+    ShieldCheck,
 } from "lucide-react";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
@@ -78,12 +81,15 @@ const categories = [
 ];
 
 export default function FoundItems() {
+    const [items, setItems] = useState(sampleFoundItems);
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [successBanner, setSuccessBanner] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All Categories");
     const [expandedItem, setExpandedItem] = useState(null);
 
     const filteredItems = useMemo(() => {
-        return sampleFoundItems.filter((item) => {
+        return items.filter((item) => {
             const search = searchTerm.toLowerCase().trim();
             const matchesSearch =
                 !search ||
@@ -127,13 +133,14 @@ export default function FoundItems() {
                             </p>
 
                             <div className="mt-5 flex flex-wrap items-center gap-2.5">
-                                <Link
-                                    to="/report-item"
+                                <button
+                                    type="button"
+                                    onClick={() => setShowReportModal(true)}
                                     className="inline-flex items-center gap-2 rounded-xl bg-white px-4.5 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-bold text-emerald-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-50"
                                 >
                                     <PlusCircle size={16} />
                                     Report a Found Item
-                                </Link>
+                                </button>
                                 <a
                                     href="#found-items-list"
                                     className="inline-flex items-center gap-2 rounded-xl border border-emerald-400/40 bg-emerald-700/60 px-4.5 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold text-white transition hover:bg-emerald-700"
@@ -192,7 +199,7 @@ export default function FoundItems() {
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {filteredItems.map((item) => (
                                 <article
-                                    key={item.id}
+                                    key={item.id || item._id}
                                     className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
                                 >
                                     <div>
@@ -234,17 +241,17 @@ export default function FoundItems() {
 
                                             <div className="mt-5 border-t border-gray-100 pt-4">
                                                 <button
-                                                    onClick={() => toggleDetails(item.id)}
+                                                    onClick={() => toggleDetails(item.id || item._id)}
                                                     className="flex w-full items-center justify-between text-xs font-semibold text-emerald-900"
                                                 >
-                                                    <span>{expandedItem === item.id ? "Hide Details" : "View Item Details"}</span>
-                                                    {expandedItem === item.id ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                                    <span>{expandedItem === (item.id || item._id) ? "Hide Details" : "View Item Details"}</span>
+                                                    {expandedItem === (item.id || item._id) ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {expandedItem === item.id && (
+                                    {expandedItem === (item.id || item._id) && (
                                         <ItemDetails item={item} />
                                     )}
                                 </article>
@@ -259,8 +266,59 @@ export default function FoundItems() {
                             </p>
                         </div>
                     )}
+                    {/* Bottom CTA for reporting found items */}
+                    <section className="mt-16 overflow-hidden rounded-2xl bg-emerald-800 text-white">
+                        <div className="flex flex-col items-center justify-between gap-6 px-6 py-10 text-center md:flex-row md:px-12 md:text-left">
+                            <div className="max-w-xl">
+                                <div className="mb-2 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-300">
+                                    <ShieldCheck size={16} />
+                                    FOUND SOMETHING ON CAMPUS?
+                                </div>
+                                <h2 className="text-2xl font-extrabold sm:text-3xl">
+                                    Help Return It to Its Owner
+                                </h2>
+                                <p className="mt-2 text-xs sm:text-sm text-emerald-100">
+                                    Log the item in the university registry so the true owner can identify and claim it.
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setShowReportModal(true)}
+                                className="flex shrink-0 items-center gap-2 rounded-xl bg-white px-6 py-3.5 font-bold text-emerald-800 shadow-sm transition hover:bg-emerald-50"
+                            >
+                                <PlusCircle size={17} />
+                                Report a Found Item
+                            </button>
+                        </div>
+                    </section>
+
+                    {/* Success Banner */}
+                    {successBanner && (
+                        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl bg-emerald-900 px-5 py-4 text-xs sm:text-sm font-semibold text-white shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-200">
+                            <CheckCircle2 size={20} className="text-emerald-400 shrink-0" />
+                            <span>{successBanner}</span>
+                        </div>
+                    )}
                 </main>
             </div>
+
+            {/* Dedicated Found Item Reporting Modal */}
+            {showReportModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+                    <div className="relative w-full max-w-3xl my-8">
+                        <FoundItemForm
+                            isModal
+                            onCancel={() => setShowReportModal(false)}
+                            onSuccess={(newItem) => {
+                                setItems((prev) => [newItem, ...prev]);
+                                setShowReportModal(false);
+                                setSuccessBanner(`The found item "${newItem.name}" has been successfully registered!`);
+                                setTimeout(() => setSuccessBanner(""), 6000);
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
 
             <Footer />
         </div>

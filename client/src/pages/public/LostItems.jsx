@@ -1,8 +1,9 @@
-import Navbar from '../../components/common/Navbar';
+﻿import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import ItemDetails, { formatDisplayDate } from '../../components/common/ItemDetails';
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
+import LostItemForm from '../../components/lost-items/LostItemForm';
 import { Link } from "react-router-dom";
 import {
     Search,
@@ -131,15 +132,57 @@ const categories = [
 ];
 
 const LostItems = () => {
+    const [items, setItems] = useState(lostItems);
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [successBanner, setSuccessBanner] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] =
         useState("All Categories");
     const [expandedItem, setExpandedItem] = useState(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    // Fetch live lost items from backend API
+    useEffect(() => {
+        let isMounted = true;
+        const fetchItems = async () => {
+            try {
+                const res = await fetch("http://localhost:5000/api/lost-items");
+                if (res.ok) {
+                    const data = await res.json();
+                    const apiItems = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
+                    if (isMounted && apiItems.length > 0) {
+                        const normalized = apiItems.map((it) => ({
+                            id: it._id || it.id,
+                            name: it.name,
+                            category: it.category,
+                            brand: it.brand || 'Unknown',
+                            color: it.color || 'Unknown',
+                            location: it.location,
+                            date: it.date ? String(it.date).split('T')[0] : new Date().toISOString().split('T')[0],
+                            description: it.description,
+                            image: it.image || 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=900',
+                            status: it.status || 'Lost',
+                        }));
+                        setItems((prev) => {
+                            const apiIds = new Set(normalized.map((x) => String(x.id)));
+                            const remaining = prev.filter((p) => !apiIds.has(String(p.id)));
+                            return [...normalized, ...remaining];
+                        });
+                    }
+                }
+            } catch {
+                // Keep sample items if server is offline
+            }
+        };
+        fetchItems();
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
     // Search and filter lost items
     const filteredItems = useMemo(() => {
-        return lostItems.filter((item) => {
+        return items.filter((item) => {
             const search = searchTerm.toLowerCase().trim();
 
             const matchesSearch =
@@ -151,7 +194,7 @@ const LostItems = () => {
                     item.color,
                     item.location,
                     item.description,
-                ].some((value) => value.toLowerCase().includes(search));
+                ].some((value) => value && value.toLowerCase().includes(search));
 
             const matchesCategory =
                 selectedCategory === "All Categories" ||
@@ -159,7 +202,7 @@ const LostItems = () => {
 
             return matchesSearch && matchesCategory;
         });
-    }, [searchTerm, selectedCategory]);
+    }, [items, searchTerm, selectedCategory]);
 
     const toggleDetails = (id) => {
         setExpandedItem((previous) => (previous === id ? null : id));
@@ -223,13 +266,14 @@ const LostItems = () => {
                                 Search Items
                             </a>
 
-                            <Link
-                                to="/report-item"
-                                className="flex items-center gap-2 rounded-lg border border-emerald-300/50 bg-emerald-700 px-4.5 py-2 sm:px-5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white transition hover:bg-emerald-600"
+                            <button
+                                type="button"
+                                onClick={() => setShowReportModal(true)}
+                                className="flex items-center gap-2 rounded-xl border border-red-300/50 bg-red-600 px-4.5 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-bold text-white transition hover:bg-red-700 shadow-sm"
                             >
                                 <PlusCircle size={16} />
-                                Report an Item
-                            </Link>
+                                Report a Lost Item
+                            </button>
 
                         </div>
                     </div>
@@ -344,7 +388,7 @@ const LostItems = () => {
                         {filteredItems.map((item) => (
 
                             <article
-                                key={item.id}
+                                key={item.id || item._id}
                                 className="group overflow-hidden rounded-2xl border border-emerald-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
                             >
 
@@ -405,15 +449,15 @@ const LostItems = () => {
 
                                     {/* Expand Details */}
                                     <button
-                                        onClick={() => toggleDetails(item.id)}
-                                        aria-expanded={expandedItem === item.id}
+                                        onClick={() => toggleDetails(item.id || item._id)}
+                                        aria-expanded={expandedItem === (item.id || item._id)}
                                         className="flex w-full items-center justify-between rounded-lg bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800 transition hover:bg-emerald-100"
                                     >
-                                        {expandedItem === item.id
+                                        {expandedItem === (item.id || item._id)
                                             ? "Hide Details"
                                             : "View Item Details"}
 
-                                        {expandedItem === item.id ? (
+                                        {expandedItem === (item.id || item._id) ? (
                                             <ChevronUp size={18} />
                                         ) : (
                                             <ChevronDown size={18} />
@@ -421,7 +465,7 @@ const LostItems = () => {
                                     </button>
 
                                     {/* Expanded Details - Inline, not an overlay */}
-                                    {expandedItem === item.id && (
+                                    {expandedItem === (item.id || item._id) && (
                                         <div className="mt-4 overflow-hidden rounded-xl border border-gray-100 shadow-sm">
                                             <ItemDetails item={{ ...item, status: item.status || 'Lost' }} />
                                         </div>
@@ -501,18 +545,44 @@ const LostItems = () => {
 
                         </div>
 
-                        <Link
-                            to="/report-item"
+                        <button
+                            type="button"
+                            onClick={() => setShowReportModal(true)}
                             className="flex shrink-0 items-center gap-2 rounded-xl bg-white px-6 py-3.5 font-bold text-emerald-800 shadow-sm transition hover:bg-emerald-50"
                         >
-                            Report an Item
+                            Report a Lost Item
                             <ArrowRight size={18} />
-                        </Link>
+                        </button>
 
                     </div>
                 </section>
 
             </main>
+            {/* ================= LOST ITEM REPORT MODAL ================= */}
+            {showReportModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+                    <div className="relative w-full max-w-3xl my-8">
+                        <LostItemForm
+                            isModal
+                            onCancel={() => setShowReportModal(false)}
+                            onSuccess={(newItem) => {
+                                setItems((prev) => [newItem, ...prev]);
+                                setShowReportModal(false);
+                                setSuccessBanner(`Your lost item "${newItem.name}" has been successfully reported!`);
+                                setTimeout(() => setSuccessBanner(""), 6000);
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {/* ================= SUCCESS BANNER ================= */}
+            {successBanner && (
+                <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl bg-emerald-900 px-5 py-4 text-xs sm:text-sm font-semibold text-white shadow-2xl">
+                    <span className="text-emerald-400">&#10003;</span>
+                    <span>{successBanner}</span>
+                </div>
+            )}
 
             {/* ================= FOOTER ================= */}
             <Footer />

@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoutes";
 import lostItemRoutes from "./routes/lostItemRoutes";
 import foundItemRoutes from "./routes/foundItemRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
+import adminRoutes from "./routes/adminRoutes";
 
 import claimRoutes from "./routes/claimRoutes";
 
@@ -38,6 +39,7 @@ app.use("/api/lost-items", lostItemRoutes);
 app.use("/api/found-items", foundItemRoutes);
 app.use("/api/claims", claimRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Health check
 app.get("/", (_req, res) => {

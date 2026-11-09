@@ -1,4 +1,4 @@
-﻿
+
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import FoundItem from "../models/FoundItem";
@@ -31,11 +31,12 @@ const sendNotification = async (
 ) => {
     try {
         await Notification.create({
-            user: userId,
+            recipient: userId,
             title,
             message,
-            type: "found_item",
-            relatedId,
+            type: "FOUND_ITEM_SUBMITTED",
+            relatedEntityType: "FoundItem",
+            relatedEntityId: relatedId,
             isRead: false,
         });
     } catch (error) {

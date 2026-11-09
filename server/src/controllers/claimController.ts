@@ -1,4 +1,4 @@
-﻿
+
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 
@@ -33,11 +33,12 @@ const sendNotification = async (
 ) => {
     try {
         await Notification.create({
-            user: userId,
+            recipient: userId,
             title,
             message,
-            type: "claim",
-            relatedId,
+            type: "CLAIM_SUBMITTED",
+            relatedEntityType: "Claim",
+            relatedEntityId: relatedId,
             isRead: false,
         });
     } catch (error) {

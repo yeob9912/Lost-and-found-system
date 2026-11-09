@@ -1,4 +1,4 @@
-﻿
+
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 
@@ -31,11 +31,12 @@ const sendNotification = async (
     relatedId: mongoose.Types.ObjectId | string
 ): Promise<void> => {
     await Notification.create({
-        user: userId,
+        recipient: userId,
         title,
         message,
-        type: "lost_item",
-        relatedId,
+        type: "LOST_ITEM_SUBMITTED",
+        relatedEntityType: "LostItem",
+        relatedEntityId: relatedId,
         isRead: false,
     });
 };

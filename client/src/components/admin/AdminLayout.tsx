@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Menu, Bell, ShieldCheck } from "lucide-react";
+import { Menu, Bell, ShieldCheck, Sun, Moon } from "lucide-react";
 import { Link } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import AdminNotificationOverlay from "./AdminNotificationOverlay";
 import { getCurrentUser, getUserProfileImage } from "../../services/authService";
+import { useTheme } from "../../context/ThemeContext";
 
 interface AdminLayoutProps {
     children: React.ReactNode;
@@ -11,7 +12,8 @@ interface AdminLayoutProps {
     subtitle?: string;
 }
 
-export default function AdminLayout({ children, title }: AdminLayoutProps) {
+export default function AdminLayout({ children, title, subtitle }: AdminLayoutProps) {
+    const { theme, toggleTheme, isDark } = useTheme();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [notificationOpen, setNotificationOpen] = useState(false);
     const [unreadCount, setUnreadCount] = useState(0);
@@ -46,7 +48,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     }, []);
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900">
+        <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0D0E12] text-[#111827] dark:text-[#F3F4F6] transition-colors duration-200">
             {/* Sliding Drawer Menu (Off-canvas on all screen sizes) */}
             <AdminSidebar
                 open={sidebarOpen}
@@ -64,41 +66,56 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
             {/* Main Content Container */}
             <div className="flex flex-col min-h-screen">
                 {/* Top Header Bar (Main Nav) */}
-                <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200/80 bg-white/95 backdrop-blur-md px-4 sm:px-6 md:px-8 shadow-xs">
+                <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#E2E8F0] dark:border-[#2A2D35] bg-white/95 dark:bg-[#181A20]/95 backdrop-blur-md px-4 sm:px-6 md:px-8 shadow-xs transition-colors duration-200">
                     <div className="flex items-center gap-3 md:gap-5">
-                        {/* Menu Icon Toggle: ONLY the icon, NO rectangle background, NO "menu" text */}
+                        {/* Menu Icon Toggle */}
                         <button
                             onClick={() => setSidebarOpen(true)}
                             aria-label="Open navigation menu"
-                            className="flex items-center justify-center p-1.5 text-slate-700 hover:text-emerald-600 active:scale-90 transition-transform duration-200 cursor-pointer focus:outline-none"
+                            className="flex items-center justify-center p-1.5 text-[#111827] dark:text-[#F3F4F6] hover:text-emerald-600 dark:hover:text-emerald-400 active:scale-90 transition-transform duration-200 cursor-pointer focus:outline-none"
                         >
-                            <Menu size={26} className="transition-transform hover:scale-110 duration-200" />
+                            <Menu size={24} className="transition-transform hover:scale-110 duration-200" />
                         </button>
 
-                        {/* ASTU Admin Logo & Title on Main Nav Only */}
+                        {/* ASTU Admin Logo & Title on Main Nav */}
                         <div className="flex items-center gap-2.5">
                             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-600/20">
                                 <ShieldCheck size={20} />
                             </div>
                             <div>
-                                <h1 className="text-base font-extrabold text-slate-900 leading-tight">
-                                    ASTU <span className="text-emerald-600">Admin</span>
+                                <h1 className="text-base font-extrabold text-[#111827] dark:text-[#F3F4F6] leading-tight">
+                                    ASTU <span className="text-emerald-600 dark:text-emerald-400">Admin</span>
                                 </h1>
-                                <p className="text-[11px] font-medium text-slate-400">
+                                <p className="text-[11px] font-medium text-[#6B7280] dark:text-[#9CA3AF]">
                                     {title || "FindBack System"}
+                                    {subtitle ? ` • ${subtitle}` : ""}
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2 sm:gap-4">
-                        {/* Notification Bell Icon: ONLY the icon, NO rectangle background */}
+                    <div className="flex items-center gap-2 sm:gap-3">
+                        {/* Theme Toggle (Light / Dark Mode) */}
+                        <button
+                            onClick={toggleTheme}
+                            aria-label={`Switch to ${isDark ? "Light" : "Dark"} Mode`}
+                            title={`Switch to ${isDark ? "Light" : "Dark"} Mode`}
+                            className="relative flex h-9 w-9 items-center justify-center rounded-xl text-[#6B7280] dark:text-[#9CA3AF] hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-[#2A2D35] active:scale-90 transition-all duration-200 cursor-pointer focus:outline-none"
+                        >
+                            {isDark ? (
+                                <Sun size={19} className="text-amber-400 animate-in spin-in-90 duration-300" />
+                            ) : (
+                                <Moon size={19} className="text-slate-600 animate-in spin-in-90 duration-300" />
+                            )}
+                        </button>
+
+                        {/* Notification Bell Icon */}
                         <button
                             onClick={() => setNotificationOpen(true)}
                             aria-label="Open Notifications"
-                            className="relative flex items-center justify-center p-2 text-slate-600 hover:text-emerald-600 active:scale-90 transition-transform duration-200 cursor-pointer focus:outline-none"
+                            className="relative flex items-center justify-center p-2 text-[#6B7280] dark:text-[#9CA3AF] hover:text-emerald-600 dark:hover:text-emerald-400 active:scale-90 transition-transform duration-200 cursor-pointer focus:outline-none"
                         >
-                            <Bell size={22} className="transition-transform hover:scale-110 duration-200" />
+                            <Bell size={21} className="transition-transform hover:scale-110 duration-200" />
                             {unreadCount > 0 && (
                                 <span className="absolute top-1 right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white shadow-xs animate-pulse">
                                     {unreadCount > 99 ? "99+" : unreadCount}
@@ -106,7 +123,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                             )}
                         </button>
 
-                        {/* Admin Avatar: Clickable to /admin/profile, NO rectangle background, NO text */}
+                        {/* Admin Avatar */}
                         <Link
                             to="/admin/profile"
                             title="Admin Profile"

@@ -23,13 +23,13 @@ interface LostItem {
 
 function StatusBadge({ status }: { status: string }) {
     const styles: Record<string, string> = {
-        pending: "bg-amber-100 text-amber-700",
-        approved: "bg-emerald-100 text-emerald-700",
-        rejected: "bg-red-100 text-red-700",
-        returned: "bg-blue-100 text-blue-700",
+        pending: "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300",
+        approved: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300",
+        rejected: "bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300",
+        returned: "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300",
     };
     return (
-        <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${styles[status] || "bg-slate-100 text-slate-600"}`}>
+        <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${styles[status] || "bg-slate-100 text-slate-600 dark:bg-[#2A2D35] dark:text-[#9CA3AF]"}`}>
             {status}
         </span>
     );
@@ -53,7 +53,7 @@ export default function ManageLostItems() {
             const params: Record<string, string> = {};
             if (statusFilter !== "all") params.approvalStatus = statusFilter;
             const data = await fetchAdminLostItems(params);
-            setItems(data.items || data.lostItems || data.data || []);
+            setItems(data?.items || data?.lostItems || data?.data || []);
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : "";
             if (!msg.toLowerCase().includes("access denied") && !msg.toLowerCase().includes("administrator")) {
@@ -109,53 +109,67 @@ export default function ManageLostItems() {
     );
 
     return (
-        <AdminLayout>
+        <AdminLayout title="Lost Items" subtitle="Submissions & Verification">
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 {/* Header */}
                 <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900">Manage Lost Items</h1>
-                        <p className="mt-1 text-sm text-slate-500">Review and manage lost item reports submitted by ASTU users.</p>
+                        <h1 className="text-2xl font-bold text-[#111827] dark:text-[#F3F4F6]">Manage Lost Items</h1>
+                        <p className="mt-1 text-sm text-[#6B7280] dark:text-[#9CA3AF]">Review and manage lost item reports submitted by ASTU users.</p>
                     </div>
-                    <button onClick={load} className="flex items-center gap-2 rounded-xl border bg-white px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors shadow-sm">
-                        <RefreshCw size={15} className={loading ? "animate-spin" : ""} /> Refresh
+                    <button
+                        onClick={load}
+                        className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-4 py-2.5 text-sm font-medium text-[#6B7280] dark:text-[#9CA3AF] hover:bg-slate-50 dark:hover:bg-[#2A2D35] transition-colors shadow-xs cursor-pointer"
+                    >
+                        <RefreshCw size={15} className={loading ? "animate-spin text-emerald-600" : ""} /> Refresh
                     </button>
                 </div>
 
                 {actionMsg && (
-                    <div className="mb-5 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm font-medium text-emerald-700">✓ {actionMsg}</div>
+                    <div className="mb-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 px-4 py-3 text-sm font-medium text-emerald-800 dark:text-emerald-300">
+                        ✓ {actionMsg}
+                    </div>
                 )}
 
                 {/* Stats */}
                 <div className="mb-6 grid gap-4 sm:grid-cols-4">
                     {[
-                        { label: "Total", value: items.length, color: "text-blue-600" },
-                        { label: "Pending", value: items.filter(i => i.approvalStatus === "pending").length, color: "text-amber-600" },
-                        { label: "Approved", value: items.filter(i => i.approvalStatus === "approved").length, color: "text-emerald-600" },
-                        { label: "Rejected", value: items.filter(i => i.approvalStatus === "rejected").length, color: "text-red-600" },
+                        { label: "Total Reports", value: items.length, color: "text-blue-600 dark:text-blue-400" },
+                        { label: "Pending", value: items.filter(i => i.approvalStatus === "pending").length, color: "text-amber-600 dark:text-amber-400" },
+                        { label: "Approved", value: items.filter(i => i.approvalStatus === "approved").length, color: "text-emerald-600 dark:text-emerald-400" },
+                        { label: "Rejected", value: items.filter(i => i.approvalStatus === "rejected").length, color: "text-red-600 dark:text-red-400" },
                     ].map(({ label, value, color }) => (
-                        <div key={label} className="rounded-2xl border bg-white p-5 shadow-sm">
-                            <p className="text-sm text-slate-500">{label}</p>
+                        <div key={label} className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-5 shadow-xs transition-colors">
+                            <p className="text-sm text-[#6B7280] dark:text-[#9CA3AF]">{label}</p>
                             <h2 className={`mt-2 text-2xl font-bold ${color}`}>{loading ? "—" : value}</h2>
                         </div>
                     ))}
                 </div>
 
                 {/* Table */}
-                <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
-                    <div className="flex flex-col gap-3 border-b p-5 sm:flex-row sm:items-center sm:justify-between">
-                        <h2 className="font-bold text-slate-800">Lost Item Reports</h2>
+                <div className="overflow-hidden rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] shadow-xs transition-colors">
+                    <div className="flex flex-col gap-3 border-b border-[#E2E8F0] dark:border-[#2A2D35] p-5 sm:flex-row sm:items-center sm:justify-between">
+                        <h2 className="font-bold text-[#111827] dark:text-[#F3F4F6]">Lost Item Reports</h2>
                         <div className="flex flex-col gap-2 sm:flex-row">
-                            <div className="flex items-center gap-2 rounded-xl border px-3 bg-slate-50">
-                                <Search size={16} className="text-slate-400" />
-                                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search reports..." className="w-full bg-transparent py-2 text-sm outline-none sm:w-48" />
+                            <div className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] px-3 bg-slate-50 dark:bg-[#0D0E12]">
+                                <Search size={16} className="text-[#6B7280] dark:text-[#9CA3AF]" />
+                                <input
+                                    value={search}
+                                    onChange={e => setSearch(e.target.value)}
+                                    placeholder="Search reports..."
+                                    className="w-full bg-transparent py-2 text-sm text-[#111827] dark:text-[#F3F4F6] outline-none sm:w-48 placeholder:text-[#6B7280] dark:placeholder:text-[#9CA3AF]"
+                                />
                             </div>
-                            <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="rounded-xl border px-3 py-2 text-sm outline-none bg-slate-50">
-                                <option value="all">All Status</option>
-                                <option value="pending">Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="rejected">Rejected</option>
-                                <option value="returned">Returned</option>
+                            <select
+                                value={statusFilter}
+                                onChange={e => setStatusFilter(e.target.value)}
+                                className="rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] px-3 py-2 text-sm outline-none bg-slate-50 dark:bg-[#0D0E12] text-[#111827] dark:text-[#F3F4F6]"
+                            >
+                                <option value="all" className="dark:bg-[#181A20]">All Status</option>
+                                <option value="pending" className="dark:bg-[#181A20]">Pending</option>
+                                <option value="approved" className="dark:bg-[#181A20]">Approved</option>
+                                <option value="rejected" className="dark:bg-[#181A20]">Rejected</option>
+                                <option value="returned" className="dark:bg-[#181A20]">Returned</option>
                             </select>
                         </div>
                     </div>
@@ -164,53 +178,53 @@ export default function ManageLostItems() {
                         {error ? (
                             <div className="p-10 text-center text-sm text-red-500">{error}</div>
                         ) : loading ? (
-                            <div className="p-10 text-center text-sm text-slate-400">Loading reports…</div>
+                            <div className="p-10 text-center text-sm text-[#6B7280] dark:text-[#9CA3AF]">Loading reports…</div>
                         ) : (
                             <table className="w-full min-w-[900px] text-left text-sm">
-                                <thead className="bg-slate-50 text-xs uppercase text-slate-500 border-b">
+                                <thead className="bg-slate-50 dark:bg-[#0D0E12] text-xs uppercase text-[#6B7280] dark:text-[#9CA3AF] border-b border-[#E2E8F0] dark:border-[#2A2D35]">
                                     <tr>
                                         <th className="px-5 py-4">Item</th>
                                         <th className="px-5 py-4">Category</th>
                                         <th className="px-5 py-4">Reported By</th>
                                         <th className="px-5 py-4">Date</th>
                                         <th className="px-5 py-4">Status</th>
-                                        <th className="px-5 py-4">Actions</th>
+                                        <th className="px-5 py-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y">
+                                <tbody className="divide-y divide-[#E2E8F0] dark:divide-[#2A2D35]">
                                     {filtered.map((item) => (
-                                        <tr key={item._id} className="hover:bg-slate-50 transition-colors">
+                                        <tr key={item._id} className="hover:bg-slate-50/70 dark:hover:bg-[#2A2D35]/30 transition-colors">
                                             <td className="px-5 py-4">
-                                                <p className="font-semibold text-slate-800">{item.title}</p>
-                                                <p className="text-xs text-slate-400 line-clamp-1">{item.description}</p>
+                                                <p className="font-semibold text-[#111827] dark:text-[#F3F4F6]">{item.title}</p>
+                                                <p className="text-xs text-[#6B7280] dark:text-[#9CA3AF] line-clamp-1">{item.description}</p>
                                             </td>
-                                            <td className="px-5 py-4 text-slate-600">{item.category || "—"}</td>
+                                            <td className="px-5 py-4 text-[#6B7280] dark:text-[#9CA3AF]">{item.category || "—"}</td>
                                             <td className="px-5 py-4">
-                                                <p className="font-medium text-slate-700">{item.reportedBy?.fullName || "Unknown"}</p>
-                                                <p className="text-xs text-slate-400">{item.reportedBy?.studentId || ""}</p>
+                                                <p className="font-medium text-[#111827] dark:text-[#F3F4F6]">{item.reportedBy?.fullName || "Unknown"}</p>
+                                                <p className="text-xs text-[#6B7280] dark:text-[#9CA3AF]">{item.reportedBy?.studentId || ""}</p>
                                             </td>
-                                            <td className="px-5 py-4 text-slate-500 text-xs">
+                                            <td className="px-5 py-4 text-[#6B7280] dark:text-[#9CA3AF] text-xs">
                                                 {new Date(item.createdAt).toLocaleDateString()}
                                             </td>
                                             <td className="px-5 py-4"><StatusBadge status={item.approvalStatus} /></td>
-                                            <td className="px-5 py-4">
-                                                <div className="flex gap-1">
-                                                    <button title="View" onClick={() => setViewItem(item)} className="rounded-lg p-2 text-blue-600 hover:bg-blue-50 transition-colors"><Eye size={16} /></button>
+                                            <td className="px-5 py-4 text-right">
+                                                <div className="flex items-center justify-end gap-1">
+                                                    <button title="View Details" onClick={() => setViewItem(item)} className="rounded-lg p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors cursor-pointer"><Eye size={16} /></button>
                                                     {item.approvalStatus === "pending" && (
                                                         <>
-                                                            <button title="Approve" onClick={() => handleApprove(item)} className="rounded-lg p-2 text-emerald-600 hover:bg-emerald-50 transition-colors"><Check size={16} /></button>
-                                                            <button title="Reject" onClick={() => setRejectTarget(item)} className="rounded-lg p-2 text-red-500 hover:bg-red-50 transition-colors"><X size={16} /></button>
+                                                            <button title="Approve Report" onClick={() => handleApprove(item)} className="rounded-lg p-2 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors cursor-pointer"><Check size={16} /></button>
+                                                            <button title="Reject Report" onClick={() => setRejectTarget(item)} className="rounded-lg p-2 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer"><X size={16} /></button>
                                                         </>
                                                     )}
                                                     {item.approvalStatus === "approved" && (
-                                                        <button title="Mark returned" onClick={() => handleConfirmReturn(item)} className="rounded-lg p-2 text-blue-600 hover:bg-blue-50 transition-colors"><RotateCw size={16} /></button>
+                                                        <button title="Mark returned" onClick={() => handleConfirmReturn(item)} className="rounded-lg p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors cursor-pointer"><RotateCw size={16} /></button>
                                                     )}
                                                 </div>
                                             </td>
                                         </tr>
                                     ))}
                                     {filtered.length === 0 && (
-                                        <tr><td colSpan={6} className="p-10 text-center text-slate-500">No lost item reports found.</td></tr>
+                                        <tr><td colSpan={6} className="p-10 text-center text-[#6B7280] dark:text-[#9CA3AF]">No lost item reports found.</td></tr>
                                     )}
                                 </tbody>
                             </table>
@@ -220,14 +234,14 @@ export default function ManageLostItems() {
 
                 {/* View Modal */}
                 {viewItem && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                        <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 dark:bg-black/80 backdrop-blur-xs p-4 animate-in fade-in">
+                        <div className="w-full max-w-lg rounded-3xl bg-white dark:bg-[#181A20] border border-[#E2E8F0] dark:border-[#2A2D35] p-6 shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
                             <div className="mb-4 flex items-start justify-between">
-                                <h2 className="text-lg font-bold text-slate-800">{viewItem.title}</h2>
-                                <button onClick={() => setViewItem(null)} className="rounded-lg p-1 text-slate-400 hover:bg-slate-100"><X size={18} /></button>
+                                <h2 className="text-lg font-bold text-[#111827] dark:text-[#F3F4F6]">{viewItem.title}</h2>
+                                <button onClick={() => setViewItem(null)} className="rounded-lg p-1 text-[#6B7280] dark:text-[#9CA3AF] hover:bg-slate-100 dark:hover:bg-[#2A2D35] cursor-pointer"><X size={18} /></button>
                             </div>
                             {viewItem.image && (
-                                <img src={viewItem.image} alt={viewItem.title} className="mb-4 w-full rounded-xl object-cover h-48" />
+                                <img src={viewItem.image} alt={viewItem.title} className="mb-4 w-full rounded-2xl object-cover h-48 border border-[#E2E8F0] dark:border-[#2A2D35]" />
                             )}
                             <div className="space-y-3 text-sm">
                                 {[
@@ -240,37 +254,37 @@ export default function ManageLostItems() {
                                     ["Email", viewItem.reportedBy?.email || "—"],
                                     ["Submitted", new Date(viewItem.createdAt).toLocaleString()],
                                 ].map(([k, v]) => (
-                                    <div key={k} className="flex justify-between border-b pb-2 last:border-0">
-                                        <span className="text-slate-500">{k}</span>
-                                        <span className="font-medium text-slate-800 text-right max-w-[60%]">{v}</span>
+                                    <div key={k} className="flex justify-between border-b border-[#E2E8F0] dark:border-[#2A2D35] pb-2 last:border-0">
+                                        <span className="text-[#6B7280] dark:text-[#9CA3AF]">{k}</span>
+                                        <span className="font-medium text-[#111827] dark:text-[#F3F4F6] text-right max-w-[60%]">{v}</span>
                                     </div>
                                 ))}
-                                <div className="border-b pb-2">
-                                    <p className="text-slate-500 mb-1">Description</p>
-                                    <p className="text-slate-700 text-xs leading-5">{viewItem.description}</p>
+                                <div className="border-b border-[#E2E8F0] dark:border-[#2A2D35] pb-2">
+                                    <p className="text-[#6B7280] dark:text-[#9CA3AF] mb-1">Description</p>
+                                    <p className="text-[#111827] dark:text-[#F3F4F6] text-xs leading-5">{viewItem.description}</p>
                                 </div>
                             </div>
-                            <button onClick={() => setViewItem(null)} className="mt-5 w-full rounded-xl bg-slate-100 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-200 transition-colors">Close</button>
+                            <button onClick={() => setViewItem(null)} className="mt-5 w-full rounded-xl bg-slate-100 dark:bg-[#2A2D35] py-2.5 text-sm font-semibold text-[#111827] dark:text-[#F3F4F6] hover:bg-slate-200 dark:hover:bg-[#2A2D35]/80 transition-colors cursor-pointer">Close</button>
                         </div>
                     </div>
                 )}
 
                 {/* Reject Modal */}
                 {rejectTarget && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                        <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-                            <h2 className="text-lg font-bold text-slate-800 mb-1">Reject Report</h2>
-                            <p className="text-sm text-slate-500 mb-4">Provide a reason for rejecting <strong>"{rejectTarget.title}"</strong>.</p>
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 dark:bg-black/80 backdrop-blur-xs p-4 animate-in fade-in">
+                        <div className="w-full max-w-sm rounded-3xl bg-white dark:bg-[#181A20] border border-[#E2E8F0] dark:border-[#2A2D35] p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+                            <h2 className="text-lg font-bold text-[#111827] dark:text-[#F3F4F6] mb-1">Reject Report</h2>
+                            <p className="text-sm text-[#6B7280] dark:text-[#9CA3AF] mb-4">Provide a reason for rejecting <strong>"{rejectTarget.title}"</strong>.</p>
                             <textarea
                                 value={rejectReason}
                                 onChange={e => setRejectReason(e.target.value)}
                                 placeholder="Reason for rejection (optional)..."
-                                className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:border-red-400 resize-none"
+                                className="w-full rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#0D0E12] px-4 py-3 text-sm text-[#111827] dark:text-[#F3F4F6] outline-none focus:border-red-400 resize-none"
                                 rows={3}
                             />
                             <div className="mt-4 flex gap-3">
-                                <button onClick={handleReject} className="flex-1 rounded-xl bg-red-600 py-2.5 text-sm font-semibold text-white hover:bg-red-700 transition-colors">Reject</button>
-                                <button onClick={() => { setRejectTarget(null); setRejectReason(""); }} className="flex-1 rounded-xl border py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">Cancel</button>
+                                <button onClick={handleReject} className="flex-1 rounded-xl bg-red-600 py-2.5 text-sm font-semibold text-white hover:bg-red-700 transition-colors cursor-pointer">Reject</button>
+                                <button onClick={() => { setRejectTarget(null); setRejectReason(""); }} className="flex-1 rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] py-2.5 text-sm font-semibold text-[#6B7280] dark:text-[#9CA3AF] hover:bg-slate-50 dark:hover:bg-[#2A2D35] transition-colors cursor-pointer">Cancel</button>
                             </div>
                         </div>
                     </div>

@@ -90,12 +90,12 @@ export default function ManageLocations() {
     );
 
     return (
-        <AdminLayout>
+        <AdminLayout title="Locations" subtitle="Campus Drop-off & Lost Zones">
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900">Manage Locations</h1>
-                        <p className="mt-1 text-sm text-slate-500">
+                        <h1 className="text-2xl font-bold text-[#111827] dark:text-[#F3F4F6]">Manage Locations</h1>
+                        <p className="mt-1 text-sm text-[#6B7280] dark:text-[#9CA3AF]">
                             Manage designated ASTU campus spots where items are frequently lost or found.
                         </p>
                     </div>
@@ -107,22 +107,22 @@ export default function ManageLocations() {
                             setDescription("");
                             setShowForm(!showForm);
                         }}
-                        className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 shadow-sm shadow-emerald-600/20 transition-all"
+                        className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 shadow-xs shadow-emerald-600/20 active:scale-95 transition-all cursor-pointer"
                     >
                         <Plus size={18} /> {showForm ? "Cancel" : "Add Location"}
                     </button>
                 </div>
 
                 {actionMsg && (
-                    <div className="mb-5 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm font-medium text-emerald-700">
+                    <div className="mb-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 px-4 py-3 text-sm font-medium text-emerald-800 dark:text-emerald-300">
                         ✓ {actionMsg}
                     </div>
                 )}
 
                 {showForm && (
-                    <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm animate-in fade-in zoom-in-95 duration-200">
+                    <div className="mb-6 rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 shadow-xs animate-in fade-in zoom-in-95 duration-200">
                         <div className="flex items-center justify-between mb-4">
-                            <h2 className="font-bold text-slate-800">
+                            <h2 className="font-bold text-[#111827] dark:text-[#F3F4F6]">
                                 {editingLoc ? "Edit Location" : "Add New Location"}
                             </h2>
                             <button
@@ -130,32 +130,32 @@ export default function ManageLocations() {
                                     setShowForm(false);
                                     setEditingLoc(null);
                                 }}
-                                className="rounded-lg p-1 text-slate-400 hover:bg-slate-100"
+                                className="rounded-lg p-1 text-[#6B7280] dark:text-[#9CA3AF] hover:bg-slate-100 dark:hover:bg-[#2A2D35] cursor-pointer"
                             >
                                 <X size={18} />
                             </button>
                         </div>
                         <div className="grid gap-4 md:grid-cols-2">
                             <div>
-                                <label className="block text-xs font-semibold text-slate-600 mb-1">
+                                <label className="block text-xs font-semibold text-[#111827] dark:text-[#F3F4F6] mb-1">
                                     Location Name *
                                 </label>
                                 <input
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     placeholder="e.g. Block 508 2nd Floor"
-                                    className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-emerald-500"
+                                    className="w-full rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#0D0E12] px-4 py-2.5 text-sm text-[#111827] dark:text-[#F3F4F6] outline-none focus:border-emerald-500"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-600 mb-1">
+                                <label className="block text-xs font-semibold text-[#111827] dark:text-[#F3F4F6] mb-1">
                                     Description / Details
                                 </label>
                                 <input
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
                                     placeholder="e.g. Near ICT Lab 3 and restrooms"
-                                    className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-emerald-500"
+                                    className="w-full rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#0D0E12] px-4 py-2.5 text-sm text-[#111827] dark:text-[#F3F4F6] outline-none focus:border-emerald-500"
                                 />
                             </div>
                         </div>
@@ -163,7 +163,7 @@ export default function ManageLocations() {
                             <button
                                 onClick={handleSave}
                                 disabled={!name.trim()}
-                                className="flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50 transition-colors shadow-sm"
+                                className="flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50 transition-colors shadow-xs cursor-pointer"
                             >
                                 <Check size={16} /> {editingLoc ? "Update Location" : "Save Location"}
                             </button>
@@ -172,7 +172,7 @@ export default function ManageLocations() {
                                     setShowForm(false);
                                     setEditingLoc(null);
                                 }}
-                                className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+                                className="rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] px-5 py-2.5 text-sm font-medium text-[#6B7280] dark:text-[#9CA3AF] hover:bg-slate-50 dark:hover:bg-[#2A2D35] transition-colors cursor-pointer"
                             >
                                 Cancel
                             </button>
@@ -181,13 +181,13 @@ export default function ManageLocations() {
                 )}
 
                 {/* Search Bar */}
-                <div className="mb-6 flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-1 shadow-sm">
-                    <Search size={18} className="text-slate-400" />
+                <div className="mb-6 flex items-center gap-2 rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-4 py-1 shadow-xs">
+                    <Search size={18} className="text-[#6B7280] dark:text-[#9CA3AF]" />
                     <input
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder="Search locations by name or description..."
-                        className="w-full py-2.5 text-sm outline-none"
+                        className="w-full py-2.5 text-sm bg-transparent text-[#111827] dark:text-[#F3F4F6] outline-none placeholder:text-[#6B7280] dark:placeholder:text-[#9CA3AF]"
                     />
                 </div>
 
@@ -196,48 +196,48 @@ export default function ManageLocations() {
                     {filtered.map((location) => (
                         <div
                             key={location.id}
-                            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                            className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 shadow-xs transition hover:-translate-y-0.5 hover:shadow-md"
                         >
                             <div className="flex items-start justify-between">
-                                <div className="rounded-xl bg-amber-50 p-3 text-amber-600">
+                                <div className="rounded-xl bg-amber-50 dark:bg-amber-950/40 p-3 text-amber-600 dark:text-amber-400">
                                     <MapPin size={22} />
                                 </div>
                                 <div className="flex gap-1">
                                     <button
                                         title="Edit location"
                                         onClick={() => startEdit(location)}
-                                        className="rounded-lg p-2 text-blue-600 hover:bg-blue-50 transition-colors"
+                                        className="rounded-lg p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors cursor-pointer"
                                     >
                                         <Pencil size={16} />
                                     </button>
                                     <button
                                         title="Delete location"
                                         onClick={() => handleDelete(location.id, location.name)}
-                                        className="rounded-lg p-2 text-red-500 hover:bg-red-50 transition-colors"
+                                        className="rounded-lg p-2 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer"
                                     >
                                         <Trash2 size={16} />
                                     </button>
                                 </div>
                             </div>
-                            <h2 className="mt-4 text-base font-bold text-slate-800">{location.name}</h2>
-                            <p className="mt-1 text-sm text-slate-500 min-h-[40px] leading-relaxed">
+                            <h2 className="mt-4 text-base font-bold text-[#111827] dark:text-[#F3F4F6]">{location.name}</h2>
+                            <p className="mt-1 text-sm text-[#6B7280] dark:text-[#9CA3AF] min-h-[40px] leading-relaxed">
                                 {location.description || "No specific details provided."}
                             </p>
-                            <div className="mt-4 border-t border-slate-100 pt-3 flex items-center justify-between">
-                                <span className="text-xs font-semibold text-amber-600">
+                            <div className="mt-4 border-t border-[#E2E8F0] dark:border-[#2A2D35] pt-3 flex items-center justify-between">
+                                <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">
                                     {location.reports} incidents reported
                                 </span>
-                                <span className="text-[11px] text-slate-400">Campus Zone</span>
+                                <span className="text-[11px] text-[#6B7280] dark:text-[#9CA3AF]">Campus Zone</span>
                             </div>
                         </div>
                     ))}
                 </div>
 
                 {filtered.length === 0 && (
-                    <div className="rounded-2xl border bg-white p-12 text-center text-slate-500">
-                        <MapPin size={36} className="mx-auto text-slate-300" />
-                        <h3 className="mt-3 font-semibold text-slate-700">No locations found</h3>
-                        <p className="mt-1 text-sm text-slate-400">Try modifying your search query.</p>
+                    <div className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-12 text-center text-[#6B7280] dark:text-[#9CA3AF]">
+                        <MapPin size={36} className="mx-auto text-slate-300 dark:text-slate-600" />
+                        <h3 className="mt-3 font-semibold text-[#111827] dark:text-[#F3F4F6]">No locations found</h3>
+                        <p className="mt-1 text-sm text-[#6B7280] dark:text-[#9CA3AF]">Try modifying your search query.</p>
                     </div>
                 )}
             </div>

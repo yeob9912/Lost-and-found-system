@@ -15,7 +15,7 @@ import {
 } from "../controllers/lostItemController";
 
 import upload from "../middleware/uploadMiddleware";
-import { protect } from "../middleware/authMiddleware";
+import { protect, adminOnly } from "../middleware/authMiddleware";
 
 const router = Router();
 
@@ -54,6 +54,7 @@ router.delete("/:id", protect, deleteLostItem);
 router.get(
     "/admin/reports",
     protect,
+    adminOnly,
     getAllLostItemReports
 );
 
@@ -61,6 +62,7 @@ router.get(
 router.patch(
     "/admin/:id/approve",
     protect,
+    adminOnly,
     approveLostItem
 );
 
@@ -68,6 +70,7 @@ router.patch(
 router.patch(
     "/admin/:id/reject",
     protect,
+    adminOnly,
     rejectLostItem
 );
 
@@ -75,6 +78,7 @@ router.patch(
 router.patch(
     "/admin/:id/confirm-return",
     protect,
+    adminOnly,
     confirmLostItemReturn
 );
 

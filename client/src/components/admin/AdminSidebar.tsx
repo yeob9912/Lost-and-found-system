@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import {
     LayoutDashboard,
     Users,
@@ -37,6 +38,16 @@ export default function AdminSidebar({
 }: AdminSidebarProps) {
     const navigate = useNavigate();
 
+    // Lock body scroll when sidebar is open to prevent page scrollbar peeking through
+    useEffect(() => {
+        if (open) {
+            document.body.classList.add("sidebar-open");
+        } else {
+            document.body.classList.remove("sidebar-open");
+        }
+        return () => document.body.classList.remove("sidebar-open");
+    }, [open]);
+
     const handleLogout = () => {
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("findback_token");
@@ -50,34 +61,34 @@ export default function AdminSidebar({
             {/* Backdrop overlay */}
             <div
                 onClick={onClose}
-                className={`fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-200 ${
+                className={`fixed inset-0 z-40 bg-black/50 dark:bg-black/70 backdrop-blur-xs transition-opacity duration-200 ${
                     open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
                 }`}
             />
 
-            {/* Clean White Off-canvas Navigation Drawer */}
+            {/* Clean Off-canvas Navigation Drawer with Light & Dark support */}
             <aside
-                className={`fixed left-0 top-0 z-50 flex h-screen w-72 max-w-[85vw] flex-col bg-white text-slate-800 border-r border-slate-200/90 shadow-2xl transition-transform duration-250 ease-out ${
+                className={`fixed left-0 top-0 z-50 flex h-screen w-72 max-w-[85vw] flex-col bg-white dark:bg-[#181A20] text-[#111827] dark:text-[#F3F4F6] border-r border-[#E2E8F0] dark:border-[#2A2D35] shadow-2xl transition-transform duration-250 ease-out overflow-hidden ${
                     open ? "translate-x-0" : "-translate-x-full"
                 }`}
             >
-                {/* Header: Close button only (Clean matching design) */}
-                <div className="flex h-14 items-center justify-between px-5 border-b border-slate-100">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                {/* Header: Close button only */}
+                <div className="flex h-14 items-center justify-between px-5 border-b border-[#E2E8F0] dark:border-[#2A2D35]">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#6B7280] dark:text-[#9CA3AF]">
                         Admin Menu
                     </span>
                     <button
                         onClick={onClose}
                         aria-label="Close navigation"
-                        className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-[#2A2D35] hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
                     >
                         <X size={18} />
                     </button>
                 </div>
 
-                {/* Vertical Navigation Items Stack (No ugly scrollbar, perfectly fitted) */}
+                {/* Vertical Navigation Items Stack */}
                 <nav
-                    className="flex-1 overflow-y-auto no-scrollbar py-3 px-3 space-y-1"
+                    className="flex-1 py-3 px-3 space-y-1 overflow-y-auto"
                     style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
                     {navigation.map(({ name, path, icon: Icon }, index) => (
@@ -98,7 +109,7 @@ export default function AdminSidebar({
                                     `group flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-150 ${
                                         isActive
                                             ? "bg-emerald-600 text-white shadow-sm shadow-emerald-600/30 font-semibold"
-                                            : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-700"
+                                            : "text-[#6B7280] dark:text-[#9CA3AF] hover:bg-emerald-50 dark:hover:bg-emerald-950/20 hover:text-emerald-700 dark:hover:text-emerald-400"
                                     }`
                                 }
                             >
@@ -108,7 +119,7 @@ export default function AdminSidebar({
                                             className={`rounded-lg p-1 transition-colors ${
                                                 isActive
                                                     ? "text-white"
-                                                    : "text-slate-400 group-hover:text-emerald-600"
+                                                    : "text-slate-400 dark:text-slate-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400"
                                             }`}
                                         >
                                             <Icon size={18} />
@@ -122,10 +133,10 @@ export default function AdminSidebar({
                 </nav>
 
                 {/* Sign Out Option at Bottom */}
-                <div className="p-3 border-t border-slate-100 bg-slate-50/50">
+                <div className="p-3 border-t border-[#E2E8F0] dark:border-[#2A2D35] bg-slate-50/50 dark:bg-[#181A20]/50">
                     <button
                         onClick={handleLogout}
-                        className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors"
+                        className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
                     >
                         <LogOut size={17} />
                         Sign Out

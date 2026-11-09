@@ -13,7 +13,7 @@ import {
     completeClaim,
 } from "../controllers/claimController";
 
-import { protect } from "../middleware/authMiddleware";
+import { protect, adminOnly } from "../middleware/authMiddleware";
 import upload from "../middleware/uploadMiddleware";
 
 const router = Router();
@@ -32,16 +32,17 @@ router.post(
 );
 
 // Admin routes
-router.get("/admin/all", protect, getAllClaims);
+router.get("/admin/all", protect, adminOnly, getAllClaims);
 
 router.patch(
     "/admin/:id/request-verification",
     protect,
+    adminOnly,
     requestClaimVerification
 );
 
-router.patch("/admin/:id/approve", protect, approveClaim);
-router.patch("/admin/:id/reject", protect, rejectClaim);
-router.patch("/admin/:id/complete", protect, completeClaim);
+router.patch("/admin/:id/approve", protect, adminOnly, approveClaim);
+router.patch("/admin/:id/reject", protect, adminOnly, rejectClaim);
+router.patch("/admin/:id/complete", protect, adminOnly, completeClaim);
 
 export default router;

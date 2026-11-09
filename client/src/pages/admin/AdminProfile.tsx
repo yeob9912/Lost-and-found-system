@@ -95,7 +95,7 @@ export default function AdminProfile() {
 
                 // Fetch live profile from backend
                 const res = await fetchAdminProfile();
-                if (res.user) {
+                if (res?.user) {
                     setProfile({
                         fullName: res.user.fullName || "",
                         email: res.user.email || "",
@@ -167,6 +167,8 @@ export default function AdminProfile() {
                 };
                 sessionStorage.setItem("findback_user", JSON.stringify(updated));
                 sessionStorage.setItem("user", JSON.stringify(updated));
+                localStorage.setItem("findback_user", JSON.stringify(updated));
+                localStorage.setItem("user", JSON.stringify(updated));
                 window.dispatchEvent(new Event("profile_image_updated"));
             }
 
@@ -202,15 +204,14 @@ export default function AdminProfile() {
             await changeAdminPassword({
                 currentPassword,
                 newPassword,
-                confirmPassword,
             });
 
-            showMsg("success", "Password changed successfully.");
             setCurrentPassword("");
             setNewPassword("");
             setConfirmPassword("");
+            showMsg("success", "Password updated successfully.");
         } catch (err: unknown) {
-            showMsg("error", err instanceof Error ? err.message : "Failed to change password.");
+            showMsg("error", err instanceof Error ? err.message : "Failed to update password.");
         } finally {
             setPasswordLoading(false);
         }
@@ -234,29 +235,29 @@ export default function AdminProfile() {
                 {/* Feedback Toast */}
                 {feedback && (
                     <div
-                        className={`mb-6 flex items-center gap-2.5 rounded-2xl p-4 text-sm font-medium shadow-sm animate-in fade-in ${
+                        className={`mb-6 flex items-center gap-2.5 rounded-2xl p-4 text-sm font-medium shadow-xs animate-in fade-in ${
                             feedback.type === "success"
-                                ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                                : "bg-red-50 text-red-800 border border-red-200"
+                                ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50"
+                                : "bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800/50"
                         }`}
                     >
                         {feedback.type === "success" ? (
-                            <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
+                            <CheckCircle2 size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                         ) : (
-                            <AlertCircle size={18} className="text-red-600 shrink-0" />
+                            <AlertCircle size={18} className="text-red-600 dark:text-red-400 shrink-0" />
                         )}
                         <span>{feedback.message}</span>
                     </div>
                 )}
 
                 {/* Profile Header Card */}
-                <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm mb-6">
+                <div className="overflow-hidden rounded-3xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] shadow-xs mb-6 transition-colors">
                     <div className="h-32 bg-gradient-to-r from-emerald-600 via-teal-600 to-slate-800" />
                     <div className="relative px-6 pb-6 pt-0 sm:px-8">
                         <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4 -mt-16 sm:-mt-14">
                             {/* Avatar */}
                             <div className="relative group">
-                                <div className="h-28 w-28 rounded-full border-4 border-white bg-slate-100 shadow-md overflow-hidden flex items-center justify-center">
+                                <div className="h-28 w-28 rounded-full border-4 border-white dark:border-[#181A20] bg-slate-100 dark:bg-[#0D0E12] shadow-md overflow-hidden flex items-center justify-center">
                                     {avatarPreview ? (
                                         <img
                                             src={avatarPreview}
@@ -289,16 +290,16 @@ export default function AdminProfile() {
                             {/* User details */}
                             <div className="text-center sm:text-left flex-1 min-w-0">
                                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                                    <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
+                                    <h1 className="text-xl sm:text-2xl font-bold text-[#111827] dark:text-[#F3F4F6]">
                                         {profile.fullName || "Administrator"}
                                     </h1>
-                                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-0.5 text-xs font-bold text-emerald-800">
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950/50 px-3 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-300">
                                         <Shield size={12} />
                                         System Administrator
                                     </span>
                                 </div>
-                                <p className="text-sm text-slate-500 mt-1 flex items-center justify-center sm:justify-start gap-1.5">
-                                    <Mail size={14} className="text-slate-400" />
+                                <p className="text-sm text-[#6B7280] dark:text-[#9CA3AF] mt-1 flex items-center justify-center sm:justify-start gap-1.5">
+                                    <Mail size={14} className="text-[#6B7280] dark:text-[#9CA3AF]" />
                                     {profile.email}
                                 </p>
                             </div>
@@ -306,7 +307,7 @@ export default function AdminProfile() {
                             {/* Logout Button */}
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50/70 px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-100 transition-colors shadow-2xs"
+                                className="flex items-center gap-2 rounded-xl border border-red-200 dark:border-red-900/40 bg-red-50/70 dark:bg-red-950/30 px-4 py-2 text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/50 transition-colors shadow-2xs cursor-pointer"
                             >
                                 <LogOut size={14} />
                                 Sign Out
@@ -315,42 +316,42 @@ export default function AdminProfile() {
                     </div>
 
                     {/* Navigation Tabs */}
-                    <div className="flex border-t border-slate-100 px-6 sm:px-8">
+                    <div className="flex border-t border-[#E2E8F0] dark:border-[#2A2D35] px-6 sm:px-8">
                         <button
                             onClick={() => setActiveTab("general")}
-                            className={`flex items-center gap-2 border-b-2 py-3 px-3 text-sm font-bold transition-colors ${
+                            className={`flex items-center gap-2 border-b-2 py-3 px-3 text-sm font-bold transition-colors cursor-pointer ${
                                 activeTab === "general"
-                                    ? "border-emerald-600 text-emerald-600"
-                                    : "border-transparent text-slate-500 hover:text-slate-800"
+                                    ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+                                    : "border-transparent text-[#6B7280] dark:text-[#9CA3AF] hover:text-[#111827] dark:hover:text-[#F3F4F6]"
                             }`}
                         >
                             General Information
                         </button>
                         <button
                             onClick={() => setActiveTab("security")}
-                            className={`flex items-center gap-2 border-b-2 py-3 px-3 text-sm font-bold transition-colors ${
+                            className={`flex items-center gap-2 border-b-2 py-3 px-3 text-sm font-bold transition-colors cursor-pointer ${
                                 activeTab === "security"
-                                    ? "border-emerald-600 text-emerald-600"
-                                    : "border-transparent text-slate-500 hover:text-slate-800"
+                                    ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+                                    : "border-transparent text-[#6B7280] dark:text-[#9CA3AF] hover:text-[#111827] dark:hover:text-[#F3F4F6]"
                             }`}
                         >
                             <Lock size={15} />
-                            Security & Password
+                            Security &amp; Password
                         </button>
                     </div>
                 </div>
 
                 {/* Tab 1: General Info */}
                 {activeTab === "general" && (
-                    <form onSubmit={handleSaveProfile} className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
-                        <h2 className="text-lg font-bold text-slate-900 mb-1">Personal Details</h2>
-                        <p className="text-xs text-slate-500 mb-6">
+                    <form onSubmit={handleSaveProfile} className="rounded-3xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 sm:p-8 shadow-xs transition-colors">
+                        <h2 className="text-lg font-bold text-[#111827] dark:text-[#F3F4F6] mb-1">Personal Details</h2>
+                        <p className="text-xs text-[#6B7280] dark:text-[#9CA3AF] mb-6">
                             Update your administrative contact and identification information.
                         </p>
 
                         <div className="grid gap-5 sm:grid-cols-2">
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                                <label className="block text-xs font-bold text-[#111827] dark:text-[#F3F4F6] mb-1.5">
                                     Full Name
                                 </label>
                                 <input
@@ -358,16 +359,16 @@ export default function AdminProfile() {
                                     value={profile.fullName}
                                     onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
                                     required
-                                    className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
+                                    className="w-full rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#0D0E12] px-4 py-2.5 text-sm text-[#111827] dark:text-[#F3F4F6] outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                                <label className="block text-xs font-bold text-[#111827] dark:text-[#F3F4F6] mb-1.5">
                                     Email Address (Read-only)
                                 </label>
-                                <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-500">
-                                    <Mail size={16} className="text-slate-400 shrink-0" />
+                                <div className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-slate-50 dark:bg-[#0D0E12]/60 px-4 py-2.5 text-sm text-[#6B7280] dark:text-[#9CA3AF]">
+                                    <Mail size={16} className="text-[#6B7280] dark:text-[#9CA3AF] shrink-0" />
                                     <input
                                         type="email"
                                         value={profile.email}
@@ -378,11 +379,11 @@ export default function AdminProfile() {
                             </div>
 
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                                <label className="block text-xs font-bold text-[#111827] dark:text-[#F3F4F6] mb-1.5">
                                     Student / Admin ID
                                 </label>
-                                <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-500">
-                                    <IdCard size={16} className="text-slate-400 shrink-0" />
+                                <div className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-slate-50 dark:bg-[#0D0E12]/60 px-4 py-2.5 text-sm text-[#6B7280] dark:text-[#9CA3AF]">
+                                    <IdCard size={16} className="text-[#6B7280] dark:text-[#9CA3AF] shrink-0" />
                                     <input
                                         type="text"
                                         value={profile.studentId}
@@ -393,33 +394,33 @@ export default function AdminProfile() {
                             </div>
 
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                                <label className="block text-xs font-bold text-[#111827] dark:text-[#F3F4F6] mb-1.5">
                                     Phone Number
                                 </label>
-                                <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-900 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/10">
-                                    <Phone size={16} className="text-slate-400 shrink-0" />
+                                <div className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#0D0E12] px-4 py-2.5 text-sm text-[#111827] dark:text-[#F3F4F6] focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/10">
+                                    <Phone size={16} className="text-[#6B7280] dark:text-[#9CA3AF] shrink-0" />
                                     <input
                                         type="tel"
                                         value={profile.phone}
                                         onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
                                         placeholder="+251 91 234 5678"
-                                        className="w-full bg-transparent outline-none"
+                                        className="w-full bg-transparent outline-none text-[#111827] dark:text-[#F3F4F6]"
                                     />
                                 </div>
                             </div>
 
                             <div className="sm:col-span-2">
-                                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                                <label className="block text-xs font-bold text-[#111827] dark:text-[#F3F4F6] mb-1.5">
                                     Department / Office
                                 </label>
-                                <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-900 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/10">
-                                    <Building2 size={16} className="text-slate-400 shrink-0" />
+                                <div className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#0D0E12] px-4 py-2.5 text-sm text-[#111827] dark:text-[#F3F4F6] focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/10">
+                                    <Building2 size={16} className="text-[#6B7280] dark:text-[#9CA3AF] shrink-0" />
                                     <input
                                         type="text"
                                         value={profile.department}
                                         onChange={(e) => setProfile({ ...profile, department: e.target.value })}
                                         placeholder="e.g. Student Services / ICT Center"
-                                        className="w-full bg-transparent outline-none"
+                                        className="w-full bg-transparent outline-none text-[#111827] dark:text-[#F3F4F6]"
                                     />
                                 </div>
                             </div>
@@ -429,7 +430,7 @@ export default function AdminProfile() {
                             <button
                                 type="submit"
                                 disabled={saving || loading}
-                                className="flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 active:scale-95 transition-all disabled:opacity-50"
+                                className="flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
                             >
                                 <Save size={16} />
                                 {saving ? "Saving..." : "Save Changes"}
@@ -440,15 +441,15 @@ export default function AdminProfile() {
 
                 {/* Tab 2: Security & Password */}
                 {activeTab === "security" && (
-                    <form onSubmit={handleChangePassword} className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
-                        <h2 className="text-lg font-bold text-slate-900 mb-1">Change Password</h2>
-                        <p className="text-xs text-slate-500 mb-6">
+                    <form onSubmit={handleChangePassword} className="rounded-3xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 sm:p-8 shadow-xs transition-colors">
+                        <h2 className="text-lg font-bold text-[#111827] dark:text-[#F3F4F6] mb-1">Change Password</h2>
+                        <p className="text-xs text-[#6B7280] dark:text-[#9CA3AF] mb-6">
                             Ensure your administrator account uses a strong, unique password.
                         </p>
 
                         <div className="space-y-4 max-w-lg">
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                                <label className="block text-xs font-bold text-[#111827] dark:text-[#F3F4F6] mb-1.5">
                                     Current Password
                                 </label>
                                 <div className="relative flex items-center">
@@ -458,12 +459,12 @@ export default function AdminProfile() {
                                         onChange={(e) => setCurrentPassword(e.target.value)}
                                         required
                                         placeholder="••••••••"
-                                        className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
+                                        className="w-full rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#0D0E12] px-4 py-2.5 text-sm text-[#111827] dark:text-[#F3F4F6] outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowCurrent(!showCurrent)}
-                                        className="absolute right-3 text-slate-400 hover:text-slate-600"
+                                        className="absolute right-3 text-[#6B7280] dark:text-[#9CA3AF] hover:text-[#111827] dark:hover:text-[#F3F4F6] cursor-pointer"
                                     >
                                         {showCurrent ? <EyeOff size={16} /> : <Eye size={16} />}
                                     </button>
@@ -471,7 +472,7 @@ export default function AdminProfile() {
                             </div>
 
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                                <label className="block text-xs font-bold text-[#111827] dark:text-[#F3F4F6] mb-1.5">
                                     New Password
                                 </label>
                                 <div className="relative flex items-center">
@@ -481,23 +482,23 @@ export default function AdminProfile() {
                                         onChange={(e) => setNewPassword(e.target.value)}
                                         required
                                         placeholder="••••••••"
-                                        className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
+                                        className="w-full rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#0D0E12] px-4 py-2.5 text-sm text-[#111827] dark:text-[#F3F4F6] outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowNew(!showNew)}
-                                        className="absolute right-3 text-slate-400 hover:text-slate-600"
+                                        className="absolute right-3 text-[#6B7280] dark:text-[#9CA3AF] hover:text-[#111827] dark:hover:text-[#F3F4F6] cursor-pointer"
                                     >
                                         {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
                                     </button>
                                 </div>
-                                <p className="text-[11px] text-slate-400 mt-1">
+                                <p className="text-[11px] text-[#6B7280] dark:text-[#9CA3AF] mt-1">
                                     Minimum 8 characters with letters, numbers, and symbols.
                                 </p>
                             </div>
 
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                                <label className="block text-xs font-bold text-[#111827] dark:text-[#F3F4F6] mb-1.5">
                                     Confirm New Password
                                 </label>
                                 <input
@@ -506,7 +507,7 @@ export default function AdminProfile() {
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     required
                                     placeholder="••••••••"
-                                    className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
+                                    className="w-full rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#0D0E12] px-4 py-2.5 text-sm text-[#111827] dark:text-[#F3F4F6] outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
                                 />
                             </div>
                         </div>
@@ -515,7 +516,7 @@ export default function AdminProfile() {
                             <button
                                 type="submit"
                                 disabled={passwordLoading}
-                                className="flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 active:scale-95 transition-all disabled:opacity-50"
+                                className="flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
                             >
                                 <Lock size={15} />
                                 {passwordLoading ? "Updating..." : "Update Password"}
@@ -527,4 +528,3 @@ export default function AdminProfile() {
         </AdminLayout>
     );
 }
-

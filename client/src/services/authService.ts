@@ -89,6 +89,10 @@ const saveAuthentication = (data: AuthResponse) => {
     sessionStorage.setItem("findback_user", JSON.stringify(data.user));
     sessionStorage.setItem("token", data.token);
     sessionStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("findback_token", data.token);
+    localStorage.setItem("findback_user", JSON.stringify(data.user));
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
 
     // Clear legacy unkeyed storage
     localStorage.removeItem("findback-profile-image");
@@ -149,17 +153,35 @@ export const loginUser = async (
 };
 
 export const getToken = (): string | null => {
-    return sessionStorage.getItem("findback_token");
+    return (
+        sessionStorage.getItem("findback_token") ||
+        sessionStorage.getItem("token") ||
+        localStorage.getItem("findback_token") ||
+        localStorage.getItem("token")
+    );
 };
 
 export const getCurrentUser = (): AuthUser | null => {
-    const user = sessionStorage.getItem("findback_user") || sessionStorage.getItem("user");
+    const raw =
+        sessionStorage.getItem("findback_user") ||
+        sessionStorage.getItem("user") ||
+        localStorage.getItem("findback_user") ||
+        localStorage.getItem("user");
 
-    return user ? JSON.parse(user) as AuthUser : null;
+    if (!raw) return null;
+    try {
+        return JSON.parse(raw) as AuthUser;
+    } catch {
+        return null;
+    }
 };
 
 export const logoutUser = (): void => {
     localStorage.removeItem("findback-profile-image");
+    localStorage.removeItem("findback_token");
+    localStorage.removeItem("findback_user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     sessionStorage.removeItem("findback_token");
     sessionStorage.removeItem("findback_user");
     sessionStorage.removeItem("token");

@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme Color Variables */
+:root {
+  --bg-main: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --border-color: #E2E8F0;
+  --text-primary: #111827;
+  --text-secondary: #6B7280;
+}
+
+html.dark {
+  --bg-main: #0D0E12;
+  --bg-surface: #181A20;
+  --border-color: #2A2D35;
+  --text-primary: #F3F4F6;
+  --text-secondary: #9CA3AF;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
 /* Hide scrollbar utility */
 .no-scrollbar::-webkit-scrollbar {
   display: none !important;
@@ -12,6 +36,22 @@
 .no-scrollbar {
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
+}
+
+/* Admin sidebar nav — always hide scrollbar */
+aside nav::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+
+aside nav {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Lock page scroll when any overlay/drawer is open */
+body.sidebar-open {
+  overflow: hidden !important;
 }
 
 @keyframes bell-ring {

@@ -13,6 +13,12 @@ import MyReports from './pages/student/MyReports.tsx';
 import Notifications from './pages/student/Notifications.tsx';
 import ClaimForm from './components/claims/ClaimForm.tsx';
 
+// Theme Context
+import { ThemeProvider } from './context/ThemeContext.tsx';
+
+// Admin Security Guard
+import AdminGuard from './components/admin/AdminGuard.tsx';
+
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard.tsx';
 import ManageUsers from './pages/admin/ManageUsers.tsx';
@@ -37,46 +43,48 @@ function AuthPage({ initialView }: { initialView: 'login' | 'signup' }) {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/lost-items" element={<LostItems />} />
-        <Route path="/found-items" element={<FoundItems />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/report-item" element={<ReportItem />} />
-        <Route path="/registration" element={<AuthPage initialView="signup" />} />
-        <Route path="/signup" element={<AuthPage initialView="signup" />} />
-        <Route path="/login" element={<AuthPage initialView="login" />} />
-        
-        {/* Student Dashboard & Activity Routes */}
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/student/profile" element={<Profile />} />
-        <Route path="/my-claims" element={<MyClaims />} />
-        <Route path="/student/my-claims" element={<MyClaims />} />
-        <Route path="/my-reports" element={<MyReports />} />
-        <Route path="/student/my-reports" element={<MyReports />} />
-        <Route path="/notifications" element={<Notifications />} />
-        <Route path="/student/notifications" element={<Notifications />} />
-        <Route path="/claim" element={<ClaimForm />} />
-        <Route path="/claim-form" element={<ClaimForm />} />
+    <ThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/lost-items" element={<LostItems />} />
+          <Route path="/found-items" element={<FoundItems />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/report-item" element={<ReportItem />} />
+          <Route path="/registration" element={<AuthPage initialView="signup" />} />
+          <Route path="/signup" element={<AuthPage initialView="signup" />} />
+          <Route path="/login" element={<AuthPage initialView="login" />} />
+          
+          {/* Student Dashboard & Activity Routes */}
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/student/profile" element={<Profile />} />
+          <Route path="/my-claims" element={<MyClaims />} />
+          <Route path="/student/my-claims" element={<MyClaims />} />
+          <Route path="/my-reports" element={<MyReports />} />
+          <Route path="/student/my-reports" element={<MyReports />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/student/notifications" element={<Notifications />} />
+          <Route path="/claim" element={<ClaimForm />} />
+          <Route path="/claim-form" element={<ClaimForm />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<ManageUsers />} />
-        <Route path="/admin/lost-items" element={<ManageLostItems />} />
-        <Route path="/admin/found-items" element={<ManageFoundItems />} />
-        <Route path="/admin/claims" element={<ManageClaims />} />
-        <Route path="/admin/categories" element={<ManageCategories />} />
-        <Route path="/admin/locations" element={<ManageLocations />} />
-        <Route path="/admin/abuse-reports" element={<AbuseReports />} />
-        <Route path="/admin/activity-logs" element={<ActivityLogs />} />
-        <Route path="/admin/profile" element={<AdminProfile />} />
-        <Route path="/admin/notifications" element={<Navigate to="/admin" replace />} />
+          {/* Protected Admin Routes - Strict Role-Based Access Control */}
+          <Route path="/admin" element={<AdminGuard><AdminDashboard /></AdminGuard>} />
+          <Route path="/admin/users" element={<AdminGuard><ManageUsers /></AdminGuard>} />
+          <Route path="/admin/lost-items" element={<AdminGuard><ManageLostItems /></AdminGuard>} />
+          <Route path="/admin/found-items" element={<AdminGuard><ManageFoundItems /></AdminGuard>} />
+          <Route path="/admin/claims" element={<AdminGuard><ManageClaims /></AdminGuard>} />
+          <Route path="/admin/categories" element={<AdminGuard><ManageCategories /></AdminGuard>} />
+          <Route path="/admin/locations" element={<AdminGuard><ManageLocations /></AdminGuard>} />
+          <Route path="/admin/abuse-reports" element={<AdminGuard><AbuseReports /></AdminGuard>} />
+          <Route path="/admin/activity-logs" element={<AdminGuard><ActivityLogs /></AdminGuard>} />
+          <Route path="/admin/profile" element={<AdminGuard><AdminProfile /></AdminGuard>} />
+          <Route path="/admin/notifications" element={<Navigate to="/admin" replace />} />
 
-        <Route path="*" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

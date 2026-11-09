@@ -14,7 +14,7 @@ import {
     confirmFoundItemReturn,
 } from "../controllers/foundItemController";
 
-import { protect } from "../middleware/authMiddleware";
+import { protect, adminOnly } from "../middleware/authMiddleware";
 import upload from "../middleware/uploadMiddleware";
 
 const router = Router();
@@ -29,12 +29,13 @@ router.put("/:id", protect, upload.single("image"), updateFoundItem);
 router.delete("/:id", protect, deleteFoundItem);
 
 // Admin routes
-router.get("/admin/reports", protect, getAllFoundItemReports);
-router.patch("/admin/:id/approve", protect, approveFoundItem);
-router.patch("/admin/:id/reject", protect, rejectFoundItem);
+router.get("/admin/reports", protect, adminOnly, getAllFoundItemReports);
+router.patch("/admin/:id/approve", protect, adminOnly, approveFoundItem);
+router.patch("/admin/:id/reject", protect, adminOnly, rejectFoundItem);
 router.patch(
     "/admin/:id/confirm-return",
     protect,
+    adminOnly,
     confirmFoundItemReturn
 );
 

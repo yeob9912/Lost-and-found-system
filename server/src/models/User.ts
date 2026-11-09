@@ -7,6 +7,11 @@ export interface IUser extends Document {
     email: string;
     password: string;
     role: "student" | "admin";
+    profileImage: string;
+    profileImagePublicId: string;
+    phone?: string;
+    department?: string;
+    yearOfStudy?: string;
     createdAt: Date;
     updatedAt: Date;
     comparePassword(candidatePassword: string): Promise<boolean>;
@@ -24,6 +29,33 @@ const userSchema = new Schema<IUser>(
             required: [true, "Full name is required"],
             trim: true,
             minlength: 2,
+        },
+        profileImage: {
+            type: String,
+            default: "",
+        },
+
+        profileImagePublicId: {
+            type: String,
+            default: "",
+        },
+
+        phone: {
+            type: String,
+            default: "",
+            trim: true,
+        },
+
+        department: {
+            type: String,
+            default: "",
+            trim: true,
+        },
+
+        yearOfStudy: {
+            type: String,
+            default: "",
+            trim: true,
         },
 
         studentId: {

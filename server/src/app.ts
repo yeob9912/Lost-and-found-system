@@ -5,6 +5,10 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import lostItemRoutes from "./routes/lostItemRoutes";
+import foundItemRoutes from "./routes/foundItemRoutes";
+
+import claimRoutes from "./routes/claimRoutes";
+
 
 const app = express();
 
@@ -30,6 +34,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/lost-items", lostItemRoutes);
+app.use("/api/found-items", foundItemRoutes);
+app.use("/api/claims", claimRoutes);
 
 // Health check
 app.get("/", (_req, res) => {
@@ -45,6 +51,12 @@ app.use((_req, res) => {
         success: false,
         message: "API endpoint not found.",
     });
+
+    app.use("/api/claims", claimRoutes);
+
+    app.use("/api/found-items", foundItemRoutes);
+
+
 });
 
 export default app;

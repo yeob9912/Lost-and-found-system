@@ -1,4 +1,4 @@
-
+﻿
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 
@@ -140,16 +140,24 @@ export const createLostItem = async (
             return;
         }
 
-        if (!req.file) {
+        let imageUrl = "";
+        let publicId = "";
+
+        if (req.file) {
+            const uploaded = await uploadImage(req.file.buffer);
+            uploadedPublicId = uploaded.public_id;
+            imageUrl = uploaded.secure_url;
+            publicId = uploaded.public_id;
+        } else if (req.body.image) {
+            imageUrl = req.body.image;
+            publicId = "external_ref";
+        } else {
             res.status(400).json({
                 success: false,
                 message: "Item image is required",
             });
             return;
         }
-
-        const uploaded = await uploadImage(req.file.buffer);
-        uploadedPublicId = uploaded.public_id;
 
         const lostItem = await LostItem.create({
             name,
@@ -159,8 +167,8 @@ export const createLostItem = async (
             location,
             date,
             description,
-            image: uploaded.secure_url,
-            imagePublicId: uploaded.public_id,
+            image: imageUrl,
+            imagePublicId: publicId,
             reportedBy: userId,
 
             // Every new report waits for admin review
@@ -259,7 +267,7 @@ export const getLostItems = async (
         const totalItems = await LostItem.countDocuments(filter);
 
         const items = await LostItem.find(filter)
-            .populate("reportedBy", "name email")
+            .populate("reportedBy", "fullName email studentId")
             .sort({ createdAt: -1 })
             .skip((pageNumber - 1) * limitNumber)
             .limit(limitNumber);
@@ -290,7 +298,7 @@ export const getLostItemById = async (
     try {
         const { id } = req.params;
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+        if (!mongoose.Types.ObjectId.isValid(id as string)) {
             res.status(400).json({
                 success: false,
                 message: "Invalid item ID",
@@ -301,7 +309,7 @@ export const getLostItemById = async (
         const item = await LostItem.findOne({
             _id: id,
             approvalStatus: "approved",
-        }).populate("reportedBy", "name");
+        }).populate("reportedBy", "fullName email studentId");
 
         if (!item) {
             res.status(404).json({
@@ -379,7 +387,7 @@ export const updateLostItem = async (
             return;
         }
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+        if (!mongoose.Types.ObjectId.isValid(id as string)) {
             res.status(400).json({
                 success: false,
                 message: "Invalid item ID",
@@ -523,7 +531,7 @@ export const deleteLostItem = async (
             return;
         }
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+        if (!mongoose.Types.ObjectId.isValid(id as string)) {
             res.status(400).json({
                 success: false,
                 message: "Invalid item ID",
@@ -617,7 +625,7 @@ export const getAllLostItemReports = async (
         const totalItems = await LostItem.countDocuments(filter);
 
         const reports = await LostItem.find(filter)
-            .populate("reportedBy", "name email")
+            .populate("reportedBy", "fullName email studentId")
             .populate("reviewedBy", "name email")
             .sort({ createdAt: -1 })
             .skip((pageNumber - 1) * limitNumber)
@@ -658,7 +666,7 @@ export const approveLostItem = async (
             return;
         }
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+        if (!mongoose.Types.ObjectId.isValid(id as string)) {
             res.status(400).json({
                 success: false,
                 message: "Invalid item ID",
@@ -736,7 +744,7 @@ export const rejectLostItem = async (
             return;
         }
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+        if (!mongoose.Types.ObjectId.isValid(id as string)) {
             res.status(400).json({
                 success: false,
                 message: "Invalid item ID",
@@ -821,7 +829,7 @@ export const confirmLostItemReturn = async (
             return;
         }
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+        if (!mongoose.Types.ObjectId.isValid(id as string)) {
             res.status(400).json({
                 success: false,
                 message: "Invalid item ID",

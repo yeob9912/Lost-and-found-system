@@ -56,8 +56,8 @@ export default function PlexusBackground() {
                     y: Math.random() * height,
                     vx: (Math.random() - 0.5) * 0.65,
                     vy: (Math.random() - 0.5) * 0.65,
-                    radius: Math.random() * 1.8 + 1.2,
-                    baseAlpha: Math.random() * 0.4 + 0.35,
+                    radius: Math.random() * 1.8 + 1.6,
+                    baseAlpha: Math.random() * 0.3 + 0.55,
                 });
             }
         };
@@ -185,7 +185,7 @@ export default function PlexusBackground() {
                     const distSq = dx * dx + dy * dy;
 
                     if (distSq < connectionDistSq) {
-                        const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * (isDark ? 0.22 : 0.16);
+                        const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * (isDark ? 0.28 : 0.20);
                         ctx.beginPath();
                         ctx.moveTo(p1.x, p1.y);
                         ctx.lineTo(p2.x, p2.y);

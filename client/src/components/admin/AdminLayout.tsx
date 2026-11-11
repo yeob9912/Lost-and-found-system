@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Menu, Bell, ShieldCheck, Sun, Moon } from "lucide-react";
+import { Menu, ShieldCheck, Sun, Moon } from "lucide-react";
 import { Link } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
-import AdminNotificationOverlay from "./AdminNotificationOverlay";
+import NotificationDropdown from "../common/NotificationDropdown";
 import { getCurrentUser, getUserProfileImage } from "../../services/authService";
 import { useTheme } from "../../context/ThemeContext";
 
@@ -12,11 +12,9 @@ interface AdminLayoutProps {
     subtitle?: string;
 }
 
-export default function AdminLayout({ children, title, subtitle }: AdminLayoutProps) {
-    const { theme, toggleTheme, isDark } = useTheme();
+export default function AdminLayout({ children }: AdminLayoutProps) {
+    const { toggleTheme, isDark } = useTheme();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [notificationOpen, setNotificationOpen] = useState(false);
-    const [unreadCount, setUnreadCount] = useState(0);
     const [avatarImage, setAvatarImage] = useState<string | null>(null);
     const [adminInitials, setAdminInitials] = useState("A");
 
@@ -53,17 +51,9 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
             <AdminSidebar
                 open={sidebarOpen}
                 onClose={() => setSidebarOpen(false)}
-                onOpenNotifications={() => setNotificationOpen(true)}
             />
 
-            {/* Notification Drawer Overlay */}
-            <AdminNotificationOverlay
-                open={notificationOpen}
-                onClose={() => setNotificationOpen(false)}
-                onUnreadCountChange={setUnreadCount}
-            />
-
-            {/* Main Content Container – hide overflow when sidebar is open to eliminate scrollbar track */}
+            {/* Main Content Container */}
             <div className={`flex flex-col min-h-screen transition-[overflow] duration-200 ${sidebarOpen ? 'overflow-hidden' : ''}`}>
                 {/* Top Header Bar (Main Nav with Glassmorphism) */}
                 <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#E2E8F0]/80 dark:border-[#2A2D35]/80 bg-white/75 dark:bg-[#181A20]/75 backdrop-blur-[14px] px-4 sm:px-6 md:px-8 shadow-xs transition-colors duration-200">
@@ -77,22 +67,17 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
                             <Menu size={24} className="transition-transform hover:scale-110 duration-200" />
                         </button>
 
-                        {/* FindBack System Logo & Title on Main Nav */}
-                        <div className="flex items-center gap-2.5">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-600/20">
+                        {/* FindBack System Logo & Clean Branding (Only "FindBack System", no subtitles/labels) */}
+                        <Link to="/admin" className="flex items-center gap-2.5 group">
+                            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-600/20 group-hover:scale-105 transition-transform">
                                 <ShieldCheck size={20} />
                             </div>
                             <div>
                                 <h1 className="text-base font-extrabold text-[#111827] dark:text-[#F3F4F6] leading-tight">
                                     FindBack <span className="text-emerald-600 dark:text-emerald-400">System</span>
                                 </h1>
-                                {title && title !== "Dashboard" && subtitle !== "System Overview" ? (
-                                    <p className="text-[11px] font-medium text-[#6B7280] dark:text-[#9CA3AF]">
-                                        {title}{subtitle ? ` • ${subtitle}` : ""}
-                                    </p>
-                                ) : null}
                             </div>
-                        </div>
+                        </Link>
                     </div>
 
                     <div className="flex items-center gap-2 sm:gap-3">
@@ -110,21 +95,13 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
                             )}
                         </button>
 
-                        {/* Notification Bell Icon */}
-                        <button
-                            onClick={() => setNotificationOpen(true)}
-                            aria-label="Open Notifications"
-                            className="relative flex items-center justify-center p-2 text-[#6B7280] dark:text-[#9CA3AF] hover:text-emerald-600 dark:hover:text-emerald-400 active:scale-90 transition-transform duration-200 cursor-pointer focus:outline-none"
-                        >
-                            <Bell size={21} className="transition-transform hover:scale-110 duration-200" />
-                            {unreadCount > 0 && (
-                                <span className="absolute top-1 right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white shadow-xs animate-pulse">
-                                    {unreadCount > 99 ? "99+" : unreadCount}
-                                </span>
-                            )}
-                        </button>
+                        {/* Notification Bell Dropdown (identical UI and behavior as Student) */}
+                        <NotificationDropdown
+                            role="admin"
+                            iconSize={20}
+                        />
 
-                        {/* Admin Avatar */}
+                        {/* Admin Avatar Link */}
                         <Link
                             to="/admin/profile"
                             title="Admin Profile"
@@ -145,7 +122,7 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
                     </div>
                 </header>
 
-                {/* Page Content Viewport */}
+                {/* Page Content Body */}
                 <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-7xl w-full mx-auto">
                     {children}
                 </main>

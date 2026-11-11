@@ -48,7 +48,7 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
     }, []);
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0D0E12] text-[#111827] dark:text-[#F3F4F6] transition-colors duration-200">
+        <div className="min-h-screen bg-[#F8FAFC]/85 dark:bg-[#0D0E12]/85 text-[#111827] dark:text-[#F3F4F6] transition-colors duration-200 relative z-10">
             {/* Sliding Drawer Menu (Off-canvas on all screen sizes) */}
             <AdminSidebar
                 open={sidebarOpen}
@@ -63,33 +63,34 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
                 onUnreadCountChange={setUnreadCount}
             />
 
-            {/* Main Content Container */}
-            <div className="flex flex-col min-h-screen">
-                {/* Top Header Bar (Main Nav) */}
-                <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#E2E8F0] dark:border-[#2A2D35] bg-white/95 dark:bg-[#181A20]/95 backdrop-blur-md px-4 sm:px-6 md:px-8 shadow-xs transition-colors duration-200">
+            {/* Main Content Container – hide overflow when sidebar is open to eliminate scrollbar track */}
+            <div className={`flex flex-col min-h-screen transition-[overflow] duration-200 ${sidebarOpen ? 'overflow-hidden' : ''}`}>
+                {/* Top Header Bar (Main Nav with Glassmorphism) */}
+                <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#E2E8F0]/80 dark:border-[#2A2D35]/80 bg-white/75 dark:bg-[#181A20]/75 backdrop-blur-[14px] px-4 sm:px-6 md:px-8 shadow-xs transition-colors duration-200">
                     <div className="flex items-center gap-3 md:gap-5">
                         {/* Menu Icon Toggle */}
                         <button
-                            onClick={() => setSidebarOpen(true)}
-                            aria-label="Open navigation menu"
+                            onClick={() => setSidebarOpen((prev) => !prev)}
+                            aria-label="Toggle navigation menu"
                             className="flex items-center justify-center p-1.5 text-[#111827] dark:text-[#F3F4F6] hover:text-emerald-600 dark:hover:text-emerald-400 active:scale-90 transition-transform duration-200 cursor-pointer focus:outline-none"
                         >
                             <Menu size={24} className="transition-transform hover:scale-110 duration-200" />
                         </button>
 
-                        {/* ASTU Admin Logo & Title on Main Nav */}
+                        {/* FindBack System Logo & Title on Main Nav */}
                         <div className="flex items-center gap-2.5">
                             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-600/20">
                                 <ShieldCheck size={20} />
                             </div>
                             <div>
                                 <h1 className="text-base font-extrabold text-[#111827] dark:text-[#F3F4F6] leading-tight">
-                                    ASTU <span className="text-emerald-600 dark:text-emerald-400">Admin</span>
+                                    FindBack <span className="text-emerald-600 dark:text-emerald-400">System</span>
                                 </h1>
-                                <p className="text-[11px] font-medium text-[#6B7280] dark:text-[#9CA3AF]">
-                                    {title || "FindBack System"}
-                                    {subtitle ? ` • ${subtitle}` : ""}
-                                </p>
+                                {title && title !== "Dashboard" && subtitle !== "System Overview" ? (
+                                    <p className="text-[11px] font-medium text-[#6B7280] dark:text-[#9CA3AF]">
+                                        {title}{subtitle ? ` • ${subtitle}` : ""}
+                                    </p>
+                                ) : null}
                             </div>
                         </div>
                     </div>

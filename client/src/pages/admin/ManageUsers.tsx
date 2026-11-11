@@ -137,7 +137,7 @@ export default function ManageUsers() {
                         { label: "Students", value: studentCount, color: "text-emerald-600 dark:text-emerald-400" },
                         { label: "Administrators", value: adminCount, color: "text-purple-600 dark:text-purple-400" },
                     ].map(({ label, value, color }) => (
-                        <div key={label} className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-5 shadow-xs transition-colors">
+                        <div key={label} className="glass-card rounded-2xl p-5 transition-all hover:-translate-y-0.5">
                             <p className="text-sm text-[#6B7280] dark:text-[#9CA3AF]">{label}</p>
                             <h2 className={`mt-2 text-2xl font-bold ${color}`}>{loading ? "—" : value}</h2>
                         </div>
@@ -145,7 +145,7 @@ export default function ManageUsers() {
                 </div>
 
                 {/* Table Card */}
-                <div className="overflow-hidden rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] shadow-xs transition-colors">
+                <div className="glass-panel overflow-hidden rounded-2xl shadow-xl shadow-black/5 dark:shadow-black/30 transition-colors">
                     {/* Toolbar */}
                     <div className="flex flex-col gap-3 border-b border-[#E2E8F0] dark:border-[#2A2D35] p-5 sm:flex-row sm:items-center sm:justify-between">
                         <h2 className="font-bold text-[#111827] dark:text-[#F3F4F6] flex items-center gap-2">
@@ -334,8 +334,8 @@ export default function ManageUsers() {
 
                 {/* View User Modal */}
                 {selectedUser && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 dark:bg-black/80 backdrop-blur-xs p-4">
-                        <div className="w-full max-w-md rounded-3xl bg-white dark:bg-[#181A20] border border-[#E2E8F0] dark:border-[#2A2D35] p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 dark:bg-black/80 backdrop-blur-sm p-4">
+                        <div className="w-full max-w-md rounded-3xl bg-white/90 dark:bg-[#181A20]/90 backdrop-blur-[14px] border border-[#E2E8F0]/80 dark:border-[#2A2D35]/80 p-6 shadow-2xl shadow-black/30 animate-in fade-in zoom-in-95 duration-200">
                             <div className="mb-5 flex items-center gap-4">
                                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 dark:bg-emerald-950/40 text-xl font-bold text-emerald-700 dark:text-emerald-400">
                                     {selectedUser.fullName.charAt(0).toUpperCase()}

@@ -96,6 +96,8 @@ const userSchema = new Schema<IUser>(
             type: String,
             enum: ["student", "admin"],
             default: "student",
+            lowercase: true,
+            trim: true,
         },
     },
     {

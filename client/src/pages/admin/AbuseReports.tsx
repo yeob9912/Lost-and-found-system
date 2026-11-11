@@ -180,23 +180,23 @@ export default function AbuseReports() {
 
                 {/* Stats */}
                 <div className="mb-6 grid gap-4 sm:grid-cols-4">
-                    <div className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-5 shadow-xs transition-colors">
+                    <div className="glass-card rounded-2xl p-5 transition-all hover:-translate-y-0.5">
                         <p className="text-sm text-[#6B7280] dark:text-[#9CA3AF]">Total Incidents</p>
                         <h2 className="mt-2 text-2xl font-bold text-blue-600 dark:text-blue-400">{reports.length}</h2>
                     </div>
-                    <div className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-5 shadow-xs transition-colors">
+                    <div className="glass-card rounded-2xl p-5 transition-all hover:-translate-y-0.5">
                         <p className="text-sm text-[#6B7280] dark:text-[#9CA3AF]">Pending Review</p>
                         <h2 className="mt-2 text-2xl font-bold text-amber-600 dark:text-amber-400">
                             {reports.filter((r) => r.status === "Pending").length}
                         </h2>
                     </div>
-                    <div className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-5 shadow-xs transition-colors">
+                    <div className="glass-card rounded-2xl p-5 transition-all hover:-translate-y-0.5">
                         <p className="text-sm text-[#6B7280] dark:text-[#9CA3AF]">Under Investigation</p>
                         <h2 className="mt-2 text-2xl font-bold text-purple-600 dark:text-purple-400">
                             {reports.filter((r) => r.status === "Under Review").length}
                         </h2>
                     </div>
-                    <div className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-5 shadow-xs transition-colors">
+                    <div className="glass-card rounded-2xl p-5 transition-all hover:-translate-y-0.5">
                         <p className="text-sm text-[#6B7280] dark:text-[#9CA3AF]">Resolved</p>
                         <h2 className="mt-2 text-2xl font-bold text-emerald-600 dark:text-emerald-400">
                             {reports.filter((r) => r.status === "Resolved").length}
@@ -205,7 +205,7 @@ export default function AbuseReports() {
                 </div>
 
                 {/* Table Container */}
-                <div className="overflow-hidden rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] shadow-xs transition-colors">
+                <div className="glass-panel overflow-hidden rounded-2xl shadow-xl shadow-black/5 dark:shadow-black/30 transition-colors">
                     <div className="flex flex-col gap-3 border-b border-[#E2E8F0] dark:border-[#2A2D35] p-5 sm:flex-row sm:items-center sm:justify-between">
                         <h2 className="font-bold text-[#111827] dark:text-[#F3F4F6] flex items-center gap-2">
                             <Flag size={18} className="text-rose-500" /> Reported Abusers & Incidents

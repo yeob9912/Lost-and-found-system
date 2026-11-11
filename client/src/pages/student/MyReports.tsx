@@ -176,7 +176,7 @@ const MyReports = () => {
     }, [reports, activeFilter, activeType, searchTerm]);
 
     return (
-        <div className="min-h-screen bg-[#F4F6F0] px-4 py-7 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-[#F4F6F0]/85 dark:bg-[#0D0E12]/85 px-4 py-7 sm:px-6 lg:px-8 relative z-10 transition-colors">
             <div className="mx-auto max-w-7xl">
 
                 {/* Page Header */}
@@ -211,7 +211,7 @@ const MyReports = () => {
                         <div
                             key={stat.label}
                             style={{ animationDelay: `${index * 90}ms` }}
-                            className="group rounded-2xl border border-[#E5EAE2] bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#B8CEB9] hover:shadow-md animate-[fadeUp_.5s_ease-out_both]"
+                            className="group glass-card rounded-2xl p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl animate-[fadeUp_.5s_ease-out_both]"
                         >
                             <div className="flex items-center justify-between">
                                 <p className="text-xs font-medium text-[#718276] sm:text-sm">
@@ -240,7 +240,7 @@ const MyReports = () => {
                 </div>
 
                 {/* Main Reports Container */}
-                <div className="overflow-hidden rounded-2xl border border-[#E5EAE2] bg-white shadow-sm">
+                <div className="glass-panel overflow-hidden rounded-2xl shadow-xl">
 
                     {/* Search and Filters */}
                     <div className="border-b border-[#EDF0EA] p-4 sm:p-5">

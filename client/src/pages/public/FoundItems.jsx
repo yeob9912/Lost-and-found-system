@@ -108,7 +108,7 @@ export default function FoundItems() {
     };
 
     return (
-        <div className="min-h-screen bg-[#f5faf7] text-gray-800 flex flex-col justify-between">
+        <div className="min-h-screen bg-[#f5faf7]/85 dark:bg-[#0D0E12]/85 text-gray-800 dark:text-gray-100 flex flex-col justify-between relative z-10 transition-colors">
             <div>
                 <Navbar />
 
@@ -156,7 +156,7 @@ export default function FoundItems() {
                 {/* Main Content */}
                 <main id="found-items-list" className="mx-auto max-w-7xl px-5 py-12 lg:px-8">
                     {/* Search and Category Filters */}
-                    <div className="mb-6 space-y-4 rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm sm:p-5">
+                    <div className="glass-panel mb-6 space-y-4 rounded-2xl p-4 shadow-lg sm:p-5">
                         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                             <div className="relative flex-1">
                                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={19} />
@@ -200,7 +200,7 @@ export default function FoundItems() {
                             {filteredItems.map((item) => (
                                 <article
                                     key={item.id || item._id}
-                                    className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                                    className="glass-card group flex flex-col justify-between overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-2xl"
                                 >
                                     <div>
                                         <div className="relative h-52 w-full overflow-hidden bg-gray-100">

@@ -192,8 +192,8 @@ export default function AdminNotificationOverlay({
                 onClick={onClose}
             />
 
-            {/* Slide-over Drawer */}
-            <aside className="relative z-50 flex h-full w-full max-w-md flex-col bg-white dark:bg-[#181A20] text-[#111827] dark:text-[#F3F4F6] border-l border-[#E2E8F0] dark:border-[#2A2D35] shadow-2xl animate-in slide-in-from-right duration-300">
+            {/* Slide-over Drawer with Glassmorphism */}
+            <aside className="relative z-50 flex h-full w-full max-w-md flex-col bg-white/85 dark:bg-[#181A20]/85 backdrop-blur-[14px] text-[#111827] dark:text-[#F3F4F6] border-l border-[#E2E8F0]/80 dark:border-[#2A2D35]/80 shadow-2xl shadow-black/40 animate-in slide-in-from-right duration-300">
                 {/* Header */}
                 <div className="flex items-center justify-between border-b border-[#E2E8F0] dark:border-[#2A2D35] px-5 py-4">
                     <div className="flex items-center gap-2.5">

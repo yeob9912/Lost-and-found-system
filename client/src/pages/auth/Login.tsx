@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ShieldCheck, ArrowLeft, ArrowRight, Scan, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { loginUser } from '../../services/authService';
 
 export default function Login({ onSwitchToSignup }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -21,13 +22,22 @@ export default function Login({ onSwitchToSignup }) {
     setLoading(true);
 
     try {
-      await loginUser({
+      const authRes = await loginUser({
         email: loginData.email,
         password: loginData.password,
       });
 
-      // Redirect to home page
-      navigate('/');
+      // Role-based post-login redirection
+      const userRole = authRes?.user?.role ? String(authRes.user.role).trim().toLowerCase() : '';
+      const redirectFrom = (location.state as any)?.from;
+
+      if (redirectFrom && redirectFrom !== '/login') {
+        navigate(redirectFrom);
+      } else if (userRole === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
@@ -36,8 +46,8 @@ export default function Login({ onSwitchToSignup }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6F0] flex items-center justify-center p-3 sm:p-6 font-sans text-[#2D3748]">
-      <div className="w-full max-w-6xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row min-h-[700px] transition-all duration-300">
+    <div className="min-h-screen bg-[#F4F6F0]/85 dark:bg-[#0D0E12]/85 flex items-center justify-center p-3 sm:p-6 font-sans text-[#2D3748] relative z-10 transition-colors">
+      <div className="glass-panel w-full max-w-6xl rounded-2xl sm:rounded-3xl shadow-2xl shadow-black/20 overflow-hidden flex flex-col md:flex-row min-h-[700px] transition-all duration-300">
 
         {/* Left Banner Panel */}
         <div className="w-full md:w-5/12 bg-[#E9F0E6] p-6 sm:p-8 lg:p-12 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#E0E7DC]">

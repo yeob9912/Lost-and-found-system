@@ -72,7 +72,7 @@ const About = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-[#f5faf7] text-gray-800 flex flex-col justify-between">
+        <div className="min-h-screen bg-[#f5faf7]/85 dark:bg-[#0D0E12]/85 text-gray-800 dark:text-gray-100 flex flex-col justify-between relative z-10 transition-colors">
             <div>
                 <Navbar />
                 <main>
@@ -179,7 +179,7 @@ const About = () => {
                                 </p>
                             </div>
 
-                            <div className="rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm sm:p-8">
+                            <div className="glass-panel rounded-2xl p-6 shadow-lg sm:p-8">
                                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
                                     <PackageSearch size={25} />
                                 </div>
@@ -227,7 +227,7 @@ const About = () => {
                     </section>
 
                     {/* MISSION AND VISION */}
-                    <section className="border-y border-emerald-100 bg-white">
+                    <section className="border-y border-emerald-100/50 bg-white/60 dark:bg-[#181A20]/60 backdrop-blur-[14px]">
                         <div className="mx-auto grid max-w-7xl gap-6 px-5 py-12 md:grid-cols-2 lg:px-8">
 
                             <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 p-7">
@@ -292,7 +292,7 @@ const About = () => {
                                 return (
                                     <div
                                         key={step.number}
-                                        className="rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                                        className="glass-card rounded-2xl p-6 transition hover:-translate-y-1 hover:shadow-xl"
                                     >
                                         <div className="flex items-center justify-between">
                                             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
@@ -318,7 +318,7 @@ const About = () => {
                     </section>
 
                     {/* CORE VALUES */}
-                    <section className="border-y border-emerald-100 bg-white">
+                    <section className="border-y border-emerald-100/50 bg-white/60 dark:bg-[#181A20]/60 backdrop-blur-[14px]">
                         <div className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
 
                             <div className="mb-9 text-center">

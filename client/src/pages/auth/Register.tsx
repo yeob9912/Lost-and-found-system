@@ -54,8 +54,8 @@ export default function Signup({ onSwitchToLogin }) {
     signupData.password === signupData.confirmPassword;
 
   return (
-    <div className="min-h-screen bg-[#F4F6F0] flex items-center justify-center p-3 sm:p-6 font-sans text-[#2D3748]">
-      <div className="w-full max-w-6xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row min-h-[700px] transition-all duration-300">
+    <div className="min-h-screen bg-[#F4F6F0]/85 dark:bg-[#0D0E12]/85 flex items-center justify-center p-3 sm:p-6 font-sans text-[#2D3748] relative z-10 transition-colors">
+      <div className="glass-panel w-full max-w-6xl rounded-2xl sm:rounded-3xl shadow-2xl shadow-black/20 overflow-hidden flex flex-col md:flex-row min-h-[700px] transition-all duration-300">
 
         {/* Left Banner Panel */}
         <div className="w-full md:w-5/12 bg-[#E9F0E6] p-6 sm:p-8 lg:p-12 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#E0E7DC]">

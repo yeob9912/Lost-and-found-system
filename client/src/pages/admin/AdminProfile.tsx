@@ -125,7 +125,7 @@ export default function AdminProfile() {
         setTimeout(() => setFeedback(null), 4000);
     };
 
-    // Handle avatar photo selection
+    // Handle avatar photo selection & instant database sync
     const handleAvatarSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -136,11 +136,23 @@ export default function AdminProfile() {
         }
 
         const reader = new FileReader();
-        reader.onloadend = () => {
+        reader.onloadend = async () => {
             const dataUrl = reader.result as string;
             setAvatarPreview(dataUrl);
             setUserProfileImage(dataUrl);
-            showMsg("success", "Profile picture updated successfully.");
+            setProfile((prev) => ({ ...prev, profileImage: dataUrl }));
+
+            try {
+                const res = await updateAdminProfile({ profileImage: dataUrl });
+                const savedImage = res?.user?.profileImage || dataUrl;
+                setAvatarPreview(savedImage);
+                setUserProfileImage(savedImage);
+                setProfile((prev) => ({ ...prev, profileImage: savedImage }));
+                showMsg("success", "Profile picture updated and saved to database.");
+            } catch (err: unknown) {
+                console.error("Failed to sync profile picture to database:", err);
+                showMsg("error", "Failed to save profile picture to database.");
+            }
         };
         reader.readAsDataURL(file);
     };
@@ -150,10 +162,11 @@ export default function AdminProfile() {
         e.preventDefault();
         setSaving(true);
         try {
-            await updateAdminProfile({
+            const res = await updateAdminProfile({
                 fullName: profile.fullName,
                 phone: profile.phone,
                 department: profile.department,
+                profileImage: avatarPreview || profile.profileImage || "",
             });
 
             // Update session storage
@@ -164,6 +177,7 @@ export default function AdminProfile() {
                     fullName: profile.fullName,
                     phone: profile.phone,
                     department: profile.department,
+                    profileImage: res?.user?.profileImage || avatarPreview || current.profileImage || "",
                 };
                 sessionStorage.setItem("findback_user", JSON.stringify(updated));
                 sessionStorage.setItem("user", JSON.stringify(updated));
@@ -251,7 +265,7 @@ export default function AdminProfile() {
                 )}
 
                 {/* Profile Header Card */}
-                <div className="overflow-hidden rounded-3xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] shadow-xs mb-6 transition-colors">
+                <div className="glass-panel overflow-hidden rounded-3xl shadow-xl shadow-black/5 dark:shadow-black/30 mb-6 transition-colors">
                     <div className="h-32 bg-gradient-to-r from-emerald-600 via-teal-600 to-slate-800" />
                     <div className="relative px-6 pb-6 pt-0 sm:px-8">
                         <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4 -mt-16 sm:-mt-14">
@@ -343,7 +357,7 @@ export default function AdminProfile() {
 
                 {/* Tab 1: General Info */}
                 {activeTab === "general" && (
-                    <form onSubmit={handleSaveProfile} className="rounded-3xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 sm:p-8 shadow-xs transition-colors">
+                    <form onSubmit={handleSaveProfile} className="glass-panel rounded-3xl p-6 sm:p-8 shadow-xl shadow-black/5 dark:shadow-black/30 transition-colors">
                         <h2 className="text-lg font-bold text-[#111827] dark:text-[#F3F4F6] mb-1">Personal Details</h2>
                         <p className="text-xs text-[#6B7280] dark:text-[#9CA3AF] mb-6">
                             Update your administrative contact and identification information.
@@ -441,7 +455,7 @@ export default function AdminProfile() {
 
                 {/* Tab 2: Security & Password */}
                 {activeTab === "security" && (
-                    <form onSubmit={handleChangePassword} className="rounded-3xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 sm:p-8 shadow-xs transition-colors">
+                    <form onSubmit={handleChangePassword} className="glass-panel rounded-3xl p-6 sm:p-8 shadow-xl shadow-black/5 dark:shadow-black/30 transition-colors">
                         <h2 className="text-lg font-bold text-[#111827] dark:text-[#F3F4F6] mb-1">Change Password</h2>
                         <p className="text-xs text-[#6B7280] dark:text-[#9CA3AF] mb-6">
                             Ensure your administrator account uses a strong, unique password.

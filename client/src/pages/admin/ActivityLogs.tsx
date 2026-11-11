@@ -143,7 +143,7 @@ export default function ActivityLogs() {
 
                 {/* Stats */}
                 <div className="mb-6 grid gap-4 sm:grid-cols-3">
-                    <div className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-5 shadow-xs transition-colors">
+                    <div className="glass-card rounded-2xl p-5 transition-all hover:-translate-y-0.5">
                         <div className="flex items-center justify-between">
                             <p className="text-sm text-[#6B7280] dark:text-[#9CA3AF]">Total Activities</p>
                             <Activity className="text-blue-600 dark:text-blue-400" size={20} />
@@ -151,7 +151,7 @@ export default function ActivityLogs() {
                         <h2 className="mt-3 text-2xl font-bold text-[#111827] dark:text-[#F3F4F6]">{activities.length}</h2>
                     </div>
 
-                    <div className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-5 shadow-xs transition-colors">
+                    <div className="glass-card rounded-2xl p-5 transition-all hover:-translate-y-0.5">
                         <div className="flex items-center justify-between">
                             <p className="text-sm text-[#6B7280] dark:text-[#9CA3AF]">Today's Events</p>
                             <Clock className="text-emerald-600 dark:text-emerald-400" size={20} />
@@ -161,7 +161,7 @@ export default function ActivityLogs() {
                         </h2>
                     </div>
 
-                    <div className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-5 shadow-xs transition-colors">
+                    <div className="glass-card rounded-2xl p-5 transition-all hover:-translate-y-0.5">
                         <div className="flex items-center justify-between">
                             <p className="text-sm text-[#6B7280] dark:text-[#9CA3AF]">Unique Actors</p>
                             <User className="text-purple-600 dark:text-purple-400" size={20} />
@@ -173,7 +173,7 @@ export default function ActivityLogs() {
                 </div>
 
                 {/* Table Container */}
-                <div className="overflow-hidden rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] shadow-xs transition-colors">
+                <div className="glass-panel overflow-hidden rounded-2xl shadow-xl shadow-black/5 dark:shadow-black/30 transition-colors">
                     {/* Toolbar */}
                     <div className="flex flex-col gap-3 border-b border-[#E2E8F0] dark:border-[#2A2D35] p-5 sm:flex-row sm:items-center sm:justify-between">
                         <h2 className="font-bold text-[#111827] dark:text-[#F3F4F6] flex items-center gap-2">

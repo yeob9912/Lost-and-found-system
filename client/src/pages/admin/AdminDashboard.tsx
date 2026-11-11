@@ -1,26 +1,23 @@
 import { useEffect, useState } from "react";
 import {
-    LayoutDashboard,
     Users,
     Search,
     PackageCheck,
     ClipboardList,
-    Tags,
-    MapPin,
-    Flag,
-    Activity,
-    ArrowUpRight,
     RefreshCw,
-    Shield,
     Clock,
     AlertCircle,
     CheckCircle2,
-    TrendingUp,
+    Shield,
+    Sparkles,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import StatisticsCard from "../../components/admin/StatisticsCard";
 import AdminLayout from "../../components/admin/AdminLayout";
 import { fetchAdminStats } from "../../services/adminService";
+import LostVsFoundBarChart from "../../components/admin/charts/LostVsFoundBarChart";
+import ItemStatusPieChart, { StatusSegment } from "../../components/admin/charts/ItemStatusPieChart";
+import RecoveryTrendLineChart, { TrendPoint } from "../../components/admin/charts/RecoveryTrendLineChart";
 
 interface Stats {
     totalUsers: number;
@@ -30,6 +27,12 @@ interface Stats {
     pendingFound: number;
     totalClaims: number;
     pendingClaims: number;
+    lostVsFound?: {
+        lost: number;
+        found: number;
+    };
+    statusDistribution?: StatusSegment[];
+    recoveryTrends?: TrendPoint[];
 }
 
 export default function AdminDashboard() {
@@ -54,142 +57,43 @@ export default function AdminDashboard() {
         loadStats();
     }, []);
 
-    // The 9 required Navigation Cards with individual styling, icons, and dynamic badges
-    const navigationCards = [
-        {
-            title: "Admin Dashboard",
-            description: "System overview, live metrics, and real-time activity",
-            to: "/admin",
-            icon: LayoutDashboard,
-            badge: "Active",
-            accent: "emerald",
-            colorClass: "from-emerald-500/10 to-teal-500/10 hover:border-emerald-500/50",
-            iconBg: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
-            badgeClass: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300",
-        },
-        {
-            title: "Manage Users",
-            description: "Accounts, role promotions, and student profiles",
-            to: "/admin/users",
-            icon: Users,
-            badge: stats ? `${stats.totalUsers} Total` : "Accounts",
-            accent: "blue",
-            colorClass: "from-blue-500/10 to-indigo-500/10 hover:border-blue-500/50",
-            iconBg: "bg-blue-500/15 text-blue-600 dark:text-blue-400",
-            badgeClass: "bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300",
-        },
-        {
-            title: "Lost Items",
-            description: "Review, approve, and track reports of lost belongings",
-            to: "/admin/lost-items",
-            icon: Search,
-            badge: stats?.pendingLost ? `${stats.pendingLost} Pending` : `${stats?.totalLost ?? 0} Items`,
-            accent: "orange",
-            colorClass: "from-orange-500/10 to-amber-500/10 hover:border-orange-500/50",
-            iconBg: "bg-orange-500/15 text-orange-600 dark:text-orange-400",
-            badgeClass: stats?.pendingLost
-                ? "bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300 font-bold animate-pulse"
-                : "bg-orange-100 text-orange-700 dark:bg-orange-950/50 dark:text-orange-300",
-        },
-        {
-            title: "Found Items",
-            description: "Verify found belongings submitted across campus",
-            to: "/admin/found-items",
-            icon: PackageCheck,
-            badge: stats?.pendingFound ? `${stats.pendingFound} Pending` : `${stats?.totalFound ?? 0} Items`,
-            accent: "emerald",
-            colorClass: "from-emerald-500/10 to-green-500/10 hover:border-emerald-500/50",
-            iconBg: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
-            badgeClass: stats?.pendingFound
-                ? "bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-300 font-bold animate-pulse"
-                : "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300",
-        },
-        {
-            title: "Claim Requests",
-            description: "Evaluate ownership claims and identity proof",
-            to: "/admin/claims",
-            icon: ClipboardList,
-            badge: stats?.pendingClaims ? `${stats.pendingClaims} Pending` : `${stats?.totalClaims ?? 0} Claims`,
-            accent: "purple",
-            colorClass: "from-purple-500/10 to-violet-500/10 hover:border-purple-500/50",
-            iconBg: "bg-purple-500/15 text-purple-600 dark:text-purple-400",
-            badgeClass: stats?.pendingClaims
-                ? "bg-purple-100 text-purple-800 dark:bg-purple-950/50 dark:text-purple-300 font-bold animate-pulse"
-                : "bg-purple-100 text-purple-700 dark:bg-purple-950/50 dark:text-purple-300",
-        },
-        {
-            title: "Categories",
-            description: "Manage classification tags for campus belongings",
-            to: "/admin/categories",
-            icon: Tags,
-            badge: "Taxonomy",
-            accent: "cyan",
-            colorClass: "from-cyan-500/10 to-sky-500/10 hover:border-cyan-500/50",
-            iconBg: "bg-cyan-500/15 text-cyan-600 dark:text-cyan-400",
-            badgeClass: "bg-cyan-100 text-cyan-700 dark:bg-cyan-950/50 dark:text-cyan-300",
-        },
-        {
-            title: "Campus Locations",
-            description: "Configure ASTU buildings, blocks, and drop-off points",
-            to: "/admin/locations",
-            icon: MapPin,
-            badge: "Campuses",
-            accent: "rose",
-            colorClass: "from-rose-500/10 to-pink-500/10 hover:border-rose-500/50",
-            iconBg: "bg-rose-500/15 text-rose-600 dark:text-rose-400",
-            badgeClass: "bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300",
-        },
-        {
-            title: "Abuse Reports",
-            description: "Investigate spam, false claims, and identify abusers",
-            to: "/admin/abuse-reports",
-            icon: Flag,
-            badge: "Moderation",
-            accent: "red",
-            colorClass: "from-red-500/10 to-rose-500/10 hover:border-red-500/50",
-            iconBg: "bg-red-500/15 text-red-600 dark:text-red-400",
-            badgeClass: "bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-300",
-        },
-        {
-            title: "Activity Logs",
-            description: "Detailed system audit trail with per-record deletion",
-            to: "/admin/activity-logs",
-            icon: Activity,
-            badge: "Audit Trail",
-            accent: "amber",
-            colorClass: "from-amber-500/10 to-yellow-500/10 hover:border-amber-500/50",
-            iconBg: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
-            badgeClass: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300",
-        },
+    // Fallback status distribution computed directly from live DB counts if array is missing
+    const statusData: StatusSegment[] = stats?.statusDistribution || [
+        { status: "Lost", count: stats?.totalLost ?? 0, color: "#F43F5E" },
+        { status: "Found", count: stats?.totalFound ?? 0, color: "#F59E0B" },
+        { status: "Claimed", count: stats?.totalClaims ?? 0, color: "#0EA5E9" },
+        { status: "Returned", count: 0, color: "#10B981" },
     ];
 
+    const recoveryData: TrendPoint[] = stats?.recoveryTrends || [];
+
     return (
-        <AdminLayout title="Dashboard" subtitle="System Overview">
+        <AdminLayout>
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
-                {/* Header */}
+                {/* Header Section */}
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
                         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                            <Shield size={14} /> ASTU Administration Portal
+                            <Shield size={14} /> FindBack System Command Center
                         </div>
                         <h1 className="mt-1 text-2xl font-black text-[#111827] dark:text-[#F3F4F6] sm:text-3xl tracking-tight">
-                            Admin Command Center
+                            Admin Dashboard
                         </h1>
                         <p className="mt-1 text-sm text-[#6B7280] dark:text-[#9CA3AF]">
-                            Real-time analytics and management for the FindBack Lost and Found System.
+                            Real-time database analytics and monitoring for reported belongings across campus.
                         </p>
                     </div>
 
                     <button
                         onClick={loadStats}
-                        className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-4 py-2.5 text-sm font-semibold text-[#6B7280] dark:text-[#9CA3AF] shadow-xs hover:bg-slate-50 dark:hover:bg-[#2A2D35] transition-colors cursor-pointer"
+                        className="flex items-center gap-2 rounded-2xl border border-[#E2E8F0]/80 dark:border-[#2A2D35]/80 bg-white/70 dark:bg-[#181A20]/75 backdrop-blur-[14px] px-4 py-2.5 text-sm font-semibold text-[#6B7280] dark:text-[#9CA3AF] shadow-md shadow-black/5 dark:shadow-black/30 hover:bg-slate-50 dark:hover:bg-[#2A2D35] transition-all cursor-pointer"
                     >
                         <RefreshCw size={15} className={loading ? "animate-spin text-emerald-600" : ""} />
-                        Refresh Data
+                        Refresh Analytics
                     </button>
                 </div>
 
-                {/* Key Metrics Statistics Grid */}
+                {/* Key Metrics Statistics Cards */}
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                     <StatisticsCard
                         title="Registered Users"
@@ -221,71 +125,55 @@ export default function AdminDashboard() {
                     />
                 </div>
 
-                {/* Section 6: Dedicated Navigation Cards Grid for all 9 Admin Pages */}
-                <div>
-                    <div className="mb-4 flex items-center justify-between">
+                {/* 
+                  Analytics Section: 3 Interactive Animated Charts 
+                  1. Lost vs. Found Items Bar Chart
+                  2. Item Status Distribution Pie Chart
+                  3. Item Recovery Trends Line Chart
+                */}
+                <div className="space-y-6">
+                    <div className="flex items-center justify-between">
                         <div>
-                            <h2 className="text-lg font-bold text-[#111827] dark:text-[#F3F4F6]">
-                                System Modules &amp; Navigation
+                            <h2 className="text-lg font-bold text-[#111827] dark:text-[#F3F4F6] flex items-center gap-2">
+                                <Sparkles size={18} className="text-emerald-600 dark:text-emerald-400" />
+                                Analytics &amp; Reporting Intelligence
                             </h2>
                             <p className="text-xs text-[#6B7280] dark:text-[#9CA3AF]">
-                                Direct access to all administrative modules across the platform
+                                Real-time dynamic visual telemetry powered by database records
                             </p>
                         </div>
-                        <span className="text-xs font-semibold text-[#6B7280] dark:text-[#9CA3AF]">
-                            9 Active Modules
-                        </span>
                     </div>
 
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {navigationCards.map((card) => {
-                            const IconComponent = card.icon;
-                            return (
-                                <Link
-                                    key={card.to}
-                                    to={card.to}
-                                    className={`group relative flex flex-col justify-between rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-5 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-lg bg-gradient-to-br ${card.colorClass}`}
-                                >
-                                    <div>
-                                        <div className="flex items-start justify-between gap-3">
-                                            <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-110 ${card.iconBg}`}>
-                                                <IconComponent size={22} />
-                                            </div>
+                    {/* Top Row: 2 Charts (Bar Chart & Pie Chart) */}
+                    <div className="grid gap-6 lg:grid-cols-2">
+                        {/* 1. Lost vs. Found Items – Bar Chart */}
+                        <LostVsFoundBarChart
+                            lost={stats?.lostVsFound?.lost ?? stats?.totalLost ?? 0}
+                            found={stats?.lostVsFound?.found ?? stats?.totalFound ?? 0}
+                            loading={loading}
+                        />
 
-                                            <div className="flex items-center gap-2">
-                                                <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${card.badgeClass}`}>
-                                                    {card.badge}
-                                                </span>
-                                                <div className="flex h-7 w-7 items-center justify-center rounded-lg text-[#6B7280] dark:text-[#9CA3AF] opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all">
-                                                    <ArrowUpRight size={17} />
-                                                </div>
-                                            </div>
-                                        </div>
+                        {/* 2. Item Status Distribution – Pie Chart */}
+                        <ItemStatusPieChart
+                            data={statusData}
+                            loading={loading}
+                        />
+                    </div>
 
-                                        <div className="mt-4">
-                                            <h3 className="text-base font-bold text-[#111827] dark:text-[#F3F4F6] group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                                                {card.title}
-                                            </h3>
-                                            <p className="mt-1 text-xs leading-relaxed text-[#6B7280] dark:text-[#9CA3AF]">
-                                                {card.description}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-4 pt-3 border-t border-[#E2E8F0]/60 dark:border-[#2A2D35]/60 flex items-center justify-between text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                                        <span>Open module</span>
-                                        <span className="transform transition-transform duration-200 group-hover:translate-x-1">→</span>
-                                    </div>
-                                </Link>
-                            );
-                        })}
+                    {/* Bottom Row: Item Recovery Trends Line Chart */}
+                    <div>
+                        {/* 3. Item Recovery Trends – Line Chart */}
+                        <RecoveryTrendLineChart
+                            data={recoveryData}
+                            loading={loading}
+                        />
                     </div>
                 </div>
 
                 {/* Operations & Pending Review Quick Panel */}
                 <div className="grid gap-6 lg:grid-cols-3">
                     {/* Pending Operational Summary */}
-                    <div className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 shadow-xs lg:col-span-2">
+                    <div className="glass-panel rounded-3xl p-6 lg:col-span-2">
                         <div className="flex items-center justify-between">
                             <div>
                                 <h3 className="font-bold text-[#111827] dark:text-[#F3F4F6]">
@@ -303,7 +191,7 @@ export default function AdminDashboard() {
                         <div className="mt-5 grid gap-3 sm:grid-cols-3">
                             <Link
                                 to="/admin/lost-items"
-                                className="rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] p-4 bg-slate-50 dark:bg-[#0D0E12] hover:border-orange-500/40 transition-colors"
+                                className="rounded-2xl border border-[#E2E8F0]/80 dark:border-[#2A2D35]/80 p-4 bg-white/50 dark:bg-[#0D0E12]/50 hover:border-orange-500/40 transition-all hover:-translate-y-0.5 shadow-sm"
                             >
                                 <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 text-xs font-semibold">
                                     <Clock size={15} /> Lost Submissions
@@ -316,7 +204,7 @@ export default function AdminDashboard() {
 
                             <Link
                                 to="/admin/found-items"
-                                className="rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] p-4 bg-slate-50 dark:bg-[#0D0E12] hover:border-emerald-500/40 transition-colors"
+                                className="rounded-2xl border border-[#E2E8F0]/80 dark:border-[#2A2D35]/80 p-4 bg-white/50 dark:bg-[#0D0E12]/50 hover:border-emerald-500/40 transition-all hover:-translate-y-0.5 shadow-sm"
                             >
                                 <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
                                     <PackageCheck size={15} /> Found Belongings
@@ -329,7 +217,7 @@ export default function AdminDashboard() {
 
                             <Link
                                 to="/admin/claims"
-                                className="rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] p-4 bg-slate-50 dark:bg-[#0D0E12] hover:border-purple-500/40 transition-colors"
+                                className="rounded-2xl border border-[#E2E8F0]/80 dark:border-[#2A2D35]/80 p-4 bg-white/50 dark:bg-[#0D0E12]/50 hover:border-purple-500/40 transition-all hover:-translate-y-0.5 shadow-sm"
                             >
                                 <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 text-xs font-semibold">
                                     <AlertCircle size={15} /> Claim Petitions
@@ -343,23 +231,23 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* System Status Banner */}
-                    <div className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 shadow-xs flex flex-col justify-between">
+                    <div className="glass-panel rounded-3xl p-6 flex flex-col justify-between">
                         <div>
                             <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                                 <CheckCircle2 size={18} />
                                 <span className="text-xs font-bold uppercase tracking-wider">System Operational</span>
                             </div>
                             <h3 className="mt-2 text-base font-bold text-[#111827] dark:text-[#F3F4F6]">
-                                ASTU FindBack Network
+                                FindBack Telemetry
                             </h3>
                             <p className="mt-1 text-xs text-[#6B7280] dark:text-[#9CA3AF] leading-relaxed">
-                                MongoDB Atlas cluster, Cloudinary image pipeline, and RBAC authentication are connected and active.
+                                Real-time particle plexus network, MongoDB Atlas cluster, and live analytics pipeline active.
                             </p>
                         </div>
 
-                        <div className="mt-5 pt-4 border-t border-[#E2E8F0] dark:border-[#2A2D35] flex items-center justify-between text-xs">
-                            <span className="text-[#6B7280] dark:text-[#9CA3AF]">API Health:</span>
-                            <span className="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                        <div className="mt-5 pt-4 border-t border-[#E2E8F0]/60 dark:border-[#2A2D35]/60 flex items-center justify-between text-xs">
+                            <span className="text-[#6B7280] dark:text-[#9CA3AF]">Engine Status:</span>
+                            <span className="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
                                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping inline-block" /> 100% Online
                             </span>
                         </div>

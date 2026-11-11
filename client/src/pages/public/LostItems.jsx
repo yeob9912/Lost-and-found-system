@@ -1,4 +1,4 @@
-﻿import Navbar from '../../components/common/Navbar';
+import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import ItemDetails, { formatDisplayDate } from '../../components/common/ItemDetails';
 
@@ -223,7 +223,7 @@ const LostItems = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#f5faf7] text-gray-800">
+        <div className="min-h-screen bg-[#f5faf7]/85 dark:bg-[#0D0E12]/85 text-gray-800 dark:text-gray-100 relative z-10 transition-colors">
 
             {/* ================= NAVBAR ================= */}
             <Navbar />
@@ -315,7 +315,7 @@ const LostItems = () => {
 
                 {/* ================= SEARCH AND FILTER ================= */}
 
-                <div className="mb-6 rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm sm:p-5">
+                <div className="glass-panel mb-6 rounded-2xl p-4 shadow-lg sm:p-5">
 
                     <div className="mb-5 flex items-center gap-2">
                         <Filter size={19} className="text-emerald-600" />
@@ -389,7 +389,7 @@ const LostItems = () => {
 
                             <article
                                 key={item.id || item._id}
-                                className="group overflow-hidden rounded-2xl border border-emerald-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+                                className="glass-card group overflow-hidden rounded-2xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
                             >
 
                                 {/* Item Image */}

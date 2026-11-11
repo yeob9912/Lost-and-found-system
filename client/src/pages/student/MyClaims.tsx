@@ -126,7 +126,7 @@ const MyClaims = () => {
     });
 
     return (
-        <div className="min-h-screen bg-[#F4F6F0] px-4 py-8 sm:px-6 lg:px-10">
+        <div className="min-h-screen bg-[#F4F6F0]/85 dark:bg-[#0D0E12]/85 px-4 py-8 sm:px-6 lg:px-10 relative z-10 transition-colors">
             <div className="max-w-7xl mx-auto">
 
                 {/* Page Heading */}
@@ -150,7 +150,7 @@ const MyClaims = () => {
                 {/* Statistics Cards */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 
-                    <div className="bg-white rounded-2xl p-5 border border-[#E5EAE2] shadow-sm">
+                    <div className="glass-card rounded-2xl p-5 shadow-sm transition hover:-translate-y-0.5">
                         <div className="flex items-center justify-between mb-3">
                             <span className="text-sm text-[#718276] font-medium">
                                 Total Claims
@@ -164,7 +164,7 @@ const MyClaims = () => {
                         </h2>
                     </div>
 
-                    <div className="bg-white rounded-2xl p-5 border border-[#E5EAE2] shadow-sm">
+                    <div className="glass-card rounded-2xl p-5 shadow-sm transition hover:-translate-y-0.5">
                         <div className="flex items-center justify-between mb-3">
                             <span className="text-sm text-[#718276] font-medium">
                                 Pending
@@ -178,7 +178,7 @@ const MyClaims = () => {
                         </h2>
                     </div>
 
-                    <div className="bg-white rounded-2xl p-5 border border-[#E5EAE2] shadow-sm">
+                    <div className="glass-card rounded-2xl p-5 shadow-sm transition hover:-translate-y-0.5">
                         <div className="flex items-center justify-between mb-3">
                             <span className="text-sm text-[#718276] font-medium">
                                 Approved
@@ -192,7 +192,7 @@ const MyClaims = () => {
                         </h2>
                     </div>
 
-                    <div className="bg-white rounded-2xl p-5 border border-[#E5EAE2] shadow-sm">
+                    <div className="glass-card rounded-2xl p-5 shadow-sm transition hover:-translate-y-0.5">
                         <div className="flex items-center justify-between mb-3">
                             <span className="text-sm text-[#718276] font-medium">
                                 Rejected
@@ -209,7 +209,7 @@ const MyClaims = () => {
                 </div>
 
                 {/* Claims Section */}
-                <div className="bg-white rounded-2xl border border-[#E5EAE2] shadow-sm overflow-hidden">
+                <div className="glass-panel rounded-2xl shadow-xl overflow-hidden">
 
                     {/* Search and Filters */}
                     <div className="p-5 sm:p-6 border-b border-[#EDF0EA]">

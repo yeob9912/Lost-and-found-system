@@ -80,6 +80,8 @@ export const setUserProfileImage = (
 
     sessionStorage.setItem("findback_user", JSON.stringify(updatedUser));
     sessionStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem("findback_user", JSON.stringify(updatedUser));
+    localStorage.setItem("user", JSON.stringify(updatedUser));
 
     window.dispatchEvent(new Event("profile_image_updated"));
 };

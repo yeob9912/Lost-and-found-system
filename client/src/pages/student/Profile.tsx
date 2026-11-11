@@ -36,6 +36,7 @@ import {
 import {
     getUserProfileImage,
     setUserProfileImage,
+    getToken,
     type AuthUser,
 } from "../../services/authService";
 
@@ -139,7 +140,7 @@ export default function Profile() {
 
     // Sync profile and unique profile picture from server
     useEffect(() => {
-        const token = sessionStorage.getItem("token") || sessionStorage.getItem("findback_token");
+        const token = getToken();
         if (!token) return;
 
         fetch("http://localhost:5000/api/users/profile", {
@@ -248,8 +249,8 @@ export default function Profile() {
                 setProfileImage(imageData);
                 setSavedMessage("Profile picture updated successfully.");
 
-                // Persist image to backend specifically for this authenticated user account
-                const token = sessionStorage.getItem("token") || sessionStorage.getItem("findback_token");
+                // Persist image to backend database specifically for this authenticated user account
+                const token = getToken();
                 if (token) {
                     fetch("http://localhost:5000/api/users/profile", {
                         method: "PATCH",
@@ -258,7 +259,15 @@ export default function Profile() {
                             Authorization: `Bearer ${token}`,
                         },
                         body: JSON.stringify({ profileImage: imageData }),
-                    }).catch((err) => console.error("Failed to sync profile picture to server:", err));
+                    })
+                        .then((res) => (res.ok ? res.json() : null))
+                        .then((data) => {
+                            if (data?.user?.profileImage) {
+                                setUserProfileImage(data.user.profileImage, student as AuthUser);
+                                setProfileImage(data.user.profileImage);
+                            }
+                        })
+                        .catch((err) => console.error("Failed to sync profile picture to server:", err));
                 }
 
                 window.setTimeout(() => setSavedMessage(""), 3000);
@@ -285,8 +294,8 @@ export default function Profile() {
             profileImageInput.current.value = "";
         }
 
-        // Remove image from backend specifically for this user
-        const token = sessionStorage.getItem("token") || sessionStorage.getItem("findback_token");
+        // Remove image from backend database specifically for this user
+        const token = getToken();
         if (token) {
             fetch("http://localhost:5000/api/users/profile", {
                 method: "PATCH",
@@ -309,8 +318,10 @@ export default function Profile() {
         try {
             sessionStorage.setItem("user", JSON.stringify(student));
             sessionStorage.setItem("findback_user", JSON.stringify(student));
+            localStorage.setItem("user", JSON.stringify(student));
+            localStorage.setItem("findback_user", JSON.stringify(student));
 
-            const token = sessionStorage.getItem("token") || sessionStorage.getItem("findback_token");
+            const token = getToken();
             if (token) {
                 await fetch("http://localhost:5000/api/users/profile", {
                     method: "PATCH",
@@ -434,7 +445,7 @@ export default function Profile() {
     // Overview section
     const renderOverview = () => (
         <div className="space-y-6">
-            <div className="rounded-2xl border border-[#E2E9DF] bg-white p-6 sm:p-8">
+            <div className="glass-panel rounded-2xl p-6 sm:p-8 shadow-xl">
                 <div className="flex flex-col items-center gap-5 sm:flex-row">
                     <div className="relative">
                         <ProfileAvatar />
@@ -691,7 +702,7 @@ export default function Profile() {
     // Security section
     const renderSecurity = () => (
         <div className="space-y-6">
-            <div className="rounded-2xl border border-[#E2E9DF] bg-white p-6 sm:p-8">
+            <div className="glass-panel rounded-2xl p-6 sm:p-8 shadow-xl">
                 <div className="mb-6">
                     <h2 className="text-lg font-bold text-[#1A362B]">
                         Change Password
@@ -861,18 +872,11 @@ export default function Profile() {
                 description="Check the status of items you have claimed."
                 onClick={() => navigate("/student/my-claims")}
             />
-
-            <ActivityLink
-                icon={<Bell size={22} />}
-                title="Notifications"
-                description="See updates and messages related to your account."
-                onClick={() => navigate("/student/notifications")}
-            />
         </div>
     );
 
     return (
-        <div className="min-h-screen bg-[#F4F6F0] px-4 py-8 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-[#F4F6F0]/85 dark:bg-[#0D0E12]/85 px-4 py-8 sm:px-6 lg:px-8 relative z-10 transition-colors">
             <div className="mx-auto max-w-6xl">
                 {/* Page heading */}
                 <div className="mb-7">
@@ -904,7 +908,7 @@ export default function Profile() {
 
                 <div className="grid items-start gap-6 lg:grid-cols-[250px_minmax(0,1fr)]">
                     {/* Sidebar */}
-                    <aside className="rounded-2xl border border-[#E2E9DF] bg-white p-3">
+                    <aside className="glass-card rounded-2xl p-3 shadow-lg">
                         <div className="mb-3 flex items-center gap-3 border-b border-[#EDF0EA] px-3 py-4">
                             <ProfileAvatar size="small" />
 

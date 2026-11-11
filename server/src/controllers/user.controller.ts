@@ -3,6 +3,7 @@ import { Response } from "express";
 import mongoose from "mongoose";
 import User from "../models/User";
 import { AuthRequest } from "../middleware/authMiddleware";
+import cloudinary from "../config/cloudinary";
 
 // GET LOGGED-IN STUDENT PROFILE
 export const getMyProfile = async (
@@ -104,6 +105,7 @@ export const updateMyProfile = async (
             department?: string;
             yearOfStudy?: string;
             profileImage?: string;
+            profileImagePublicId?: string;
         } = {};
 
         if (fullName !== undefined) {
@@ -148,8 +150,28 @@ export const updateMyProfile = async (
         }
 
         if (profileImage !== undefined) {
-            updates.profileImage =
-                typeof profileImage === "string" ? profileImage : "";
+            let finalImageUrl = typeof profileImage === "string" ? profileImage.trim() : "";
+            // If base64 image and Cloudinary is configured, try Cloudinary upload
+            if (
+                finalImageUrl.startsWith("data:image/") &&
+                process.env.CLOUDINARY_CLOUD_NAME &&
+                process.env.CLOUDINARY_API_KEY &&
+                process.env.CLOUDINARY_API_SECRET
+            ) {
+                try {
+                    const uploadRes = await cloudinary.uploader.upload(finalImageUrl, {
+                        folder: "findback/profiles",
+                        resource_type: "image",
+                    });
+                    if (uploadRes?.secure_url) {
+                        finalImageUrl = uploadRes.secure_url;
+                        updates.profileImagePublicId = uploadRes.public_id;
+                    }
+                } catch (cErr) {
+                    console.warn("Cloudinary upload failed, persisting image directly:", cErr);
+                }
+            }
+            updates.profileImage = finalImageUrl;
         }
 
         const user = await User.findByIdAndUpdate(

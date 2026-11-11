@@ -12,13 +12,18 @@ import {
   LogOut,
   Activity,
   PlusCircle,
-  ArrowRight,
+  Check,
+  Trash2,
+  ShieldCheck,
 } from 'lucide-react';
 import { getCurrentUser, logoutUser, getUserProfileImage, type AuthUser } from '../../services/authService';
 import {
   getUnreadNotificationsCount,
   getNotifications,
   markAllNotificationsAsRead,
+  markNotificationAsRead,
+  deleteNotification,
+  clearAllNotifications,
   type AppNotification,
 } from '../../services/notificationService';
 
@@ -26,11 +31,12 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
+  const [mobileNotifOpen, setMobileNotifOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(() => getCurrentUser());
   const [profileImage, setProfileImage] = useState<string | null>(() => getUserProfileImage(getCurrentUser()));
   const [unreadCount, setUnreadCount] = useState(() => getCurrentUser() ? getUnreadNotificationsCount() : 0);
-  const [recentNotifs, setRecentNotifs] = useState<AppNotification[]>(() =>
-    getCurrentUser() ? getNotifications().slice(0, 5) : []
+  const [notifications, setNotifications] = useState<AppNotification[]>(() =>
+    getCurrentUser() ? getNotifications() : []
   );
   const location = useLocation();
   const navigate = useNavigate();
@@ -45,9 +51,10 @@ export default function Navbar() {
     setDropdownOpen(false);
     setNotifDropdownOpen(false);
     setMobileMenuOpen(false);
+    setMobileNotifOpen(false);
     if (currentUser) {
       setUnreadCount(getUnreadNotificationsCount());
-      setRecentNotifs(getNotifications().slice(0, 5));
+      setNotifications(getNotifications());
     }
   }, [location.pathname]);
 
@@ -66,7 +73,7 @@ export default function Navbar() {
   useEffect(() => {
     const handler = () => {
       setUnreadCount(getUnreadNotificationsCount());
-      setRecentNotifs(getNotifications().slice(0, 5));
+      setNotifications(getNotifications());
     };
     window.addEventListener('notifications_updated', handler);
     return () => window.removeEventListener('notifications_updated', handler);
@@ -100,7 +107,47 @@ export default function Navbar() {
     setDropdownOpen(false);
     setNotifDropdownOpen(false);
     setMobileMenuOpen(false);
+    setMobileNotifOpen(false);
     navigate('/login');
+  };
+
+  const handleMarkAsRead = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    const updated = markNotificationAsRead(id);
+    setNotifications(updated);
+    setUnreadCount(updated.filter((n) => !n.isRead).length);
+  };
+
+  const handleMarkAllAsRead = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const updated = markAllNotificationsAsRead();
+    setNotifications(updated);
+    setUnreadCount(0);
+  };
+
+  const handleDeleteNotif = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    const updated = deleteNotification(id);
+    setNotifications(updated);
+    setUnreadCount(updated.filter((n) => !n.isRead).length);
+  };
+
+  const handleClearAll = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const updated = clearAllNotifications();
+    setNotifications(updated);
+    setUnreadCount(0);
+  };
+
+  const handleNotificationClick = (notif: AppNotification) => {
+    if (!notif.isRead) {
+      markNotificationAsRead(notif.id);
+    }
+    setNotifDropdownOpen(false);
+    setMobileMenuOpen(false);
+    if (notif.link) {
+      navigate(notif.link);
+    }
   };
 
   const navLinks = [
@@ -117,10 +164,11 @@ export default function Navbar() {
   };
 
   const userInitial = (user?.fullName || 'U').trim().charAt(0).toUpperCase();
+  const isAdmin = user?.role ? String(user.role).trim().toLowerCase() === 'admin' : false;
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-md">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-gray-200/60 dark:border-[#2A2D35]/60 bg-white/80 dark:bg-[#181A20]/80 backdrop-blur-[14px] shadow-xs">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
@@ -152,6 +200,15 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="flex items-center gap-1.5 rounded-full bg-emerald-900 text-white px-3.5 py-1.5 text-xs font-bold hover:bg-emerald-950 transition-colors shadow-xs"
+            >
+              <ShieldCheck className="h-4 w-4 text-emerald-300" />
+              <span>Admin Dashboard</span>
+            </Link>
+          )}
         </nav>
 
         {/* User Profile / Join ASTU Toggle */}
@@ -181,14 +238,16 @@ export default function Navbar() {
                 </button>
 
                 {notifDropdownOpen && (
-                  <div className="absolute right-0 mt-2.5 w-80 origin-top-right rounded-2xl border border-gray-100 bg-white shadow-xl ring-1 ring-black/5 z-50 animate-in fade-in zoom-in-95 duration-150">
-                    {/* Header */}
-                    <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <Bell className="h-4 w-4 text-emerald-700" />
-                        <span className="text-sm font-bold text-gray-900">Notifications</span>
+                  <div className="absolute right-0 mt-2.5 w-[380px] max-w-[calc(100vw-2rem)] origin-top-right rounded-2xl border border-gray-100 bg-white shadow-2xl ring-1 ring-black/5 z-50 animate-in fade-in zoom-in-95 duration-150 flex flex-col"
+                    style={{ maxHeight: 'calc(100vh - 100px)' }}
+                  >
+                    {/* Header – always visible */}
+                    <div className="flex shrink-0 items-center justify-between border-b border-gray-100 px-5 py-4 bg-white rounded-t-2xl">
+                      <div className="flex items-center gap-2.5">
+                        <Bell className="h-5 w-5 text-emerald-800" />
+                        <span className="text-base font-bold text-gray-900 tracking-tight">Notifications</span>
                         {unreadCount > 0 && (
-                          <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-red-600">
+                          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-bold text-emerald-800">
                             {unreadCount} new
                           </span>
                         )}
@@ -196,61 +255,84 @@ export default function Navbar() {
                       {unreadCount > 0 && (
                         <button
                           type="button"
-                          onClick={() => {
-                            markAllNotificationsAsRead();
-                            setUnreadCount(0);
-                            setRecentNotifs(getNotifications().slice(0, 5));
-                          }}
-                          className="text-[10px] font-semibold text-emerald-700 hover:text-emerald-900"
+                          onClick={handleMarkAllAsRead}
+                          className="text-xs font-semibold text-emerald-700 hover:text-emerald-900 transition hover:underline"
                         >
-                          Mark all read
+                          Mark all as read
                         </button>
                       )}
                     </div>
 
-                    {/* Notification items */}
-                    <div className="max-h-72 overflow-y-auto py-1">
-                      {recentNotifs.length === 0 ? (
-                        <p className="py-6 text-center text-xs text-gray-400">No notifications yet</p>
+                    {/* Notification items – scrollable, fills remaining height */}
+                    <div className="flex-1 overflow-y-auto divide-y divide-gray-100 min-h-0">
+                      {notifications.length === 0 ? (
+                        <div className="py-12 text-center text-sm text-gray-400">
+                          <Bell className="mx-auto h-8 w-8 text-gray-300 mb-2 stroke-[1.5]" />
+                          <p className="font-medium">No notifications</p>
+                          <p className="text-xs text-gray-400 mt-0.5">You're all caught up!</p>
+                        </div>
                       ) : (
-                        recentNotifs.map((notif) => (
-                          <Link
+                        notifications.map((notif) => (
+                          <div
                             key={notif.id}
-                            to={notif.link}
-                            onClick={() => setNotifDropdownOpen(false)}
-                            className={`flex items-start gap-3 px-4 py-2.5 text-xs transition hover:bg-gray-50 ${
-                              !notif.isRead ? 'bg-emerald-50/60' : ''
+                            onClick={() => handleNotificationClick(notif)}
+                            className={`group relative flex items-start justify-between gap-3 px-5 py-3.5 cursor-pointer transition-colors ${
+                              !notif.isRead ? 'bg-emerald-50/40 hover:bg-emerald-50/80' : 'hover:bg-gray-50/80'
                             }`}
                           >
-                            {!notif.isRead && (
-                              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-red-500" />
-                            )}
-                            {notif.isRead && (
-                              <span className="mt-1.5 h-2 w-2 shrink-0" />
-                            )}
-                            <div className="min-w-0">
-                              <p className={`font-semibold ${!notif.isRead ? 'text-gray-900' : 'text-gray-600'}`}>
-                                {notif.title}
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2">
+                                {!notif.isRead && (
+                                  <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-600" />
+                                )}
+                                <p className={`text-sm font-bold ${!notif.isRead ? 'text-gray-900' : 'text-gray-700'}`}>
+                                  {notif.title}
+                                </p>
+                              </div>
+                              <p className="mt-1 text-xs text-gray-600 leading-relaxed">
+                                {notif.message}
                               </p>
-                              <p className="mt-0.5 text-gray-500 line-clamp-2">{notif.message}</p>
-                              <p className="mt-1 text-[10px] text-gray-400">
+                              <p className="mt-1.5 text-[11px] text-gray-400 font-medium">
                                 {notif.date} · {notif.time}
                               </p>
                             </div>
-                          </Link>
+
+                            {/* Action buttons: Mark as Read & Delete */}
+                            <div className="flex items-center gap-1 shrink-0 pt-0.5">
+                              {!notif.isRead && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => handleMarkAsRead(e, notif.id)}
+                                  title="Mark as read"
+                                  className="rounded-lg p-1 text-gray-400 hover:bg-emerald-100 hover:text-emerald-700 transition"
+                                >
+                                  <Check className="h-4 w-4" />
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                onClick={(e) => handleDeleteNotif(e, notif.id)}
+                                title="Delete notification"
+                                className="rounded-lg p-1 text-gray-400 hover:bg-red-50 hover:text-red-600 transition"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
                         ))
                       )}
                     </div>
 
-                    {/* Footer */}
-                    <div className="border-t border-gray-100 px-4 py-2.5">
-                      <Link
-                        to="/notifications"
-                        onClick={() => setNotifDropdownOpen(false)}
-                        className="flex items-center justify-center gap-1.5 text-xs font-semibold text-emerald-700 hover:text-emerald-900"
+                    {/* Footer - Clear all – always visible */}
+                    <div className="shrink-0 border-t border-gray-100 px-4 py-3 bg-white text-center rounded-b-2xl">
+                      <button
+                        type="button"
+                        onClick={handleClearAll}
+                        disabled={notifications.length === 0}
+                        className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-emerald-800 hover:text-emerald-950 transition hover:underline disabled:opacity-40 disabled:cursor-not-allowed disabled:no-underline"
                       >
-                        View all notifications <ArrowRight className="h-3 w-3" />
-                      </Link>
+                        Clear all
+                      </button>
                     </div>
                   </div>
                 )}
@@ -285,9 +367,27 @@ export default function Navbar() {
                       <p className="truncate text-xs font-medium text-emerald-700">
                         {user.studentId || user.email}
                       </p>
+                      {isAdmin && (
+                        <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
+                          <ShieldCheck className="h-3 w-3" /> Administrator
+                        </span>
+                      )}
                     </div>
 
                     <div className="py-1">
+                      {isAdmin && (
+                        <div className="mb-1.5 pb-1.5 border-b border-gray-100">
+                          <Link
+                            to="/admin"
+                            onClick={() => setDropdownOpen(false)}
+                            className="flex items-center gap-2.5 rounded-xl bg-emerald-900 px-3.5 py-2.5 text-xs font-bold text-white hover:bg-emerald-950 transition-colors shadow-sm"
+                          >
+                            <ShieldCheck className="h-4 w-4 text-emerald-300" />
+                            <span>Admin Dashboard</span>
+                          </Link>
+                        </div>
+                      )}
+
                       {/* Direct Profile Link */}
                       <Link
                         to="/profile"
@@ -327,14 +427,24 @@ export default function Navbar() {
                         <div className="px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-gray-400">
                           Other
                         </div>
-                        <Link
-                          to="/notifications"
-                          onClick={() => setDropdownOpen(false)}
-                          className="flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setDropdownOpen(false);
+                            setNotifDropdownOpen(true);
+                          }}
+                          className="flex w-full items-center justify-between rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 transition-colors"
                         >
-                          <Bell className="h-4 w-4 text-emerald-700" />
-                          <span>Notifications</span>
-                        </Link>
+                          <div className="flex items-center gap-2.5">
+                            <Bell className="h-4 w-4 text-emerald-700" />
+                            <span>Notifications</span>
+                          </div>
+                          {unreadCount > 0 && (
+                            <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800">
+                              {unreadCount}
+                            </span>
+                          )}
+                        </button>
                         <Link
                           to="/report-item"
                           onClick={() => setDropdownOpen(false)}
@@ -371,14 +481,143 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="rounded-lg p-2 text-emerald-900 hover:bg-emerald-50 md:hidden"
-          aria-label="Toggle navigation"
-        >
-          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        {/* Mobile: Notification Bell + Hamburger – visible only on mobile */}
+        <div className="flex items-center gap-1 md:hidden">
+          {user && (
+            <div className="relative" ref={notifDropdownRef}>
+              <button
+                type="button"
+                onClick={() => {
+                  setNotifDropdownOpen(!notifDropdownOpen);
+                  setMobileMenuOpen(false);
+                  setMobileNotifOpen(false);
+                }}
+                className="relative flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 transition-colors hover:text-emerald-800"
+                aria-label="Notifications"
+              >
+                <Bell className="h-5 w-5" />
+                {unreadCount > 0 && (
+                  <span
+                    style={{ minWidth: '18px', height: '18px' }}
+                    className="absolute -right-1.5 -top-1.5 flex items-center justify-center rounded-full bg-red-500 ring-2 ring-white px-1 text-[10px] font-bold leading-none text-white shadow"
+                  >
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Mobile notification dropdown – same full dropdown as desktop */}
+              {notifDropdownOpen && (
+                <div
+                  className="absolute right-0 mt-2.5 w-[340px] max-w-[calc(100vw-2rem)] origin-top-right rounded-2xl border border-gray-100 bg-white shadow-2xl ring-1 ring-black/5 z-50 animate-in fade-in zoom-in-95 duration-150 flex flex-col"
+                  style={{ maxHeight: 'calc(100vh - 100px)' }}
+                >
+                  {/* Header */}
+                  <div className="flex shrink-0 items-center justify-between border-b border-gray-100 px-5 py-4 bg-white rounded-t-2xl">
+                    <div className="flex items-center gap-2.5">
+                      <Bell className="h-5 w-5 text-emerald-800" />
+                      <span className="text-base font-bold text-gray-900 tracking-tight">Notifications</span>
+                      {unreadCount > 0 && (
+                        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-bold text-emerald-800">
+                          {unreadCount} new
+                        </span>
+                      )}
+                    </div>
+                    {unreadCount > 0 && (
+                      <button
+                        type="button"
+                        onClick={handleMarkAllAsRead}
+                        className="text-xs font-semibold text-emerald-700 hover:text-emerald-900 transition hover:underline"
+                      >
+                        Mark all as read
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Scrollable notification list */}
+                  <div className="flex-1 overflow-y-auto divide-y divide-gray-100 min-h-0">
+                    {notifications.length === 0 ? (
+                      <div className="py-12 text-center text-sm text-gray-400">
+                        <Bell className="mx-auto h-8 w-8 text-gray-300 mb-2 stroke-[1.5]" />
+                        <p className="font-medium">No notifications</p>
+                        <p className="text-xs text-gray-400 mt-0.5">You're all caught up!</p>
+                      </div>
+                    ) : (
+                      notifications.map((notif) => (
+                        <div
+                          key={notif.id}
+                          onClick={() => handleNotificationClick(notif)}
+                          className={`flex items-start justify-between gap-3 px-5 py-3.5 cursor-pointer transition-colors ${
+                            !notif.isRead ? 'bg-emerald-50/40 hover:bg-emerald-50/80' : 'hover:bg-gray-50/80'
+                          }`}
+                        >
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2">
+                              {!notif.isRead && (
+                                <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-600" />
+                              )}
+                              <p className={`text-sm font-bold ${!notif.isRead ? 'text-gray-900' : 'text-gray-700'}`}>
+                                {notif.title}
+                              </p>
+                            </div>
+                            <p className="mt-1 text-xs text-gray-600 leading-relaxed">{notif.message}</p>
+                            <p className="mt-1.5 text-[11px] text-gray-400 font-medium">
+                              {notif.date} · {notif.time}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-1 shrink-0 pt-0.5">
+                            {!notif.isRead && (
+                              <button
+                                type="button"
+                                onClick={(e) => handleMarkAsRead(e, notif.id)}
+                                title="Mark as read"
+                                className="rounded-lg p-1 text-gray-400 hover:bg-emerald-100 hover:text-emerald-700 transition"
+                              >
+                                <Check className="h-4 w-4" />
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={(e) => handleDeleteNotif(e, notif.id)}
+                              title="Delete"
+                              className="rounded-lg p-1 text-gray-400 hover:bg-red-50 hover:text-red-600 transition"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="shrink-0 border-t border-gray-100 px-4 py-3 bg-white text-center rounded-b-2xl">
+                    <button
+                      type="button"
+                      onClick={handleClearAll}
+                      disabled={notifications.length === 0}
+                      className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-emerald-800 hover:text-emerald-950 transition hover:underline disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      Clear all
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Mobile Hamburger */}
+          <button
+            onClick={() => {
+              setMobileMenuOpen(!mobileMenuOpen);
+              setNotifDropdownOpen(false);
+            }}
+            className="rounded-lg p-2 text-emerald-900 hover:bg-emerald-50"
+            aria-label="Toggle navigation"
+          >
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Navigation Drawer & Backdrop Overlay */}
@@ -411,6 +650,7 @@ export default function Navbar() {
 
               {user ? (
                 <div className="mt-3 border-t border-gray-100 pt-3 flex flex-col gap-2">
+                  {/* User info card */}
                   <div className="flex items-center gap-2.5 rounded-2xl bg-emerald-50/70 p-2.5 border border-emerald-100">
                     <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-emerald-800 text-xs font-bold text-white shadow-sm">
                       {profileImage ? (
@@ -422,22 +662,24 @@ export default function Navbar() {
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-bold text-gray-900">{user.fullName}</p>
                       <p className="truncate text-xs font-medium text-emerald-700">{user.studentId || user.email}</p>
-                    </div>
-                    {/* Mobile notification badge */}
-                    <Link
-                      to="/notifications"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600"
-                      aria-label="Notifications"
-                    >
-                      <Bell className="h-4 w-4" />
-                      {unreadCount > 0 && (
-                        <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white">
-                          {unreadCount > 9 ? '9+' : unreadCount}
+                      {isAdmin && (
+                        <span className="mt-0.5 inline-flex items-center gap-1 rounded-full bg-emerald-200/70 px-2 py-0.2 text-[9px] font-bold text-emerald-900">
+                          <ShieldCheck className="h-3 w-3" /> Administrator
                         </span>
                       )}
-                    </Link>
+                    </div>
                   </div>
+
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center gap-2.5 rounded-xl bg-emerald-900 px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-emerald-950 transition-colors"
+                    >
+                      <ShieldCheck className="h-4 w-4 text-emerald-300" />
+                      <span>Admin Dashboard</span>
+                    </Link>
+                  )}
 
                   <Link
                     to="/profile"
@@ -472,14 +714,6 @@ export default function Navbar() {
                   <div className="px-3.5 pt-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
                     Other
                   </div>
-                  <Link
-                    to="/notifications"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-sm font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-950 transition-colors"
-                  >
-                    <Bell className="h-4 w-4 text-emerald-700" />
-                    <span>Notifications</span>
-                  </Link>
                   <Link
                     to="/report-item"
                     onClick={() => setMobileMenuOpen(false)}

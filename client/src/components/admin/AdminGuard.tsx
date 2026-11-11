@@ -10,18 +10,21 @@ const API_BASE = "http://localhost:5000/api";
 
 export default function AdminGuard({ children }: AdminGuardProps) {
     const location = useLocation();
-    const [checked, setChecked] = useState(false);
-    const [authorized, setAuthorized] = useState(false);
+    const localUser = getCurrentUser();
+    const isInitiallyAdmin = localUser?.role ? String(localUser.role).trim().toLowerCase() === "admin" : false;
+
+    const [checked, setChecked] = useState(isInitiallyAdmin);
+    const [authorized, setAuthorized] = useState(isInitiallyAdmin);
 
     useEffect(() => {
         let isMounted = true;
 
         const verifyAdminStatus = async () => {
             const token = getToken();
-            const localUser = getCurrentUser();
+            const currentLocalUser = getCurrentUser();
 
             // Unauthenticated visitor -> immediately reject
-            if (!token) {
+            if (!token && !currentLocalUser) {
                 if (isMounted) {
                     setAuthorized(false);
                     setChecked(true);
@@ -31,42 +34,57 @@ export default function AdminGuard({ children }: AdminGuardProps) {
 
             try {
                 // Verify with backend against live database record
-                const res = await fetch(`${API_BASE}/auth/me`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                if (token) {
+                    const res = await fetch(`${API_BASE}/auth/me`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
 
-                if (res.ok) {
-                    const data = await res.json();
-                    const liveUser = data.user;
+                    if (res.ok) {
+                        const data = await res.json();
+                        const liveUser = data.user;
 
-                    if (liveUser && liveUser.role === "admin") {
-                        // Persist verified admin role to session and local storage
-                        sessionStorage.setItem("findback_user", JSON.stringify(liveUser));
-                        sessionStorage.setItem("user", JSON.stringify(liveUser));
-                        localStorage.setItem("findback_user", JSON.stringify(liveUser));
-                        localStorage.setItem("user", JSON.stringify(liveUser));
+                        if (liveUser) {
+                            const liveRole = String(liveUser.role || "").trim().toLowerCase();
+                            const isAdmin = liveRole === "admin";
 
-                        if (isMounted) {
-                            setAuthorized(true);
-                            setChecked(true);
+                            // Persist latest verified user and role to both storages
+                            sessionStorage.setItem("findback_user", JSON.stringify(liveUser));
+                            sessionStorage.setItem("user", JSON.stringify(liveUser));
+                            localStorage.setItem("findback_user", JSON.stringify(liveUser));
+                            localStorage.setItem("user", JSON.stringify(liveUser));
+
+                            if (isMounted) {
+                                setAuthorized(isAdmin);
+                                setChecked(true);
+                            }
+                            return;
                         }
-                        return;
                     }
                 }
             } catch {
-                // If network/server check is unreachable, fallback to local cached role
-                if (localUser && localUser.role === "admin") {
+                // If backend check has network issue, fallback to local cached role
+                if (currentLocalUser) {
+                    const isCachedAdmin = String(currentLocalUser.role || "").trim().toLowerCase() === "admin";
                     if (isMounted) {
-                        setAuthorized(true);
+                        setAuthorized(isCachedAdmin);
                         setChecked(true);
                     }
                     return;
                 }
             }
 
-            // User is either not authenticated or not an admin
+            // Fallback: check cached user if token was valid
+            if (currentLocalUser && String(currentLocalUser.role || "").trim().toLowerCase() === "admin") {
+                if (isMounted) {
+                    setAuthorized(true);
+                    setChecked(true);
+                }
+                return;
+            }
+
+            // User is not an admin
             if (isMounted) {
                 setAuthorized(false);
                 setChecked(true);

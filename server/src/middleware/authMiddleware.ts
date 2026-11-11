@@ -31,12 +31,21 @@ export const protect = async (
             token,
             process.env.JWT_SECRET as string
         ) as {
-            userId: string;
+            userId?: string;
+            id?: string;
             role?: "student" | "admin";
         };
 
+        const targetId = decoded.userId || decoded.id;
+        if (!targetId) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid token structure.",
+            });
+        }
+
         // Fetch user from DB to verify active account and live role (supports instant role promotions)
-        const dbUser = await User.findById(decoded.userId).select("role email fullName");
+        const dbUser = await User.findById(targetId).select("role email fullName");
         if (!dbUser) {
             return res.status(401).json({
                 success: false,
@@ -44,9 +53,11 @@ export const protect = async (
             });
         }
 
+        const userRole = String(dbUser.role || "student").trim().toLowerCase() as "student" | "admin";
+
         req.user = {
-            userId: decoded.userId,
-            role: dbUser.role as "student" | "admin",
+            userId: String(targetId),
+            role: userRole,
             email: dbUser.email,
         };
 
@@ -65,7 +76,8 @@ export const adminOnly = (
     res: Response,
     next: NextFunction
 ) => {
-    if (!req.user || req.user.role !== "admin") {
+    const role = req.user?.role ? String(req.user.role).trim().toLowerCase() : "";
+    if (role !== "admin") {
         return res.status(403).json({
             success: false,
             message: "Access denied. Administrators only.",

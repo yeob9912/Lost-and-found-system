@@ -39,15 +39,16 @@ export const updateUserRole = async (req: AuthRequest, res: Response) => {
     try {
         const { id } = req.params;
         const { role } = req.body;
+        const normalizedRole = typeof role === "string" ? role.trim().toLowerCase() : "";
 
-        if (!["student", "admin"].includes(role)) {
-            return res.status(400).json({ success: false, message: "Invalid role." });
+        if (!["student", "admin"].includes(normalizedRole)) {
+            return res.status(400).json({ success: false, message: "Invalid role. Role must be 'student' or 'admin'." });
         }
 
-        const user = await User.findByIdAndUpdate(id, { role }, { new: true }).select("-password");
+        const user = await User.findByIdAndUpdate(id, { role: normalizedRole }, { new: true }).select("-password");
         if (!user) return res.status(404).json({ success: false, message: "User not found." });
 
-        return res.status(200).json({ success: true, user, message: `User role updated to ${role}.` });
+        return res.status(200).json({ success: true, user, message: `User role updated to ${normalizedRole}.` });
     } catch (err) {
         console.error("updateUserRole error:", err);
         return res.status(500).json({ success: false, message: "Failed to update role." });
@@ -74,7 +75,7 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
     }
 };
 
-// GET /api/admin/stats  — dashboard summary numbers
+// GET /api/admin/stats  — dashboard summary numbers and dynamic analytics
 export const getAdminStats = async (_req: AuthRequest, res: Response) => {
     try {
         const LostItem = (await import("../models/LostItem")).default;
@@ -89,6 +90,12 @@ export const getAdminStats = async (_req: AuthRequest, res: Response) => {
             pendingFound,
             totalClaims,
             pendingClaims,
+            lostStatusCount,
+            foundStatusCount,
+            claimedStatusCount,
+            lostReturnedCount,
+            foundReturnedCount,
+            claimCompletedCount,
         ] = await Promise.all([
             User.countDocuments(),
             LostItem.countDocuments(),
@@ -97,7 +104,43 @@ export const getAdminStats = async (_req: AuthRequest, res: Response) => {
             FoundItem.countDocuments({ approvalStatus: "pending" }),
             Claim.countDocuments(),
             Claim.countDocuments({ status: "pending" }),
+            LostItem.countDocuments({ status: "lost" }),
+            FoundItem.countDocuments({ status: "available" }),
+            Claim.countDocuments({ status: { $in: ["pending", "verification_requested", "response_submitted", "approved"] } }),
+            LostItem.countDocuments({ status: "returned" }),
+            FoundItem.countDocuments({ status: "returned" }),
+            Claim.countDocuments({ status: "completed" }),
         ]);
+
+        const returnedStatusCount = lostReturnedCount + foundReturnedCount + claimCompletedCount;
+
+        // Dynamic 6-month recovery trend aggregation from database
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const now = new Date();
+        const trendPromises = [];
+        const monthLabels: string[] = [];
+
+        for (let i = 5; i >= 0; i--) {
+            const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            const start = new Date(d.getFullYear(), d.getMonth(), 1);
+            const end = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59, 999);
+            const label = `${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+            monthLabels.push(label);
+
+            trendPromises.push(
+                Promise.all([
+                    LostItem.countDocuments({ status: "returned", updatedAt: { $gte: start, $lte: end } }),
+                    FoundItem.countDocuments({ status: "returned", updatedAt: { $gte: start, $lte: end } }),
+                    Claim.countDocuments({ status: "completed", updatedAt: { $gte: start, $lte: end } }),
+                ])
+            );
+        }
+
+        const trendResults = await Promise.all(trendPromises);
+        const recoveryTrends = trendResults.map(([lCount, fCount, cCount], idx) => ({
+            period: monthLabels[idx],
+            recoveries: lCount + fCount + cCount,
+        }));
 
         return res.status(200).json({
             success: true,
@@ -109,6 +152,17 @@ export const getAdminStats = async (_req: AuthRequest, res: Response) => {
                 pendingFound,
                 totalClaims,
                 pendingClaims,
+                lostVsFound: {
+                    lost: totalLost,
+                    found: totalFound,
+                },
+                statusDistribution: [
+                    { status: "Lost", count: lostStatusCount, color: "#F43F5E" },
+                    { status: "Found", count: foundStatusCount, color: "#F59E0B" },
+                    { status: "Claimed", count: claimedStatusCount, color: "#0EA5E9" },
+                    { status: "Returned", count: returnedStatusCount, color: "#10B981" },
+                ],
+                recoveryTrends,
             },
         });
     } catch (err) {

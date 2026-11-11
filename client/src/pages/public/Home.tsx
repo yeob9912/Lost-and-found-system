@@ -157,7 +157,7 @@ export default function Home() {
     return (
         <div
             id="home"
-            className="min-h-screen overflow-hidden bg-white font-sans text-gray-800"
+            className="min-h-screen overflow-hidden bg-white/85 dark:bg-[#0D0E12]/85 font-sans text-gray-800 dark:text-gray-100 relative z-10 transition-colors"
         >
             <style>{`
         html {
@@ -336,7 +336,7 @@ export default function Home() {
                     className="mx-auto mb-10 max-w-7xl px-6"
                 >
 
-                    <div className="grid grid-cols-1 gap-6 rounded-2xl bg-[#edf4ee] px-5 py-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3.5">
+                    <div className="glass-panel grid grid-cols-1 gap-6 rounded-2xl bg-[#edf4ee]/85 dark:bg-[#181A20]/80 px-5 py-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3.5">
 
                         {steps.map((step, index) => {
                             const Icon = step.icon;
@@ -409,7 +409,7 @@ export default function Home() {
                     </div>
 
                     {/* Search Field */}
-                    <div className="mb-6 flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 shadow-sm transition focus-within:border-emerald-800 focus-within:ring-2 focus-within:ring-emerald-800/15">
+                    <div className="glass-card mb-6 flex items-center gap-3 rounded-xl px-3.5 py-2.5 transition focus-within:border-emerald-800 focus-within:ring-2 focus-within:ring-emerald-800/15">
 
                         <Search className="h-4 w-4 shrink-0 text-emerald-800" />
 
@@ -439,7 +439,7 @@ export default function Home() {
 
                             <article
                                 key={item.id}
-                                className={`fb-fade-up group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl fb-delay-${index + 1}`}
+                                className={`fb-fade-up group overflow-hidden rounded-xl glass-card transition duration-300 hover:-translate-y-1 hover:shadow-2xl fb-delay-${index + 1}`}
                             >
 
                                 {/* Item Image */}
@@ -697,7 +697,7 @@ export default function Home() {
 
                 <section className="mx-auto mb-20 max-w-7xl px-6">
 
-                    <div className="flex flex-col gap-5 rounded-2xl border border-emerald-900/10 bg-[#edf4ee] p-6 sm:flex-row sm:items-center sm:p-8">
+                    <div className="glass-panel flex flex-col gap-5 rounded-2xl bg-[#edf4ee]/80 dark:bg-[#181A20]/80 p-6 sm:flex-row sm:items-center sm:p-8">
 
                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-900">
                             <ShieldCheck className="h-5 w-5" />

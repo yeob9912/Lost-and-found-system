@@ -25,7 +25,7 @@ export default function StatisticsCard({
     color = "blue",
 }: StatisticsCardProps) {
     return (
-        <div className="group rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-5 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-emerald-500/40 dark:hover:border-emerald-500/40">
+        <div className="group rounded-2xl border border-[#E2E8F0]/80 dark:border-[#2A2D35]/80 bg-white/75 dark:bg-[#181A20]/75 backdrop-blur-[14px] p-5 shadow-xl shadow-black/5 dark:shadow-black/40 transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl hover:border-emerald-500/50 dark:hover:border-emerald-500/50">
             <div className="flex items-center justify-between">
                 <div>
                     <p className="text-sm font-medium text-[#6B7280] dark:text-[#9CA3AF]">{title}</p>

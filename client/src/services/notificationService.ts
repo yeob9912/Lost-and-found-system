@@ -106,3 +106,21 @@ export const markAllNotificationsAsRead = (): AppNotification[] => {
     return list;
 };
 
+export const deleteNotification = (id: number): AppNotification[] => {
+    const list = getNotifications().filter((n) => n.id !== id);
+    try {
+        localStorage.setItem(NOTIFICATIONS_STORAGE_KEY, JSON.stringify(list));
+        window.dispatchEvent(new Event("notifications_updated"));
+    } catch {}
+    return list;
+};
+
+export const clearAllNotifications = (): AppNotification[] => {
+    const list: AppNotification[] = [];
+    try {
+        localStorage.setItem(NOTIFICATIONS_STORAGE_KEY, JSON.stringify(list));
+        window.dispatchEvent(new Event("notifications_updated"));
+    } catch {}
+    return list;
+};
+

@@ -2,8 +2,10 @@ const BASE = (import.meta as unknown as { env?: { VITE_API_URL?: string } }).env
 
 function getToken(): string {
     return (
-        sessionStorage.getItem("token") ||
         sessionStorage.getItem("findback_token") ||
+        sessionStorage.getItem("token") ||
+        localStorage.getItem("findback_token") ||
+        localStorage.getItem("token") ||
         ""
     );
 }

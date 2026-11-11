@@ -120,7 +120,7 @@ export default function ManageLocations() {
                 )}
 
                 {showForm && (
-                    <div className="mb-6 rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 shadow-xs animate-in fade-in zoom-in-95 duration-200">
+                    <div className="glass-panel mb-6 rounded-2xl p-6 shadow-xl shadow-black/5 dark:shadow-black/30 animate-in fade-in zoom-in-95 duration-200">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="font-bold text-[#111827] dark:text-[#F3F4F6]">
                                 {editingLoc ? "Edit Location" : "Add New Location"}
@@ -181,7 +181,7 @@ export default function ManageLocations() {
                 )}
 
                 {/* Search Bar */}
-                <div className="mb-6 flex items-center gap-2 rounded-xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-4 py-1 shadow-xs">
+                <div className="glass-card mb-6 flex items-center gap-2 rounded-xl px-4 py-1">
                     <Search size={18} className="text-[#6B7280] dark:text-[#9CA3AF]" />
                     <input
                         value={search}
@@ -196,7 +196,7 @@ export default function ManageLocations() {
                     {filtered.map((location) => (
                         <div
                             key={location.id}
-                            className="rounded-2xl border border-[#E2E8F0] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 shadow-xs transition hover:-translate-y-0.5 hover:shadow-md"
+                            className="glass-card rounded-2xl p-6 transition hover:-translate-y-0.5 hover:shadow-xl"
                         >
                             <div className="flex items-start justify-between">
                                 <div className="rounded-xl bg-amber-50 dark:bg-amber-950/40 p-3 text-amber-600 dark:text-amber-400">

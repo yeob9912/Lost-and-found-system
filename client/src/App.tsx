@@ -10,11 +10,11 @@ import ReportItem from './pages/public/ReportItem.jsx';
 import Profile from './pages/student/Profile.tsx';
 import MyClaims from './pages/student/MyClaims.tsx';
 import MyReports from './pages/student/MyReports.tsx';
-import Notifications from './pages/student/Notifications.tsx';
 import ClaimForm from './components/claims/ClaimForm.tsx';
 
 // Theme Context
 import { ThemeProvider } from './context/ThemeContext.tsx';
+import PlexusBackground from './components/common/PlexusBackground.tsx';
 
 // Admin Security Guard
 import AdminGuard from './components/admin/AdminGuard.tsx';
@@ -44,6 +44,7 @@ function AuthPage({ initialView }: { initialView: 'login' | 'signup' }) {
 function App() {
   return (
     <ThemeProvider>
+      <PlexusBackground />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -63,8 +64,8 @@ function App() {
           <Route path="/student/my-claims" element={<MyClaims />} />
           <Route path="/my-reports" element={<MyReports />} />
           <Route path="/student/my-reports" element={<MyReports />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/student/notifications" element={<Notifications />} />
+          <Route path="/notifications" element={<Navigate to="/" replace />} />
+          <Route path="/student/notifications" element={<Navigate to="/" replace />} />
           <Route path="/claim" element={<ClaimForm />} />
           <Route path="/claim-form" element={<ClaimForm />} />
 

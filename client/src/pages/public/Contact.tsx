@@ -79,7 +79,7 @@ const Contact = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#f5faf7] text-gray-800 flex flex-col justify-between">
+        <div className="min-h-screen bg-[#f5faf7]/85 dark:bg-[#0D0E12]/85 text-gray-800 dark:text-gray-100 flex flex-col justify-between relative z-10 transition-colors">
             <div>
                 <Navbar />
                 <main>
@@ -133,7 +133,7 @@ const Contact = () => {
                             </p>
                         </div>
 
-                        <div className="flex gap-4 rounded-xl border border-emerald-100 bg-white p-5 shadow-sm">
+                        <div className="glass-card flex gap-4 rounded-xl p-5 shadow-sm">
                             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
                                 <MapPin size={21} />
                             </div>
@@ -151,7 +151,7 @@ const Contact = () => {
                             </div>
                         </div>
 
-                        <div className="flex gap-4 rounded-xl border border-emerald-100 bg-white p-5 shadow-sm">
+                        <div className="glass-card flex gap-4 rounded-xl p-5 shadow-sm">
                             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
                                 <Mail size={21} />
                             </div>
@@ -168,7 +168,7 @@ const Contact = () => {
                             </div>
                         </div>
 
-                        <div className="flex gap-4 rounded-xl border border-emerald-100 bg-white p-5 shadow-sm">
+                        <div className="glass-card flex gap-4 rounded-xl p-5 shadow-sm">
                             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
                                 <MessageCircle size={21} />
                             </div>
@@ -210,7 +210,7 @@ const Contact = () => {
                     </aside>
 
                     {/* CONTACT FORM */}
-                    <section className="rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm sm:p-8 lg:col-span-2">
+                    <section className="glass-panel rounded-2xl p-6 shadow-xl sm:p-8 lg:col-span-2">
 
                         <div className="mb-7">
                             <span className="text-xs font-bold tracking-wider text-emerald-700">

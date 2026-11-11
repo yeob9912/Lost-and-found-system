@@ -9,9 +9,10 @@
   --border-color: #E2E8F0;
   --text-primary: #111827;
   --text-secondary: #6B7280;
+  color-scheme: light;
 }
 
-html.dark {
+html.dark, body.dark {
   --bg-main: #0D0E12;
   --bg-surface: #181A20;
   --border-color: #2A2D35;
@@ -26,6 +27,40 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+/* Glassmorphism Depth Layering with 14px Backdrop Blur */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(226, 232, 240, 0.75);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.06);
+}
+
+.dark .glass-panel, html.dark .glass-panel {
+  background: rgba(24, 26, 32, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.45);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(226, 232, 240, 0.75);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .glass-card, html.dark .glass-card {
+  background: rgba(24, 26, 32, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.4);
+}
+
 /* Hide scrollbar utility */
 .no-scrollbar::-webkit-scrollbar {
   display: none !important;
@@ -38,20 +73,37 @@ body {
   scrollbar-width: none !important;
 }
 
-/* Admin sidebar nav — always hide scrollbar */
-aside nav::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
+/* Sidebar item staggered entrance animation */
+@keyframes itemSlideDownFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-aside nav {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
+.animate-menu-item {
+  animation: itemSlideDownFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Lock page scroll when any overlay/drawer is open */
 body.sidebar-open {
   overflow: hidden !important;
+  /* Prevent layout shift when scrollbar disappears */
+  scrollbar-gutter: stable;
+}
+
+/* Hide the sidebar scroll phantom / stray scrollbar track in admin panel */
+.admin-sidebar-panel::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+.admin-sidebar-panel {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 
 @keyframes bell-ring {

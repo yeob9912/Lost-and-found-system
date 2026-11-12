@@ -14,7 +14,7 @@ import {
     confirmFoundItemReturn,
 } from "../controllers/foundItemController";
 
-import { protect, adminOnly } from "../middleware/authMiddleware";
+import { protect, adminOnly, studentOnly } from "../middleware/authMiddleware";
 import upload from "../middleware/uploadMiddleware";
 
 const router = Router();
@@ -22,11 +22,11 @@ const router = Router();
 // Public routes
 router.get("/", getFoundItems);
 
-// User routes
-router.get("/my-items", protect, getMyFoundItems);
-router.post("/", protect, upload.single("image"), createFoundItem);
-router.put("/:id", protect, upload.single("image"), updateFoundItem);
-router.delete("/:id", protect, deleteFoundItem);
+// Student routes (Admins manage found items via admin routes)
+router.get("/my-items", protect, studentOnly, getMyFoundItems);
+router.post("/", protect, studentOnly, upload.single("image"), createFoundItem);
+router.put("/:id", protect, studentOnly, upload.single("image"), updateFoundItem);
+router.delete("/:id", protect, studentOnly, deleteFoundItem);
 
 // Admin routes
 router.get("/admin/reports", protect, adminOnly, getAllFoundItemReports);

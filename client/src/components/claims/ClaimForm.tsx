@@ -144,7 +144,7 @@ export default function ClaimForm({
   const isClaim = mode === 'claim';
 
   return (
-    <div className="min-h-screen bg-[#f5faf7] flex flex-col font-sans text-gray-800">
+    <div className="min-h-screen bg-[#f5faf7] dark:bg-[#0D0E12] flex flex-col font-sans text-gray-800 dark:text-gray-100 transition-colors">
       <Navbar />
 
       <main className="flex-1 py-10 px-4 sm:px-6 lg:px-8">

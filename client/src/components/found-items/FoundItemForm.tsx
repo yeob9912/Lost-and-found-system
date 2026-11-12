@@ -218,37 +218,37 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
   // SUCCESS STATE
   if (submitted) {
     return (
-      <div className="relative overflow-hidden rounded-3xl border border-emerald-100 bg-white p-6 sm:p-10 text-center shadow-2xl max-w-xl mx-auto animate-in zoom-in-95 duration-200">
-        <div className="absolute -top-16 -right-16 h-36 w-36 rounded-full bg-emerald-100/60 blur-2xl" />
-        <div className="absolute -bottom-16 -left-16 h-36 w-36 rounded-full bg-teal-100/60 blur-2xl" />
+      <div className="relative overflow-hidden rounded-3xl border border-emerald-100 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 sm:p-10 text-center shadow-2xl max-w-xl mx-auto animate-in zoom-in-95 duration-200">
+        <div className="absolute -top-16 -right-16 h-36 w-36 rounded-full bg-emerald-100/60 dark:bg-emerald-950/30 blur-2xl" />
+        <div className="absolute -bottom-16 -left-16 h-36 w-36 rounded-full bg-teal-100/60 dark:bg-teal-950/30 blur-2xl" />
 
         <div className="relative">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-tr from-emerald-600 to-teal-700 text-white shadow-xl shadow-emerald-700/25">
             <CheckCircle2 size={40} />
           </div>
 
-          <div className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1 text-xs font-bold text-emerald-800">
+          <div className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1 text-xs font-bold text-emerald-800 dark:text-emerald-400">
             <Sparkles size={14} /> Registered in ASTU Found Custody
           </div>
 
-          <h2 className="mt-3 text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+          <h2 className="mt-3 text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
             Thank You for Doing the Right Thing!
           </h2>
 
-          <p className="mt-2 text-sm text-gray-600 leading-relaxed max-w-md mx-auto">
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 leading-relaxed max-w-md mx-auto">
             Your found item report for{' '}
-            <strong className="text-gray-900 font-bold">
+            <strong className="text-gray-900 dark:text-white font-bold">
               {createdItem?.name || formData.name}
             </strong>{' '}
             is now visible in the registry. The rightful owner can now identify and file a claim.
           </p>
 
-          <div className="mt-6 rounded-2xl bg-gradient-to-br from-emerald-50/70 to-teal-50/40 p-4.5 text-xs text-emerald-950 border border-emerald-100 text-left space-y-2">
-            <p className="font-bold flex items-center gap-2">
-              <ShieldCheck size={16} className="text-emerald-700" />
+          <div className="mt-6 rounded-2xl bg-gradient-to-br from-emerald-50/70 to-teal-50/40 dark:from-[#1E2028] dark:to-[#181A20] p-4.5 text-xs text-emerald-950 dark:text-emerald-200 border border-emerald-100 dark:border-[#2A2D35] text-left space-y-2">
+            <p className="font-bold flex items-center gap-2 text-emerald-900 dark:text-emerald-300">
+              <ShieldCheck size={16} className="text-emerald-700 dark:text-emerald-400" />
               Item Custody Reference
             </p>
-            <div className="space-y-1.5 pl-6 text-emerald-900/90 text-xs">
+            <div className="space-y-1.5 pl-6 text-emerald-900/90 dark:text-gray-300 text-xs">
               <p>• <strong>Holding Location:</strong> {formData.storageLocation}</p>
               <p>• <strong>Private Verification Details:</strong> Safely secured for admin proof challenges.</p>
               <p>• When a claimant files for this item, you will be coordinated via campus security.</p>
@@ -260,7 +260,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
               <button
                 type="button"
                 onClick={onCancel}
-                className="rounded-xl bg-emerald-900 hover:bg-emerald-950 px-6 py-3 text-xs sm:text-sm font-bold text-white transition shadow-md"
+                className="rounded-xl bg-emerald-900 dark:bg-emerald-700 hover:bg-emerald-950 dark:hover:bg-emerald-600 px-6 py-3 text-xs sm:text-sm font-bold text-white transition shadow-md"
               >
                 Close &amp; View Found Items
               </button>
@@ -286,7 +286,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                 setImageFile(null);
                 setImagePreview('');
               }}
-              className="rounded-xl border border-gray-200 bg-white px-5 py-3 text-xs sm:text-sm font-bold text-gray-700 transition hover:bg-gray-50 shadow-sm"
+              className="rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-5 py-3 text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-200 transition hover:bg-gray-50 dark:hover:bg-[#2A2D35] shadow-sm"
             >
               Report Another Found Item
             </button>
@@ -298,7 +298,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
 
   return (
     <div
-      className={`relative overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-2xl ${
+      className={`relative overflow-hidden rounded-3xl border border-gray-100 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] shadow-2xl transition-colors ${
         isModal ? 'max-h-[90vh] overflow-y-auto' : 'mx-auto max-w-3xl'
       }`}
     >
@@ -308,23 +308,23 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
       {/* Main Container */}
       <div className="p-6 sm:p-9">
         {/* Header Bar */}
-        <div className="mb-7 flex items-start justify-between border-b border-gray-100 pb-5">
+        <div className="mb-7 flex items-start justify-between border-b border-gray-100 dark:border-[#2A2D35] pb-5">
           <div className="flex items-start gap-3.5">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800 shadow-sm">
               <ShieldCheck size={24} />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 border border-emerald-200">
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Found Property Registry
                 </span>
                 <span className="text-[11px] font-medium text-gray-400">• ASTU Campus</span>
               </div>
-              <h2 className="mt-1 text-2xl sm:text-3xl font-black tracking-tight text-gray-900">
+              <h2 className="mt-1 text-2xl sm:text-3xl font-black tracking-tight text-gray-900 dark:text-white">
                 Register a Found Item
               </h2>
-              <p className="mt-0.5 text-xs sm:text-sm text-gray-500">
+              <p className="mt-0.5 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 Help reunite this item with its rightful owner by recording where it was recovered and where it is kept.
               </p>
             </div>
@@ -334,7 +334,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
             <button
               type="button"
               onClick={onCancel}
-              className="rounded-xl p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition"
+              className="rounded-xl p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-[#2A2D35] hover:text-gray-700 dark:hover:text-gray-200 transition"
               aria-label="Close modal"
             >
               <X size={20} />
@@ -343,10 +343,10 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
         </div>
 
         {/* Security Tip Banner */}
-        <div className="mb-6 flex items-start gap-3 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50/60 p-4 text-xs text-amber-900 border border-amber-200/80 shadow-sm">
-          <Lock size={18} className="shrink-0 text-amber-700 mt-0.5" />
+        <div className="mb-6 flex items-start gap-3 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50/60 dark:from-amber-950/30 dark:to-orange-950/20 p-4 text-xs text-amber-900 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/60 shadow-sm">
+          <Lock size={18} className="shrink-0 text-amber-700 dark:text-amber-400 mt-0.5" />
           <div className="leading-relaxed">
-            <strong className="block font-bold text-amber-950">Fraud Prevention Guideline:</strong>
+            <strong className="block font-bold text-amber-950 dark:text-amber-200">Fraud Prevention Guideline:</strong>
             Keep identifying serial numbers, stickers, or specific wallet contents confidential! Place them in the{' '}
             <span className="font-bold underline">Private Verification Details</span> field below so only the true owner can claim it.
           </div>
@@ -354,9 +354,9 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
 
         {/* Authentication Notice if not signed in */}
         {!currentUser && (
-          <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50/60 p-4 text-xs text-emerald-950 border border-emerald-200 shadow-sm">
+          <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50/60 dark:from-emerald-950/40 dark:to-teal-950/30 p-4 text-xs text-emerald-950 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 shadow-sm">
             <div className="flex items-start gap-3">
-              <AlertCircle size={18} className="shrink-0 text-emerald-700 mt-0.5" />
+              <AlertCircle size={18} className="shrink-0 text-emerald-700 dark:text-emerald-400 mt-0.5" />
               <div>
                 <strong className="block font-bold">Sign In to Earn ASTU Community Trust</strong>
                 Recording under your verified student account connects your profile and enables direct updates.
@@ -365,7 +365,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
             <button
               type="button"
               onClick={() => navigate('/login', { state: { returnTo: '/found-items' } })}
-              className="inline-flex items-center gap-1.5 self-start sm:self-center shrink-0 rounded-xl bg-emerald-800 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-900 transition"
+              className="inline-flex items-center gap-1.5 self-start sm:self-center shrink-0 rounded-xl bg-emerald-800 dark:bg-emerald-700 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-900 transition"
             >
               <LogIn size={13} /> Log In
             </button>
@@ -374,8 +374,8 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
 
         {/* Error Banner */}
         {errorMessage && (
-          <div className="mb-6 flex items-start gap-3 rounded-2xl bg-rose-50 p-4 text-xs font-semibold text-rose-800 border border-rose-200 shadow-sm animate-in fade-in duration-200">
-            <AlertCircle size={18} className="shrink-0 text-rose-600 mt-0.5" />
+          <div className="mb-6 flex items-start gap-3 rounded-2xl bg-rose-50 dark:bg-rose-950/60 p-4 text-xs font-semibold text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800 shadow-sm animate-in fade-in duration-200">
+            <AlertCircle size={18} className="shrink-0 text-rose-600 dark:text-rose-400 mt-0.5" />
             <div className="flex-1">
               <span className="block font-bold">Please check your inputs:</span>
               <span className="font-normal">{errorMessage}</span>
@@ -385,9 +385,9 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
 
         <form onSubmit={handleSubmit} className="space-y-7">
           {/* SECTION 1: Item Basic Information */}
-          <div className="rounded-2xl border border-gray-100 bg-[#fbfdfa] p-4.5 sm:p-5.5 space-y-4.5">
-            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black">
+          <div className="rounded-2xl border border-gray-100 dark:border-[#2A2D35] bg-[#fbfdfa] dark:bg-[#1E2028] p-4.5 sm:p-5.5 space-y-4.5">
+            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-400 text-[11px] font-black">
                 1
               </span>
               <span>Found Item Overview</span>
@@ -395,7 +395,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
 
             {/* Item Name */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                 Item Title / Name <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
@@ -407,7 +407,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                   onChange={handleInputChange}
                   placeholder="e.g. Sony Wireless Headphones, Scientific Calculator, ASTU ID Card"
                   required
-                  className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 placeholder:text-gray-400"
+                  className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 />
               </div>
             </div>
@@ -415,7 +415,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
             {/* Category & Brand */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                   Category <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
@@ -424,10 +424,10 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
-                    className="w-full appearance-none rounded-xl border border-gray-200 bg-white pl-10 pr-9 py-2.5 text-sm text-gray-900 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10"
+                    className="w-full appearance-none rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-9 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10"
                   >
                     {CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat}>
+                      <option key={cat} value={cat} className="dark:bg-[#181A20] dark:text-white">
                         {cat}
                       </option>
                     ))}
@@ -439,7 +439,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                   Brand / Manufacturer
                 </label>
                 <input
@@ -448,7 +448,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                   value={formData.brand}
                   onChange={handleInputChange}
                   placeholder="e.g. Sony, Casio, ASTU, Apple, Unknown"
-                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 placeholder:text-gray-400"
+                  className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 />
               </div>
             </div>
@@ -456,7 +456,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
             {/* Color & Date Found */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                   Primary Color
                 </label>
                 <div className="relative">
@@ -467,13 +467,13 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                     value={formData.color}
                     onChange={handleInputChange}
                     placeholder="e.g. Forest Green, Matte Black, Navy Blue"
-                    className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 placeholder:text-gray-400"
+                    className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                   Date Found <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
@@ -484,7 +484,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                     value={formData.date}
                     onChange={handleInputChange}
                     required
-                    className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10"
+                    className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10"
                   />
                 </div>
               </div>
@@ -492,9 +492,9 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
           </div>
 
           {/* SECTION 2: Location Recovered & Current Custody */}
-          <div className="rounded-2xl border border-gray-100 bg-[#fbfdfa] p-4.5 sm:p-5.5 space-y-4.5">
-            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black">
+          <div className="rounded-2xl border border-gray-100 dark:border-[#2A2D35] bg-[#fbfdfa] dark:bg-[#1E2028] p-4.5 sm:p-5.5 space-y-4.5">
+            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-400 text-[11px] font-black">
                 2
               </span>
               <span>Discovery Location &amp; Physical Custody</span>
@@ -502,7 +502,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
 
             {/* Campus Location */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                 Where on Campus Did You Find It? <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
@@ -511,10 +511,10 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                   name="location"
                   value={formData.location}
                   onChange={handleInputChange}
-                  className="w-full appearance-none rounded-xl border border-gray-200 bg-white pl-10 pr-9 py-2.5 text-sm text-gray-900 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10"
+                  className="w-full appearance-none rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-9 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10"
                 >
                   {CAMPUS_LOCATIONS.map((loc) => (
-                    <option key={loc} value={loc}>
+                    <option key={loc} value={loc} className="dark:bg-[#181A20] dark:text-white">
                       {loc}
                     </option>
                   ))}
@@ -531,14 +531,14 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                   value={formData.customLocation}
                   onChange={handleInputChange}
                   placeholder="Specify building name, floor, or room number"
-                  className="mt-2.5 w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10"
+                  className="mt-2.5 w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10"
                 />
               )}
             </div>
 
             {/* Current Storage Location */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                 Current Storage / Custody Location <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
@@ -547,10 +547,10 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                   name="storageLocation"
                   value={formData.storageLocation}
                   onChange={handleInputChange}
-                  className="w-full appearance-none rounded-xl border border-gray-200 bg-white pl-10 pr-9 py-2.5 text-sm text-gray-900 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10"
+                  className="w-full appearance-none rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-9 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10"
                 >
                   {STORAGE_LOCATIONS.map((loc) => (
-                    <option key={loc} value={loc}>
+                    <option key={loc} value={loc} className="dark:bg-[#181A20] dark:text-white">
                       {loc}
                     </option>
                   ))}
@@ -559,7 +559,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                   ▼
                 </div>
               </div>
-              <p className="mt-1.5 text-[11px] text-gray-400">
+              <p className="mt-1.5 text-[11px] text-gray-400 dark:text-gray-500">
                 Informs the claimant and security where the physical item can be handed over upon proof of ownership.
               </p>
             </div>
@@ -568,13 +568,13 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
           {/* SECTION 3: Public Description vs Private Proof */}
           <div className="space-y-4">
             {/* Public Description */}
-            <div className="rounded-2xl border border-gray-100 bg-[#fbfdfa] p-4.5 sm:p-5.5 space-y-3">
-              <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black">
+            <div className="rounded-2xl border border-gray-100 dark:border-[#2A2D35] bg-[#fbfdfa] dark:bg-[#1E2028] p-4.5 sm:p-5.5 space-y-3">
+              <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-400 text-[11px] font-black">
                   3
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Eye size={13} className="text-emerald-700" />
+                  <Eye size={13} className="text-emerald-700 dark:text-emerald-400" />
                   Public Description (Visible to Campus) <span className="text-rose-500">*</span>
                 </span>
               </div>
@@ -585,22 +585,22 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                 onChange={handleInputChange}
                 placeholder="General description visible on the public feed (e.g. Sony wireless headphones with green ear padding found on 2nd floor desk)."
                 required
-                className="w-full rounded-xl border border-gray-200 bg-white p-3 text-sm text-gray-900 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 resize-none placeholder:text-gray-400"
+                className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-3 text-sm text-gray-900 dark:text-white outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 resize-none placeholder:text-gray-400 dark:placeholder:text-gray-500"
               />
             </div>
 
             {/* Private Verification Details */}
-            <div className="rounded-2xl border border-emerald-200/70 bg-gradient-to-br from-emerald-50/60 to-teal-50/40 p-4.5 sm:p-5.5 space-y-3">
+            <div className="rounded-2xl border border-emerald-200/70 dark:border-emerald-800/60 bg-gradient-to-br from-emerald-50/60 to-teal-50/40 dark:from-emerald-950/30 dark:to-teal-950/20 p-4.5 sm:p-5.5 space-y-3">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-emerald-950">
-                  <Lock size={14} className="text-emerald-700" />
+                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-emerald-950 dark:text-emerald-300">
+                  <Lock size={14} className="text-emerald-700 dark:text-emerald-400" />
                   <span>Private Verification Details (Admin-Only Challenge)</span>
                 </div>
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-md">
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100/90 dark:bg-emerald-900/50 px-2 py-0.5 rounded-md">
                   <Shield size={12} /> Hidden from Public
                 </span>
               </div>
-              <p className="text-[12px] text-emerald-900/80 leading-relaxed">
+              <p className="text-[12px] text-emerald-900/80 dark:text-emerald-300/80 leading-relaxed">
                 Provide secret identifying details (e.g. initials, exact serial number, stickers, background wallpaper) so admins can verify anyone who attempts to claim this item.
               </p>
               <textarea
@@ -609,15 +609,15 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                 value={formData.privateDetails}
                 onChange={handleInputChange}
                 placeholder="e.g. Engraved initials 'D.M.' on inside band, specific serial #123456, or lock-screen photo"
-                className="w-full rounded-xl border border-emerald-300 bg-white p-3 text-sm text-gray-900 outline-none transition focus:border-emerald-700 focus:ring-4 focus:ring-emerald-600/15 resize-none placeholder:text-gray-400"
+                className="w-full rounded-xl border border-emerald-300 dark:border-emerald-800 bg-white dark:bg-[#181A20] p-3 text-sm text-gray-900 dark:text-white outline-none transition focus:border-emerald-700 focus:ring-4 focus:ring-emerald-600/15 resize-none placeholder:text-gray-400 dark:placeholder:text-gray-500"
               />
             </div>
           </div>
 
           {/* SECTION 4: Contact & Photo */}
-          <div className="rounded-2xl border border-gray-100 bg-[#fbfdfa] p-4.5 sm:p-5.5 space-y-4.5">
-            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black">
+          <div className="rounded-2xl border border-gray-100 dark:border-[#2A2D35] bg-[#fbfdfa] dark:bg-[#1E2028] p-4.5 sm:p-5.5 space-y-4.5">
+            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-400 text-[11px] font-black">
                 4
               </span>
               <span>Finder Contact &amp; Photo</span>
@@ -625,7 +625,7 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
 
             {/* Finder Phone */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                 Finder Contact Phone (Optional)
               </label>
               <div className="relative">
@@ -636,49 +636,49 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
                   value={formData.finderContact}
                   onChange={handleInputChange}
                   placeholder="+251 9... or 09..."
-                  className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 placeholder:text-gray-400"
+                  className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 />
               </div>
             </div>
 
             {/* Photo Upload */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                 Photo of the Recovered Item
               </label>
 
               {imagePreview ? (
-                <div className="relative w-full overflow-hidden rounded-2xl border border-emerald-200 bg-emerald-50/30 p-2.5 flex flex-col sm:flex-row items-center gap-4">
+                <div className="relative w-full overflow-hidden rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50/30 dark:bg-emerald-950/20 p-2.5 flex flex-col sm:flex-row items-center gap-4">
                   <img
                     src={imagePreview}
                     alt="Found item preview"
-                    className="h-32 w-32 rounded-xl object-cover bg-white shadow-sm border border-gray-200"
+                    className="h-32 w-32 rounded-xl object-cover bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700"
                   />
                   <div className="flex-1 text-center sm:text-left">
-                    <p className="text-xs font-bold text-gray-900">
+                    <p className="text-xs font-bold text-gray-900 dark:text-white">
                       {imageFile ? imageFile.name : 'Image attached'}
                     </p>
-                    <p className="text-[11px] text-gray-500 mt-0.5">
+                    <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
                       {imageFile ? `${(imageFile.size / 1024).toFixed(1)} KB` : 'Ready to submit'}
                     </p>
                     <button
                       type="button"
                       onClick={handleRemoveImage}
-                      className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-white px-3 py-1.5 text-xs font-bold text-emerald-800 hover:bg-emerald-50 transition shadow-sm"
+                      className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-[#181A20] px-3 py-1.5 text-xs font-bold text-emerald-800 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition shadow-sm"
                     >
                       <X size={14} /> Remove Photo
                     </button>
                   </div>
                 </div>
               ) : (
-                <label className="group flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 hover:border-emerald-500 bg-white hover:bg-emerald-50/20 px-6 py-7 text-center transition duration-200">
-                  <div className="mb-2.5 rounded-2xl bg-emerald-50 p-3 text-emerald-700 shadow-sm border border-emerald-100 group-hover:scale-110 transition duration-200">
+                <label className="group flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 dark:border-[#2A2D35] hover:border-emerald-500 bg-white dark:bg-[#181A20] hover:bg-emerald-50/20 dark:hover:bg-emerald-950/20 px-6 py-7 text-center transition duration-200">
+                  <div className="mb-2.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 p-3 text-emerald-700 dark:text-emerald-400 shadow-sm border border-emerald-100 dark:border-emerald-800 group-hover:scale-110 transition duration-200">
                     <Upload size={22} />
                   </div>
-                  <span className="text-xs sm:text-sm font-bold text-gray-900">
+                  <span className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
                     Click to attach photo of found item
                   </span>
-                  <span className="mt-1 text-[11px] text-gray-400">
+                  <span className="mt-1 text-[11px] text-gray-400 dark:text-gray-500">
                     PNG, JPG, JPEG, WEBP up to 5 MB
                   </span>
                   <input
@@ -694,12 +694,12 @@ export default function FoundItemForm({ onSuccess, onCancel, isModal = false }: 
           </div>
 
           {/* Form Actions */}
-          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-3 border-t border-gray-100">
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-3 border-t border-gray-100 dark:border-[#2A2D35]">
             {onCancel && (
               <button
                 type="button"
                 onClick={onCancel}
-                className="w-full sm:w-auto rounded-xl border border-gray-200 bg-white px-6 py-2.5 text-xs sm:text-sm font-bold text-gray-700 transition hover:bg-gray-50"
+                className="w-full sm:w-auto rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-6 py-2.5 text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-200 transition hover:bg-gray-50 dark:hover:bg-[#2A2D35]"
               >
                 Cancel
               </button>

@@ -106,7 +106,7 @@ const About = () => {
                                 <div className="mt-7 flex flex-wrap gap-3">
                                     <Link
                                         to="/lost-items"
-                                        className="flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-emerald-800 hover:bg-emerald-50"
+                                        className="flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-emerald-800 hover:bg-emerald-50 shadow-sm transition"
                                     >
                                         Explore Lost Items
                                         <ArrowRight size={17} />
@@ -114,7 +114,7 @@ const About = () => {
 
                                     <Link
                                         to="/report-item"
-                                        className="rounded-lg border border-emerald-300/50 px-5 py-3 text-sm font-semibold text-white hover:bg-emerald-700"
+                                        className="rounded-lg border border-emerald-300/50 px-5 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition"
                                     >
                                         Report an Item
                                     </Link>
@@ -128,15 +128,15 @@ const About = () => {
                                     className="h-64 w-full rounded-2xl object-cover shadow-xl sm:h-80"
                                 />
 
-                                <div className="absolute -bottom-4 left-4 flex items-center gap-3 rounded-xl bg-white p-4 shadow-lg">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+                                <div className="absolute -bottom-4 left-4 flex items-center gap-3 rounded-xl bg-white dark:bg-[#181A20] border border-transparent dark:border-[#2A2D35] p-4 shadow-lg">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
                                         <ShieldCheck size={22} />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-bold text-gray-800">
+                                        <p className="text-sm font-bold text-gray-800 dark:text-white">
                                             Community First
                                         </p>
-                                        <p className="text-xs text-gray-500">
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">
                                             Supporting responsible item recovery
                                         </p>
                                     </div>
@@ -151,54 +151,54 @@ const About = () => {
                         <div className="grid items-center gap-10 md:grid-cols-2">
 
                             <div>
-                                <span className="text-xs font-bold tracking-wider text-emerald-700">
+                                <span className="text-xs font-bold tracking-wider text-emerald-700 dark:text-emerald-400">
                                     WHY FINDBACK EXISTS
                                 </span>
 
-                                <h2 className="mt-3 text-2xl font-extrabold text-gray-900">
+                                <h2 className="mt-3 text-2xl font-extrabold text-gray-900 dark:text-white">
                                     Making Lost and Found Easier
                                 </h2>
 
-                                <p className="mt-4 text-sm leading-7 text-gray-600">
+                                <p className="mt-4 text-sm leading-7 text-gray-600 dark:text-gray-300">
                                     Losing personal belongings on a university campus can be
                                     frustrating. Finding them becomes even more difficult
                                     when information about lost and recovered items is
                                     scattered across different places and people.
                                 </p>
 
-                                <p className="mt-4 text-sm leading-7 text-gray-600">
+                                <p className="mt-4 text-sm leading-7 text-gray-600 dark:text-gray-300">
                                     FindBack provides a centralized platform where users
                                     can report lost belongings, publish information about
                                     found items, and search existing reports without
                                     depending only on informal communication.
                                 </p>
 
-                                <p className="mt-4 text-sm leading-7 text-gray-600">
+                                <p className="mt-4 text-sm leading-7 text-gray-600 dark:text-gray-300">
                                     Our goal is to make the recovery process more organized,
                                     accessible, and convenient for the ASTU community.
                                 </p>
                             </div>
 
                             <div className="glass-panel rounded-2xl p-6 shadow-lg sm:p-8">
-                                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
                                     <PackageSearch size={25} />
                                 </div>
 
-                                <h3 className="text-lg font-bold text-gray-900">
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                                     One Platform, Two Purposes
                                 </h3>
 
                                 <div className="mt-6 space-y-6">
 
                                     <div className="flex gap-4">
-                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-600">
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400">
                                             <Search size={20} />
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-gray-800">
+                                            <h4 className="font-bold text-gray-800 dark:text-gray-200">
                                                 Lost Items
                                             </h4>
-                                            <p className="mt-1 text-sm leading-6 text-gray-500">
+                                            <p className="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
                                                 Help users publish and search for belongings they
                                                 have lost.
                                             </p>
@@ -206,14 +206,14 @@ const About = () => {
                                     </div>
 
                                     <div className="flex gap-4">
-                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400">
                                             <ShieldCheck size={20} />
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-gray-800">
+                                            <h4 className="font-bold text-gray-800 dark:text-gray-200">
                                                 Found Items
                                             </h4>
-                                            <p className="mt-1 text-sm leading-6 text-gray-500">
+                                            <p className="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
                                                 Help people report recovered belongings so their
                                                 rightful owners can identify them.
                                             </p>
@@ -227,19 +227,19 @@ const About = () => {
                     </section>
 
                     {/* MISSION AND VISION */}
-                    <section className="border-y border-emerald-100/50 bg-white/60 dark:bg-[#181A20]/60 backdrop-blur-[14px]">
+                    <section className="border-y border-emerald-100/50 dark:border-[#2A2D35] bg-white/60 dark:bg-[#181A20]/60 backdrop-blur-[14px]">
                         <div className="mx-auto grid max-w-7xl gap-6 px-5 py-12 md:grid-cols-2 lg:px-8">
 
-                            <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 p-7">
+                            <div className="rounded-2xl border border-emerald-100 dark:border-[#2A2D35] bg-emerald-50/70 dark:bg-[#1E2028] p-7">
                                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-600 text-white">
                                     <Target size={22} />
                                 </div>
 
-                                <h3 className="mt-5 text-xl font-bold text-gray-900">
+                                <h3 className="mt-5 text-xl font-bold text-gray-900 dark:text-white">
                                     Our Mission
                                 </h3>
 
-                                <p className="mt-3 text-sm leading-7 text-gray-600">
+                                <p className="mt-3 text-sm leading-7 text-gray-600 dark:text-gray-300">
                                     To provide an accessible and organized platform that
                                     connects people who have lost belongings with those who
                                     have found them, making item recovery easier within the
@@ -247,16 +247,16 @@ const About = () => {
                                 </p>
                             </div>
 
-                            <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 p-7">
+                            <div className="rounded-2xl border border-emerald-100 dark:border-[#2A2D35] bg-emerald-50/70 dark:bg-[#1E2028] p-7">
                                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-600 text-white">
                                     <Eye size={22} />
                                 </div>
 
-                                <h3 className="mt-5 text-xl font-bold text-gray-900">
+                                <h3 className="mt-5 text-xl font-bold text-gray-900 dark:text-white">
                                     Our Vision
                                 </h3>
 
-                                <p className="mt-3 text-sm leading-7 text-gray-600">
+                                <p className="mt-3 text-sm leading-7 text-gray-600 dark:text-gray-300">
                                     To build a connected university community where lost
                                     belongings can be easily reported, identified, and
                                     returned to their rightful owners through responsible
@@ -271,15 +271,15 @@ const About = () => {
                     <section className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
 
                         <div className="mx-auto mb-10 max-w-2xl text-center">
-                            <span className="text-xs font-bold tracking-wider text-emerald-700">
+                            <span className="text-xs font-bold tracking-wider text-emerald-700 dark:text-emerald-400">
                                 SIMPLE AND ORGANIZED
                             </span>
 
-                            <h2 className="mt-3 text-2xl font-extrabold text-gray-900">
+                            <h2 className="mt-3 text-2xl font-extrabold text-gray-900 dark:text-white">
                                 How FindBack Works
                             </h2>
 
-                            <p className="mt-3 text-sm leading-6 text-gray-500">
+                            <p className="mt-3 text-sm leading-6 text-gray-500 dark:text-gray-400">
                                 Four simple steps to help lost belongings find their way
                                 back to their owners.
                             </p>
@@ -295,20 +295,20 @@ const About = () => {
                                         className="glass-card rounded-2xl p-6 transition hover:-translate-y-1 hover:shadow-xl"
                                     >
                                         <div className="flex items-center justify-between">
-                                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
                                                 <Icon size={23} />
                                             </div>
 
-                                            <span className="text-sm font-extrabold text-emerald-200">
+                                            <span className="text-sm font-extrabold text-emerald-200 dark:text-emerald-800">
                                                 {step.number}
                                             </span>
                                         </div>
 
-                                        <h3 className="mt-5 text-base font-bold text-gray-900">
+                                        <h3 className="mt-5 text-base font-bold text-gray-900 dark:text-white">
                                             {step.title}
                                         </h3>
 
-                                        <p className="mt-3 text-sm leading-6 text-gray-500">
+                                        <p className="mt-3 text-sm leading-6 text-gray-500 dark:text-gray-400">
                                             {step.description}
                                         </p>
                                     </div>
@@ -318,19 +318,19 @@ const About = () => {
                     </section>
 
                     {/* CORE VALUES */}
-                    <section className="border-y border-emerald-100/50 bg-white/60 dark:bg-[#181A20]/60 backdrop-blur-[14px]">
+                    <section className="border-y border-emerald-100/50 dark:border-[#2A2D35] bg-white/60 dark:bg-[#181A20]/60 backdrop-blur-[14px]">
                         <div className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
 
                             <div className="mb-9 text-center">
-                                <span className="text-xs font-bold tracking-wider text-emerald-700">
+                                <span className="text-xs font-bold tracking-wider text-emerald-700 dark:text-emerald-400">
                                     WHAT MATTERS TO US
                                 </span>
 
-                                <h2 className="mt-3 text-2xl font-extrabold text-gray-900">
+                                <h2 className="mt-3 text-2xl font-extrabold text-gray-900 dark:text-white">
                                     Our Core Values
                                 </h2>
 
-                                <p className="mt-3 text-sm text-gray-500">
+                                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
                                     The principles that guide the FindBack platform.
                                 </p>
                             </div>
@@ -342,17 +342,17 @@ const About = () => {
                                     return (
                                         <div
                                             key={value.title}
-                                            className="rounded-xl border border-gray-100 bg-[#f8fcf9] p-6 text-center"
+                                            className="rounded-xl border border-gray-100 dark:border-[#2A2D35] bg-[#f8fcf9] dark:bg-[#1E2028] p-6 text-center"
                                         >
-                                            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                                            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
                                                 <Icon size={23} />
                                             </div>
 
-                                            <h3 className="mt-4 font-bold text-gray-900">
+                                            <h3 className="mt-4 font-bold text-gray-900 dark:text-white">
                                                 {value.title}
                                             </h3>
 
-                                            <p className="mt-2 text-sm leading-6 text-gray-500">
+                                            <p className="mt-2 text-sm leading-6 text-gray-500 dark:text-gray-400">
                                                 {value.description}
                                             </p>
                                         </div>
@@ -368,15 +368,15 @@ const About = () => {
                         <div className="grid items-center gap-8 md:grid-cols-2">
 
                             <div>
-                                <span className="text-xs font-bold tracking-wider text-emerald-700">
+                                <span className="text-xs font-bold tracking-wider text-emerald-700 dark:text-emerald-400">
                                     OUR COMMUNITY
                                 </span>
 
-                                <h2 className="mt-3 text-2xl font-extrabold text-gray-900">
+                                <h2 className="mt-3 text-2xl font-extrabold text-gray-900 dark:text-white">
                                     Designed for the ASTU Community
                                 </h2>
 
-                                <p className="mt-4 text-sm leading-7 text-gray-600">
+                                <p className="mt-4 text-sm leading-7 text-gray-600 dark:text-gray-300">
                                     FindBack is intended for ASTU students and authorized
                                     university community members who need a convenient way
                                     to report, search for, or recover belongings.
@@ -385,16 +385,14 @@ const About = () => {
                                 <div className="mt-5 space-y-3">
                                     {[
                                         "ASTU Students",
-
                                         "Administrative Staff",
-
                                     ].map((member) => (
                                         <div key={member} className="flex items-center gap-3">
                                             <CheckCircle2
                                                 size={18}
-                                                className="shrink-0 text-emerald-600"
+                                                className="shrink-0 text-emerald-600 dark:text-emerald-400"
                                             />
-                                            <span className="text-sm font-medium text-gray-700">
+                                            <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
                                                 {member}
                                             </span>
                                         </div>
@@ -402,16 +400,16 @@ const About = () => {
                                 </div>
                             </div>
 
-                            <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-7">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-emerald-700 shadow-sm">
+                            <div className="rounded-2xl border border-emerald-100 dark:border-[#2A2D35] bg-emerald-50 dark:bg-[#1E2028] p-7">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white dark:bg-[#181A20] text-emerald-700 dark:text-emerald-400 shadow-sm border border-transparent dark:border-[#2A2D35]">
                                     <ShieldCheck size={25} />
                                 </div>
 
-                                <h3 className="mt-5 text-lg font-bold text-gray-900">
+                                <h3 className="mt-5 text-lg font-bold text-gray-900 dark:text-white">
                                     Your Information Matters
                                 </h3>
 
-                                <p className="mt-3 text-sm leading-7 text-gray-600">
+                                <p className="mt-3 text-sm leading-7 text-gray-600 dark:text-gray-300">
                                     FindBack encourages responsible use of personal
                                     information. Users should provide accurate item details
                                     and verify ownership before handing over belongings.

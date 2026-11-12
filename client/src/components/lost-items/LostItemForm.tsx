@@ -241,37 +241,37 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
   // SUCCESS STATE
   if (submitted) {
     return (
-      <div className="relative overflow-hidden rounded-3xl border border-rose-100 bg-white p-6 sm:p-10 text-center shadow-2xl max-w-xl mx-auto animate-in zoom-in-95 duration-200">
-        <div className="absolute -top-16 -right-16 h-36 w-36 rounded-full bg-rose-100/60 blur-2xl" />
-        <div className="absolute -bottom-16 -left-16 h-36 w-36 rounded-full bg-emerald-100/60 blur-2xl" />
+      <div className="relative overflow-hidden rounded-3xl border border-rose-100 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-6 sm:p-10 text-center shadow-2xl max-w-xl mx-auto animate-in zoom-in-95 duration-200">
+        <div className="absolute -top-16 -right-16 h-36 w-36 rounded-full bg-rose-100/60 dark:bg-rose-950/30 blur-2xl" />
+        <div className="absolute -bottom-16 -left-16 h-36 w-36 rounded-full bg-emerald-100/60 dark:bg-emerald-950/30 blur-2xl" />
 
         <div className="relative">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-tr from-rose-500 to-rose-600 text-white shadow-xl shadow-rose-500/25">
             <CheckCircle2 size={40} />
           </div>
 
-          <div className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-rose-200 bg-rose-50 px-3.5 py-1 text-xs font-bold text-rose-700">
+          <div className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/60 px-3.5 py-1 text-xs font-bold text-rose-700 dark:text-rose-400">
             <Sparkles size={14} /> Report Broadcasted to Campus
           </div>
 
-          <h2 className="mt-3 text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+          <h2 className="mt-3 text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
             Lost Item Report Published!
           </h2>
 
-          <p className="mt-2 text-sm text-gray-600 leading-relaxed max-w-md mx-auto">
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 leading-relaxed max-w-md mx-auto">
             Your report for{' '}
-            <strong className="text-gray-900 font-bold">
+            <strong className="text-gray-900 dark:text-white font-bold">
               {createdItem?.name || formData.name}
             </strong>{' '}
             is now registered. When someone reports finding it, you will receive an instant match alert.
           </p>
 
-          <div className="mt-6 rounded-2xl bg-gradient-to-br from-slate-50 to-rose-50/40 p-4.5 text-xs text-gray-700 border border-rose-100 text-left space-y-2.5">
-            <p className="font-bold text-gray-900 flex items-center gap-2">
-              <Shield size={15} className="text-rose-600" />
+          <div className="mt-6 rounded-2xl bg-gradient-to-br from-slate-50 to-rose-50/40 dark:from-[#1E2028] dark:to-[#181A20] p-4.5 text-xs text-gray-700 dark:text-gray-300 border border-rose-100 dark:border-[#2A2D35] text-left space-y-2.5">
+            <p className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <Shield size={15} className="text-rose-600 dark:text-rose-400" />
               What happens next?
             </p>
-            <div className="space-y-1.5 pl-6 text-gray-600 text-xs">
+            <div className="space-y-1.5 pl-6 text-gray-600 dark:text-gray-400 text-xs">
               <p>• Visible immediately on the <strong>ASTU Lost Items Directory</strong>.</p>
               <p>• Automatically matched against current and incoming found property.</p>
               <p>• You will be notified in <strong>My Claims</strong> or <strong>Notifications</strong> when verified.</p>
@@ -283,7 +283,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
               <button
                 type="button"
                 onClick={onCancel}
-                className="rounded-xl bg-gray-900 hover:bg-black px-6 py-3 text-xs sm:text-sm font-bold text-white transition shadow-md"
+                className="rounded-xl bg-gray-900 dark:bg-gray-700 hover:bg-black dark:hover:bg-gray-600 px-6 py-3 text-xs sm:text-sm font-bold text-white transition shadow-md"
               >
                 Close &amp; View List
               </button>
@@ -308,7 +308,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
                 setImageFile(null);
                 setImagePreview('');
               }}
-              className="rounded-xl border border-gray-200 bg-white px-5 py-3 text-xs sm:text-sm font-bold text-gray-700 transition hover:bg-gray-50 shadow-sm"
+              className="rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-5 py-3 text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-200 transition hover:bg-gray-50 dark:hover:bg-[#2A2D35] shadow-sm"
             >
               Report Another Lost Item
             </button>
@@ -320,7 +320,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
 
   return (
     <div
-      className={`relative overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-2xl ${
+      className={`relative overflow-hidden rounded-3xl border border-gray-100 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] shadow-2xl transition-colors ${
         isModal ? 'max-h-[90vh] overflow-y-auto' : 'mx-auto max-w-3xl'
       }`}
     >
@@ -330,23 +330,23 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
       {/* Main Container */}
       <div className="p-6 sm:p-9">
         {/* Header Bar */}
-        <div className="mb-7 flex items-start justify-between border-b border-gray-100 pb-5">
+        <div className="mb-7 flex items-start justify-between border-b border-gray-100 dark:border-[#2A2D35] pb-5">
           <div className="flex items-start gap-3.5">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-50 text-rose-600 border border-rose-100 shadow-sm">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/50 shadow-sm">
               <AlertCircle size={24} />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-rose-600 border border-rose-100">
+                <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 dark:bg-rose-950/60 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/50">
                   <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
                   Lost Property Registry
                 </span>
                 <span className="text-[11px] font-medium text-gray-400">• ASTU Campus</span>
               </div>
-              <h2 className="mt-1 text-2xl sm:text-3xl font-black tracking-tight text-gray-900">
+              <h2 className="mt-1 text-2xl sm:text-3xl font-black tracking-tight text-gray-900 dark:text-white">
                 Report a Lost Item
               </h2>
-              <p className="mt-0.5 text-xs sm:text-sm text-gray-500">
+              <p className="mt-0.5 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                 Provide details about your missing belongings so our community and security can identify them.
               </p>
             </div>
@@ -356,7 +356,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
             <button
               type="button"
               onClick={onCancel}
-              className="rounded-xl p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition"
+              className="rounded-xl p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-[#2A2D35] hover:text-gray-700 dark:hover:text-gray-200 transition"
               aria-label="Close modal"
             >
               <X size={20} />
@@ -366,18 +366,18 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
 
         {/* Authentication Notice if not signed in */}
         {!currentUser && (
-          <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50/60 p-4 text-xs text-amber-900 border border-amber-200/80 shadow-sm">
+          <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50/60 dark:from-amber-950/40 dark:to-orange-950/30 p-4 text-xs text-amber-900 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800 shadow-sm">
             <div className="flex items-start gap-3">
-              <AlertCircle size={18} className="shrink-0 text-amber-700 mt-0.5" />
+              <AlertCircle size={18} className="shrink-0 text-amber-700 dark:text-amber-400 mt-0.5" />
               <div>
-                <strong className="block font-bold text-amber-950">Student Login Recommended</strong>
+                <strong className="block font-bold text-amber-950 dark:text-amber-200">Student Login Recommended</strong>
                 Sign in with your ASTU account to receive match notifications when someone finds this item.
               </div>
             </div>
             <button
               type="button"
               onClick={() => navigate('/login', { state: { returnTo: '/lost-items' } })}
-              className="inline-flex items-center gap-1.5 self-start sm:self-center shrink-0 rounded-xl bg-amber-800 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-amber-900 transition"
+              className="inline-flex items-center gap-1.5 self-start sm:self-center shrink-0 rounded-xl bg-amber-800 dark:bg-amber-700 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-amber-900 transition"
             >
               <LogIn size={13} /> Log In
             </button>
@@ -386,8 +386,8 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
 
         {/* Error Banner */}
         {errorMessage && (
-          <div className="mb-6 flex items-start gap-3 rounded-2xl bg-rose-50 p-4 text-xs font-semibold text-rose-800 border border-rose-200 shadow-sm animate-in fade-in duration-200">
-            <AlertCircle size={18} className="shrink-0 text-rose-600 mt-0.5" />
+          <div className="mb-6 flex items-start gap-3 rounded-2xl bg-rose-50 dark:bg-rose-950/60 p-4 text-xs font-semibold text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800 shadow-sm animate-in fade-in duration-200">
+            <AlertCircle size={18} className="shrink-0 text-rose-600 dark:text-rose-400 mt-0.5" />
             <div className="flex-1">
               <span className="block font-bold">Please check your inputs:</span>
               <span className="font-normal">{errorMessage}</span>
@@ -397,9 +397,9 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
 
         <form onSubmit={handleSubmit} className="space-y-7">
           {/* SECTION 1: Item Core Identification */}
-          <div className="rounded-2xl border border-gray-100 bg-[#fbfdfa] p-4.5 sm:p-5.5 space-y-4.5">
-            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-100 text-rose-700 text-[11px] font-black">
+          <div className="rounded-2xl border border-gray-100 dark:border-[#2A2D35] bg-[#fbfdfa] dark:bg-[#1E2028] p-4.5 sm:p-5.5 space-y-4.5">
+            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-950/70 text-rose-700 dark:text-rose-400 text-[11px] font-black">
                 1
               </span>
               <span>Item Overview &amp; Categorization</span>
@@ -407,7 +407,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
 
             {/* Item Name */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                 Item Title / Name <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
@@ -419,7 +419,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
                   onChange={handleInputChange}
                   placeholder="e.g. HP Pavilion 15 Silver Laptop, Black Leather Wallet"
                   required
-                  className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 placeholder:text-gray-400"
+                  className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 />
               </div>
             </div>
@@ -427,7 +427,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
             {/* Category & Brand */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                   Category <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
@@ -436,10 +436,10 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
-                    className="w-full appearance-none rounded-xl border border-gray-200 bg-white pl-10 pr-9 py-2.5 text-sm text-gray-900 outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10"
+                    className="w-full appearance-none rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-9 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10"
                   >
                     {CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat}>
+                      <option key={cat} value={cat} className="dark:bg-[#181A20] dark:text-white">
                         {cat}
                       </option>
                     ))}
@@ -451,7 +451,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                   Brand / Maker
                 </label>
                 <input
@@ -460,7 +460,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
                   value={formData.brand}
                   onChange={handleInputChange}
                   placeholder="e.g. Dell, Apple, Samsung, Casio, Unknown"
-                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 placeholder:text-gray-400"
+                  className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 />
               </div>
             </div>
@@ -468,7 +468,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
             {/* Color & Date */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                   Primary Color
                 </label>
                 <div className="relative">
@@ -479,13 +479,13 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
                     value={formData.color}
                     onChange={handleInputChange}
                     placeholder="e.g. Matte Black, Metallic Blue, Silver"
-                    className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 placeholder:text-gray-400"
+                    className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                   Date Lost <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
@@ -496,7 +496,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
                     value={formData.date}
                     onChange={handleInputChange}
                     required
-                    className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10"
+                    className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10"
                   />
                 </div>
               </div>
@@ -504,9 +504,9 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
           </div>
 
           {/* SECTION 2: Location & Description */}
-          <div className="rounded-2xl border border-gray-100 bg-[#fbfdfa] p-4.5 sm:p-5.5 space-y-4.5">
-            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-100 text-rose-700 text-[11px] font-black">
+          <div className="rounded-2xl border border-gray-100 dark:border-[#2A2D35] bg-[#fbfdfa] dark:bg-[#1E2028] p-4.5 sm:p-5.5 space-y-4.5">
+            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-950/70 text-rose-700 dark:text-rose-400 text-[11px] font-black">
                 2
               </span>
               <span>Where &amp; How It Was Lost</span>
@@ -514,7 +514,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
 
             {/* Campus Location */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                 Last Known Campus Location <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
@@ -523,10 +523,10 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
                   name="location"
                   value={formData.location}
                   onChange={handleInputChange}
-                  className="w-full appearance-none rounded-xl border border-gray-200 bg-white pl-10 pr-9 py-2.5 text-sm text-gray-900 outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10"
+                  className="w-full appearance-none rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-9 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10"
                 >
                   {CAMPUS_LOCATIONS.map((loc) => (
-                    <option key={loc} value={loc}>
+                    <option key={loc} value={loc} className="dark:bg-[#181A20] dark:text-white">
                       {loc}
                     </option>
                   ))}
@@ -543,14 +543,14 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
                   value={formData.customLocation}
                   onChange={handleInputChange}
                   placeholder="Specify exact building name, room, or floor number"
-                  className="mt-2.5 w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10"
+                  className="mt-2.5 w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10"
                 />
               )}
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                 Item Description &amp; Circumstances <span className="text-rose-500">*</span>
               </label>
               <textarea
@@ -560,26 +560,26 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
                 onChange={handleInputChange}
                 placeholder="Describe where you think you misplaced it, its condition, carrying pouch, or context..."
                 required
-                className="w-full rounded-xl border border-gray-200 bg-white p-3 text-sm text-gray-900 outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 resize-none placeholder:text-gray-400"
+                className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] p-3 text-sm text-gray-900 dark:text-white outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 resize-none placeholder:text-gray-400 dark:placeholder:text-gray-500"
               />
             </div>
           </div>
 
           {/* SECTION 3: Secret Proof of Ownership */}
-          <div className="rounded-2xl border border-amber-200/70 bg-gradient-to-br from-amber-50/50 to-orange-50/30 p-4.5 sm:p-5.5 space-y-3">
+          <div className="rounded-2xl border border-amber-200/70 dark:border-amber-800/60 bg-gradient-to-br from-amber-50/50 to-orange-50/30 dark:from-amber-950/30 dark:to-orange-950/20 p-4.5 sm:p-5.5 space-y-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-amber-900">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-200 text-amber-900 text-[11px] font-black">
+              <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-amber-900 dark:text-amber-300">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-200 dark:bg-amber-900/80 text-amber-900 dark:text-amber-200 text-[11px] font-black">
                   3
                 </span>
                 <span>Secret Marks &amp; Proof (Admin Protected)</span>
               </div>
-              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-md">
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-800 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-900/50 px-2 py-0.5 rounded-md">
                 <Shield size={12} /> Confidential
               </span>
             </div>
 
-            <p className="text-[12px] text-amber-800/90 leading-relaxed">
+            <p className="text-[12px] text-amber-800/90 dark:text-amber-300/90 leading-relaxed">
               List unique identifiers that only you know (serial number, distinctive scratch, internal stickers, wallpaper, or wallet contents). Campus security uses this to confirm ownership when someone turns in a matching item.
             </p>
 
@@ -589,14 +589,14 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
               value={formData.distinguishingFeatures}
               onChange={handleInputChange}
               placeholder="e.g. Serial #CNU1234, small scratch on top left bezel, ASTU library slip in side pocket"
-              className="w-full rounded-xl border border-amber-200 bg-white p-3 text-sm text-gray-900 outline-none transition focus:border-amber-600 focus:ring-4 focus:ring-amber-500/15 resize-none placeholder:text-gray-400"
+              className="w-full rounded-xl border border-amber-200 dark:border-amber-800 bg-white dark:bg-[#181A20] p-3 text-sm text-gray-900 dark:text-white outline-none transition focus:border-amber-600 focus:ring-4 focus:ring-amber-500/15 resize-none placeholder:text-gray-400 dark:placeholder:text-gray-500"
             />
           </div>
 
           {/* SECTION 4: Contact & Photo */}
-          <div className="rounded-2xl border border-gray-100 bg-[#fbfdfa] p-4.5 sm:p-5.5 space-y-4.5">
-            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-100 text-rose-700 text-[11px] font-black">
+          <div className="rounded-2xl border border-gray-100 dark:border-[#2A2D35] bg-[#fbfdfa] dark:bg-[#1E2028] p-4.5 sm:p-5.5 space-y-4.5">
+            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-950/70 text-rose-700 dark:text-rose-400 text-[11px] font-black">
                 4
               </span>
               <span>Contact &amp; Photo Attachment</span>
@@ -604,7 +604,7 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
 
             {/* Contact Phone */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                 Phone Number (for Coordination)
               </label>
               <div className="relative">
@@ -615,49 +615,49 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
                   value={formData.contactPhone}
                   onChange={handleInputChange}
                   placeholder="+251 9... or 09..."
-                  className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 placeholder:text-gray-400"
+                  className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white outline-none transition focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 />
               </div>
             </div>
 
             {/* Photo Upload */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">
                 Photo (Item picture, previous photo, or model reference)
               </label>
 
               {imagePreview ? (
-                <div className="relative w-full overflow-hidden rounded-2xl border border-rose-200 bg-rose-50/30 p-2.5 flex flex-col sm:flex-row items-center gap-4">
+                <div className="relative w-full overflow-hidden rounded-2xl border border-rose-200 dark:border-rose-800 bg-rose-50/30 dark:bg-rose-950/20 p-2.5 flex flex-col sm:flex-row items-center gap-4">
                   <img
                     src={imagePreview}
                     alt="Lost item preview"
-                    className="h-32 w-32 rounded-xl object-cover bg-white shadow-sm border border-gray-200"
+                    className="h-32 w-32 rounded-xl object-cover bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700"
                   />
                   <div className="flex-1 text-center sm:text-left">
-                    <p className="text-xs font-bold text-gray-900">
+                    <p className="text-xs font-bold text-gray-900 dark:text-white">
                       {imageFile ? imageFile.name : 'Image attached'}
                     </p>
-                    <p className="text-[11px] text-gray-500 mt-0.5">
+                    <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
                       {imageFile ? `${(imageFile.size / 1024).toFixed(1)} KB` : 'Ready to upload'}
                     </p>
                     <button
                       type="button"
                       onClick={handleRemoveImage}
-                      className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-rose-200 bg-white px-3 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50 transition shadow-sm"
+                      className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-rose-200 dark:border-rose-800 bg-white dark:bg-[#181A20] px-3 py-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition shadow-sm"
                     >
                       <X size={14} /> Remove Photo
                     </button>
                   </div>
                 </div>
               ) : (
-                <label className="group flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 hover:border-rose-400 bg-white hover:bg-rose-50/20 px-6 py-7 text-center transition duration-200">
-                  <div className="mb-2.5 rounded-2xl bg-rose-50 p-3 text-rose-600 shadow-sm border border-rose-100 group-hover:scale-110 transition duration-200">
+                <label className="group flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 dark:border-[#2A2D35] hover:border-rose-400 bg-white dark:bg-[#181A20] hover:bg-rose-50/20 dark:hover:bg-rose-950/20 px-6 py-7 text-center transition duration-200">
+                  <div className="mb-2.5 rounded-2xl bg-rose-50 dark:bg-rose-950/60 p-3 text-rose-600 dark:text-rose-400 shadow-sm border border-rose-100 dark:border-rose-900/50 group-hover:scale-110 transition duration-200">
                     <Upload size={22} />
                   </div>
-                  <span className="text-xs sm:text-sm font-bold text-gray-900">
+                  <span className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
                     Click to attach or drag an image
                   </span>
-                  <span className="mt-1 text-[11px] text-gray-400">
+                  <span className="mt-1 text-[11px] text-gray-400 dark:text-gray-500">
                     PNG, JPG, JPEG, WEBP up to 5 MB
                   </span>
                   <input
@@ -673,12 +673,12 @@ export default function LostItemForm({ onSuccess, onCancel, isModal = false }: L
           </div>
 
           {/* Form Actions */}
-          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-3 border-t border-gray-100">
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-3 border-t border-gray-100 dark:border-[#2A2D35]">
             {onCancel && (
               <button
                 type="button"
                 onClick={onCancel}
-                className="w-full sm:w-auto rounded-xl border border-gray-200 bg-white px-6 py-2.5 text-xs sm:text-sm font-bold text-gray-700 transition hover:bg-gray-50"
+                className="w-full sm:w-auto rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-6 py-2.5 text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-200 transition hover:bg-gray-50 dark:hover:bg-[#2A2D35]"
               >
                 Cancel
               </button>

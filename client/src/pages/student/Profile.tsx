@@ -39,6 +39,8 @@ import {
     getToken,
     type AuthUser,
 } from "../../services/authService";
+import Navbar from "../../components/common/Navbar";
+import Footer from "../../components/common/Footer";
 
 type Student = {
     id?: string;
@@ -470,20 +472,20 @@ export default function Profile() {
                     </div>
 
                     <div className="flex-1 text-center sm:text-left">
-                        <h2 className="text-2xl font-bold text-[#1A362B]">
+                        <h2 className="text-2xl font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                             {fullName}
                         </h2>
 
-                        <p className="mt-1 text-sm text-[#718276]">
+                        <p className="mt-1 text-sm text-[#718276] dark:text-[#9CA3AF]">
                             ASTU Student
                         </p>
 
                         <div className="mt-3 flex flex-wrap justify-center gap-2 sm:justify-start">
-                            <span className="rounded-full bg-[#E9F0E6] px-3 py-1 text-xs font-medium text-[#2D5A46]">
+                            <span className="rounded-full bg-[#E9F0E6] dark:bg-emerald-950/60 px-3 py-1 text-xs font-medium text-[#2D5A46] dark:text-emerald-300">
                                 {student.studentId || "Student ID not added"}
                             </span>
 
-                            <span className="rounded-full bg-[#F1F3EF] px-3 py-1 text-xs font-medium text-[#718276]">
+                            <span className="rounded-full bg-[#F1F3EF] dark:bg-[#2A2D35] px-3 py-1 text-xs font-medium text-[#718276] dark:text-[#9CA3AF]">
                                 {student.role || "Student Account"}
                             </span>
                         </div>
@@ -492,7 +494,7 @@ export default function Profile() {
                             <button
                                 type="button"
                                 onClick={() => profileImageInput.current?.click()}
-                                className="flex items-center gap-1.5 text-xs font-semibold text-[#2D5A46] transition hover:text-[#1A362B]"
+                                className="flex items-center gap-1.5 text-xs font-semibold text-[#2D5A46] dark:text-emerald-400 transition hover:text-[#1A362B] dark:hover:text-emerald-300"
                             >
                                 <ImagePlus size={15} />
                                 Change Photo
@@ -552,16 +554,16 @@ export default function Profile() {
                 />
             </div>
 
-            <div className="rounded-2xl border border-[#E2E9DF] bg-white p-6">
-                <h3 className="font-bold text-[#1A362B]">
+            <div className="glass-panel rounded-2xl border border-[#E2E9DF] dark:border-[#2A2D35] p-6">
+                <h3 className="font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                     Account Settings
                 </h3>
 
-                <p className="mt-1 text-sm text-[#849187]">
+                <p className="mt-1 text-sm text-[#849187] dark:text-[#9CA3AF]">
                     Manage your account and personal preferences.
                 </p>
 
-                <div className="mt-5 divide-y divide-[#EDF0EA]">
+                <div className="mt-5 divide-y divide-[#EDF0EA] dark:divide-[#2A2D35]">
                     <SettingsLink
                         icon={<User size={18} />}
                         title="Personal Information"
@@ -596,14 +598,14 @@ export default function Profile() {
 
     // Personal information section
     const renderPersonalInformation = () => (
-        <div className="rounded-2xl border border-[#E2E9DF] bg-white p-6 sm:p-8">
+        <div className="glass-panel rounded-2xl border border-[#E2E9DF] dark:border-[#2A2D35] p-6 sm:p-8">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
                 <div>
-                    <h2 className="text-lg font-bold text-[#1A362B]">
+                    <h2 className="text-lg font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                         Personal Information
                     </h2>
 
-                    <p className="mt-1 text-sm text-[#849187]">
+                    <p className="mt-1 text-sm text-[#849187] dark:text-[#9CA3AF]">
                         Keep your student information up to date.
                     </p>
                 </div>
@@ -612,7 +614,7 @@ export default function Profile() {
                     <button
                         type="button"
                         onClick={() => setEditing(true)}
-                        className="flex items-center gap-2 rounded-xl border border-[#DCE6D9] px-4 py-2 text-sm font-semibold text-[#2D5A46] transition hover:bg-[#F4F6F0]"
+                        className="flex items-center gap-2 rounded-xl border border-[#DCE6D9] dark:border-[#2A2D35] px-4 py-2 text-sm font-semibold text-[#2D5A46] dark:text-emerald-400 transition hover:bg-[#F4F6F0] dark:hover:bg-[#2A2D35]"
                     >
                         <Pencil size={15} />
                         Edit
@@ -780,18 +782,18 @@ export default function Profile() {
                 </form>
             </div>
 
-            <div className="rounded-2xl border border-[#E2E9DF] bg-white p-6">
+            <div className="glass-panel rounded-2xl border border-[#E2E9DF] dark:border-[#2A2D35] p-6">
                 <div className="flex items-start gap-3">
-                    <div className="rounded-xl bg-[#E9F0E6] p-3 text-[#2D5A46]">
+                    <div className="rounded-xl bg-[#E9F0E6] dark:bg-emerald-950/60 p-3 text-[#2D5A46] dark:text-emerald-400">
                         <Shield size={20} />
                     </div>
 
                     <div>
-                        <h3 className="font-semibold text-[#1A362B]">
+                        <h3 className="font-semibold text-[#1A362B] dark:text-[#F3F4F6]">
                             Account Security
                         </h3>
 
-                        <p className="mt-1 text-sm leading-6 text-[#849187]">
+                        <p className="mt-1 text-sm leading-6 text-[#849187] dark:text-[#9CA3AF]">
                             Never share your password with anyone. Always log out
                             when using a shared computer.
                         </p>
@@ -803,29 +805,29 @@ export default function Profile() {
 
     // Notifications section
     const renderNotifications = () => (
-        <div className="rounded-2xl border border-[#E2E9DF] bg-white p-6 sm:p-8">
+        <div className="glass-panel rounded-2xl border border-[#E2E9DF] dark:border-[#2A2D35] p-6 sm:p-8">
             <div className="mb-6">
-                <h2 className="text-lg font-bold text-[#1A362B]">
+                <h2 className="text-lg font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                     Notification Preferences
                 </h2>
 
-                <p className="mt-1 text-sm text-[#849187]">
+                <p className="mt-1 text-sm text-[#849187] dark:text-[#9CA3AF]">
                     Choose the updates you want to receive from FindBack.
                 </p>
             </div>
 
-            <div className="divide-y divide-[#EDF0EA]">
+            <div className="divide-y divide-[#EDF0EA] dark:divide-[#2A2D35]">
                 {notificationOptions.map((option) => (
                     <div
                         key={option.id}
                         className="flex items-center justify-between gap-4 py-5 first:pt-0 last:pb-0"
                     >
                         <div>
-                            <h3 className="text-sm font-semibold text-[#1A362B]">
+                            <h3 className="text-sm font-semibold text-[#1A362B] dark:text-[#F3F4F6]">
                                 {option.title}
                             </h3>
 
-                            <p className="mt-1 text-sm text-[#849187]">
+                            <p className="mt-1 text-sm text-[#849187] dark:text-[#9CA3AF]">
                                 {option.description}
                             </p>
                         </div>
@@ -836,8 +838,8 @@ export default function Profile() {
                             aria-checked={!!preferences[option.id]}
                             onClick={() => handlePreferenceChange(option.id)}
                             className={`relative h-6 w-11 shrink-0 rounded-full transition ${preferences[option.id]
-                                    ? "bg-[#2D5A46]"
-                                    : "bg-[#D6DDD3]"
+                                    ? "bg-[#2D5A46] dark:bg-emerald-600"
+                                    : "bg-[#D6DDD3] dark:bg-[#2A2D35]"
                                 }`}
                         >
                             <span
@@ -849,8 +851,8 @@ export default function Profile() {
                 ))}
             </div>
 
-            <div className="mt-6 flex items-center gap-2 rounded-xl bg-[#F4F6F0] p-3 text-xs text-[#718276]">
-                <CheckCircle2 size={16} className="shrink-0 text-[#2D5A46]" />
+            <div className="mt-6 flex items-center gap-2 rounded-xl bg-[#F4F6F0] dark:bg-[#181A20] p-3 text-xs text-[#718276] dark:text-[#9CA3AF] border border-transparent dark:border-[#2A2D35]">
+                <CheckCircle2 size={16} className="shrink-0 text-[#2D5A46] dark:text-emerald-400" />
                 Your preferences are saved automatically on this device.
             </div>
         </div>
@@ -876,24 +878,25 @@ export default function Profile() {
     );
 
     return (
-        <div className="min-h-screen bg-[#F4F6F0]/85 dark:bg-[#0D0E12]/85 px-4 py-8 sm:px-6 lg:px-8 relative z-10 transition-colors">
-            <div className="mx-auto max-w-6xl">
+        <div className="min-h-screen bg-[#F4F6F0]/85 dark:bg-[#0D0E12]/85 text-[#111827] dark:text-[#F3F4F6] relative z-10 transition-colors flex flex-col justify-between">
+            <Navbar />
+            <div className="mx-auto max-w-6xl w-full px-4 py-8 sm:px-6 lg:px-8 flex-1">
                 {/* Page heading */}
                 <div className="mb-7">
-                    <div className="flex items-center gap-2 text-sm text-[#849187]">
+                    <div className="flex items-center gap-2 text-sm text-[#849187] dark:text-[#9CA3AF]">
                         <Settings size={16} />
                         <span>Account</span>
                         <ChevronRight size={14} />
-                        <span className="font-medium text-[#2D5A46]">
+                        <span className="font-medium text-[#2D5A46] dark:text-emerald-400">
                             Profile
                         </span>
                     </div>
 
-                    <h1 className="mt-3 text-3xl font-bold text-[#1A362B]">
+                    <h1 className="mt-3 text-3xl font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                         My Profile
                     </h1>
 
-                    <p className="mt-2 text-sm text-[#718276]">
+                    <p className="mt-2 text-sm text-[#718276] dark:text-[#9CA3AF]">
                         Manage your personal information and account settings.
                     </p>
                 </div>
@@ -909,15 +912,15 @@ export default function Profile() {
                 <div className="grid items-start gap-6 lg:grid-cols-[250px_minmax(0,1fr)]">
                     {/* Sidebar */}
                     <aside className="glass-card rounded-2xl p-3 shadow-lg">
-                        <div className="mb-3 flex items-center gap-3 border-b border-[#EDF0EA] px-3 py-4">
+                        <div className="mb-3 flex items-center gap-3 border-b border-[#EDF0EA] dark:border-[#2A2D35] px-3 py-4">
                             <ProfileAvatar size="small" />
 
                             <div className="min-w-0">
-                                <p className="truncate text-sm font-bold text-[#1A362B]">
+                                <p className="truncate text-sm font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                                     {fullName}
                                 </p>
 
-                                <p className="truncate text-xs text-[#849187]">
+                                <p className="truncate text-xs text-[#849187] dark:text-[#9CA3AF]">
                                     {student.studentId || "ASTU Student"}
                                 </p>
                             </div>
@@ -934,8 +937,8 @@ export default function Profile() {
                                         type="button"
                                         onClick={() => setActiveTab(tab.id)}
                                         className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-medium transition ${isActive
-                                                ? "bg-[#E9F0E6] text-[#2D5A46]"
-                                                : "text-[#718276] hover:bg-[#F4F6F0] hover:text-[#1A362B]"
+                                                ? "bg-[#E9F0E6] dark:bg-emerald-950/60 text-[#2D5A46] dark:text-emerald-300 font-semibold"
+                                                : "text-[#718276] dark:text-[#9CA3AF] hover:bg-[#F4F6F0] dark:hover:bg-[#2A2D35] hover:text-[#1A362B] dark:hover:text-[#F3F4F6]"
                                             }`}
                                     >
                                         <Icon size={18} />
@@ -945,11 +948,11 @@ export default function Profile() {
                             })}
                         </nav>
 
-                        <div className="mt-4 border-t border-[#EDF0EA] pt-3">
+                        <div className="mt-4 border-t border-[#EDF0EA] dark:border-[#2A2D35] pt-3">
                             <button
                                 type="button"
                                 onClick={handleLogout}
-                                className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                                className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-600 dark:text-red-400 transition hover:bg-red-50 dark:hover:bg-red-950/20"
                             >
                                 <LogOut size={18} />
                                 Log Out
@@ -966,14 +969,14 @@ export default function Profile() {
                         {activeTab === "activity" && renderActivity()}
 
                         {/* Delete account */}
-                        <div className="mt-6 rounded-2xl border border-red-100 bg-white p-6">
+                        <div className="mt-6 rounded-2xl border border-red-100 dark:border-red-950/40 glass-panel p-6">
                             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                                 <div>
-                                    <h3 className="font-bold text-[#1A362B]">
+                                    <h3 className="font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                                         Delete Account
                                     </h3>
 
-                                    <p className="mt-1 text-sm text-[#849187]">
+                                    <p className="mt-1 text-sm text-[#849187] dark:text-[#9CA3AF]">
                                         Permanently remove your FindBack account.
                                     </p>
                                 </div>
@@ -981,7 +984,7 @@ export default function Profile() {
                                 <button
                                     type="button"
                                     onClick={() => setShowDeleteConfirmation(true)}
-                                    className="flex items-center justify-center gap-2 rounded-xl border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                                    className="flex items-center justify-center gap-2 rounded-xl border border-red-200 dark:border-red-900/60 px-4 py-2.5 text-sm font-semibold text-red-600 dark:text-red-400 transition hover:bg-red-50 dark:hover:bg-red-950/20"
                                 >
                                     <Trash2 size={16} />
                                     Delete Account
@@ -994,17 +997,17 @@ export default function Profile() {
 
             {/* Delete account modal */}
             {showDeleteConfirmation && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-                    <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-                        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-600">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-xs">
+                    <div className="w-full max-w-md rounded-2xl bg-white dark:bg-[#181A20] border border-gray-100 dark:border-[#2A2D35] p-6 shadow-xl">
+                        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400">
                             <Trash2 size={22} />
                         </div>
 
-                        <h2 className="text-xl font-bold text-[#1A362B]">
+                        <h2 className="text-xl font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                             Delete your account?
                         </h2>
 
-                        <p className="mt-2 text-sm leading-6 text-[#718276]">
+                        <p className="mt-2 text-sm leading-6 text-[#718276] dark:text-[#9CA3AF]">
                             Account deletion is permanent. Your reports and claims
                             may also need to be handled before your account can be
                             removed.
@@ -1014,7 +1017,7 @@ export default function Profile() {
                             <button
                                 type="button"
                                 onClick={() => setShowDeleteConfirmation(false)}
-                                className="rounded-xl border border-[#DCE6D9] px-4 py-2.5 text-sm font-semibold text-[#718276] hover:bg-[#F4F6F0]"
+                                className="rounded-xl border border-[#DCE6D9] dark:border-[#2A2D35] px-4 py-2.5 text-sm font-semibold text-[#718276] dark:text-[#9CA3AF] hover:bg-[#F4F6F0] dark:hover:bg-[#2A2D35]"
                             >
                                 Cancel
                             </button>
@@ -1030,6 +1033,7 @@ export default function Profile() {
                     </div>
                 </div>
             )}
+            <Footer />
         </div>
     );
 }
@@ -1045,15 +1049,15 @@ function InfoCard({
     value: string;
 }) {
     return (
-        <div className="rounded-2xl border border-[#E2E9DF] bg-white p-5">
-            <div className="flex items-center gap-2 text-[#2D5A46]">
+        <div className="rounded-2xl border border-[#E2E9DF] dark:border-[#2A2D35] glass-panel p-5">
+            <div className="flex items-center gap-2 text-[#2D5A46] dark:text-emerald-400">
                 {icon}
-                <span className="text-sm font-medium text-[#718276]">
+                <span className="text-sm font-medium text-[#718276] dark:text-[#9CA3AF]">
                     {label}
                 </span>
             </div>
 
-            <p className="mt-3 break-words font-semibold text-[#1A362B]">
+            <p className="mt-3 break-words font-semibold text-[#1A362B] dark:text-[#F3F4F6]">
                 {value}
             </p>
         </div>
@@ -1076,23 +1080,23 @@ function SettingsLink({
         <button
             type="button"
             onClick={onClick}
-            className="flex w-full items-center gap-4 py-4 text-left transition hover:bg-[#FAFBF8]"
+            className="flex w-full items-center gap-4 py-4 text-left transition hover:bg-[#FAFBF8] dark:hover:bg-[#2A2D35]/50"
         >
-            <div className="rounded-xl bg-[#E9F0E6] p-2.5 text-[#2D5A46]">
+            <div className="rounded-xl bg-[#E9F0E6] dark:bg-emerald-950/60 p-2.5 text-[#2D5A46] dark:text-emerald-400">
                 {icon}
             </div>
 
             <div className="flex-1">
-                <p className="text-sm font-semibold text-[#1A362B]">
+                <p className="text-sm font-semibold text-[#1A362B] dark:text-[#F3F4F6]">
                     {title}
                 </p>
 
-                <p className="mt-1 text-xs text-[#849187]">
+                <p className="mt-1 text-xs text-[#849187] dark:text-[#9CA3AF]">
                     {description}
                 </p>
             </div>
 
-            <ChevronRight size={18} className="text-[#849187]" />
+            <ChevronRight size={18} className="text-[#849187] dark:text-[#9CA3AF]" />
         </button>
     );
 }
@@ -1113,7 +1117,7 @@ function ProfileField({
 }) {
     return (
         <label className="block">
-            <span className="mb-2 block text-sm font-semibold text-[#405548]">
+            <span className="mb-2 block text-sm font-semibold text-[#405548] dark:text-[#D1D5DB]">
                 {label}
             </span>
 
@@ -1123,7 +1127,7 @@ function ProfileField({
                 disabled={disabled}
                 onChange={(event) => onChange?.(event.target.value)}
                 placeholder={placeholder}
-                className="w-full rounded-xl border border-[#DCE6D9] bg-[#FAFBF8] px-4 py-3 text-sm text-[#1A362B] outline-none transition placeholder:text-[#A0AAA0] focus:border-[#2D5A46] focus:ring-2 focus:ring-[#2D5A46]/10 disabled:cursor-not-allowed disabled:bg-[#F1F3EF] disabled:text-[#849187]"
+                className="w-full rounded-xl border border-[#DCE6D9] dark:border-[#2A2D35] bg-[#FAFBF8] dark:bg-[#181A20] px-4 py-3 text-sm text-[#1A362B] dark:text-[#F3F4F6] outline-none transition placeholder:text-[#A0AAA0] dark:placeholder:text-[#6B7280] focus:border-[#2D5A46] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#2D5A46]/10 disabled:cursor-not-allowed disabled:bg-[#F1F3EF] dark:disabled:bg-[#22242B] disabled:text-[#849187] dark:disabled:text-[#6B7280]"
             />
         </label>
     );
@@ -1145,7 +1149,7 @@ function PasswordField({
 }) {
     return (
         <label className="block">
-            <span className="mb-2 block text-sm font-semibold text-[#405548]">
+            <span className="mb-2 block text-sm font-semibold text-[#405548] dark:text-[#D1D5DB]">
                 {label}
             </span>
 
@@ -1155,13 +1159,13 @@ function PasswordField({
                     value={value}
                     onChange={(event) => onChange(event.target.value)}
                     placeholder="Enter password"
-                    className="w-full rounded-xl border border-[#DCE6D9] bg-[#FAFBF8] px-4 py-3 pr-12 text-sm text-[#1A362B] outline-none transition placeholder:text-[#A0AAA0] focus:border-[#2D5A46] focus:ring-2 focus:ring-[#2D5A46]/10"
+                    className="w-full rounded-xl border border-[#DCE6D9] dark:border-[#2A2D35] bg-[#FAFBF8] dark:bg-[#181A20] px-4 py-3 pr-12 text-sm text-[#1A362B] dark:text-[#F3F4F6] outline-none transition placeholder:text-[#A0AAA0] dark:placeholder:text-[#6B7280] focus:border-[#2D5A46] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#2D5A46]/10"
                 />
 
                 <button
                     type="button"
                     onClick={onToggle}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#849187] hover:text-[#2D5A46]"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#849187] dark:text-[#9CA3AF] hover:text-[#2D5A46] dark:hover:text-emerald-400"
                     aria-label={visible ? "Hide password" : "Show password"}
                 >
                     {visible ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -1184,16 +1188,16 @@ function ActivityLink({
     onClick: () => void;
 }) {
     return (
-        <div className="rounded-2xl border border-[#E2E9DF] bg-white p-6">
+        <div className="rounded-2xl border border-[#E2E9DF] dark:border-[#2A2D35] glass-panel p-6">
             <div className="flex items-center gap-4">
-                <div className="rounded-xl bg-[#E9F0E6] p-3 text-[#2D5A46]">
+                <div className="rounded-xl bg-[#E9F0E6] dark:bg-emerald-950/60 p-3 text-[#2D5A46] dark:text-emerald-400">
                     {icon}
                 </div>
 
                 <div className="flex-1">
-                    <h3 className="font-bold text-[#1A362B]">{title}</h3>
+                    <h3 className="font-bold text-[#1A362B] dark:text-[#F3F4F6]">{title}</h3>
 
-                    <p className="mt-1 text-sm text-[#849187]">
+                    <p className="mt-1 text-sm text-[#849187] dark:text-[#9CA3AF]">
                         {description}
                     </p>
                 </div>
@@ -1201,7 +1205,7 @@ function ActivityLink({
                 <button
                     type="button"
                     onClick={onClick}
-                    className="flex items-center gap-1 text-sm font-semibold text-[#2D5A46] hover:text-[#1A362B]"
+                    className="flex items-center gap-1 text-sm font-semibold text-[#2D5A46] dark:text-emerald-400 hover:text-[#1A362B] dark:hover:text-emerald-300"
                 >
                     View <ChevronRight size={17} />
                 </button>

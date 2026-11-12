@@ -1,5 +1,7 @@
 
 import { useMemo, useState } from "react";
+import Navbar from "../../components/common/Navbar";
+import Footer from "../../components/common/Footer";
 import {
     Search,
     Filter,
@@ -87,10 +89,10 @@ const sampleReports: Report[] = [
 ];
 
 const statusStyles: Record<ReportStatus, string> = {
-    Pending: "bg-amber-50 text-amber-700 ring-amber-200",
-    Approved: "bg-emerald-50 text-emerald-700 ring-emerald-200",
-    Resolved: "bg-blue-50 text-blue-700 ring-blue-200",
-    Rejected: "bg-red-50 text-red-700 ring-red-200",
+    Pending: "bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 ring-amber-200 dark:ring-amber-800",
+    Approved: "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 ring-emerald-200 dark:ring-emerald-800",
+    Resolved: "bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 ring-blue-200 dark:ring-blue-800",
+    Rejected: "bg-red-50 dark:bg-red-950/60 text-red-700 dark:text-red-400 ring-red-200 dark:ring-red-800",
 };
 
 const StatusBadge = ({ status }: { status: ReportStatus }) => {
@@ -114,8 +116,8 @@ const StatusBadge = ({ status }: { status: ReportStatus }) => {
 const TypeBadge = ({ type }: { type: ReportType }) => (
     <span
         className={`rounded-full px-2.5 py-1 text-xs font-semibold ${type === "Lost"
-                ? "bg-orange-50 text-orange-700"
-                : "bg-[#E9F0E6] text-[#2D5A46]"
+                ? "bg-orange-50 dark:bg-orange-950/60 text-orange-700 dark:text-orange-400"
+                : "bg-[#E9F0E6] dark:bg-emerald-950/60 text-[#2D5A46] dark:text-emerald-400"
             }`}
     >
         {type === "Lost" ? "Lost Item" : "Found Item"}
@@ -176,30 +178,32 @@ const MyReports = () => {
     }, [reports, activeFilter, activeType, searchTerm]);
 
     return (
-        <div className="min-h-screen bg-[#F4F6F0]/85 dark:bg-[#0D0E12]/85 px-4 py-7 sm:px-6 lg:px-8 relative z-10 transition-colors">
+        <div className="min-h-screen bg-[#F4F6F0]/85 dark:bg-[#0D0E12]/85 flex flex-col transition-colors">
+            <Navbar />
+            <div className="flex-1 px-4 py-7 sm:px-6 lg:px-8 relative z-10">
             <div className="mx-auto max-w-7xl">
 
                 {/* Page Header */}
                 <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between animate-[fadeUp_.5s_ease-out]">
                     <div>
-                        <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#789080]">
+                        <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#789080] dark:text-[#9CA3AF]">
                             <span>Student Portal</span>
-                            <span className="h-1 w-1 rounded-full bg-[#A5B7A8]" />
+                            <span className="h-1 w-1 rounded-full bg-[#A5B7A8] dark:bg-[#4B5563]" />
                             <span>My Activities</span>
                         </div>
 
-                        <h1 className="text-2xl font-bold tracking-tight text-[#1A362B] sm:text-3xl">
+                        <h1 className="text-2xl font-bold tracking-tight text-[#1A362B] dark:text-[#F3F4F6] sm:text-3xl">
                             My Reports
                         </h1>
 
-                        <p className="mt-1.5 text-sm text-[#718276]">
+                        <p className="mt-1.5 text-sm text-[#718276] dark:text-[#9CA3AF]">
                             Keep track of the items you have reported.
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2 rounded-xl border border-[#DDE7D9] bg-white px-3.5 py-2.5 shadow-sm">
-                        <FileText size={17} className="text-[#2D5A46]" />
-                        <span className="text-sm font-medium text-[#40594A]">
+                    <div className="flex items-center gap-2 rounded-xl border border-[#DDE7D9] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-3.5 py-2.5 shadow-sm">
+                        <FileText size={17} className="text-[#2D5A46] dark:text-emerald-400" />
+                        <span className="text-sm font-medium text-[#40594A] dark:text-[#9CA3AF]">
                             {reports.length} Total Reports
                         </span>
                     </div>
@@ -214,7 +218,7 @@ const MyReports = () => {
                             className="group glass-card rounded-2xl p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl animate-[fadeUp_.5s_ease-out_both]"
                         >
                             <div className="flex items-center justify-between">
-                                <p className="text-xs font-medium text-[#718276] sm:text-sm">
+                                <p className="text-xs font-medium text-[#718276] dark:text-[#9CA3AF] sm:text-sm">
                                     {stat.label}
                                 </p>
 
@@ -223,13 +227,13 @@ const MyReports = () => {
                                 </div>
                             </div>
 
-                            <h2 className="mt-3 text-2xl font-bold text-[#1A362B]">
+                            <h2 className="mt-3 text-2xl font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                                 {stat.value}
                             </h2>
 
-                            <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-[#F0F3ED]">
+                            <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-[#F0F3ED] dark:bg-[#2A2D35]">
                                 <div
-                                    className="h-full rounded-full bg-[#789D7E] transition-all duration-700"
+                                    className="h-full rounded-full bg-[#789D7E] dark:bg-emerald-600 transition-all duration-700"
                                     style={{
                                         width: `${reports.length ? (stat.value / reports.length) * 100 : 0}%`,
                                     }}
@@ -243,14 +247,14 @@ const MyReports = () => {
                 <div className="glass-panel overflow-hidden rounded-2xl shadow-xl">
 
                     {/* Search and Filters */}
-                    <div className="border-b border-[#EDF0EA] p-4 sm:p-5">
+                    <div className="border-b border-[#EDF0EA] dark:border-[#2A2D35] p-4 sm:p-5">
 
                         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                             <div>
-                                <h2 className="text-base font-bold text-[#1A362B]">
+                                <h2 className="text-base font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                                     Submitted Reports
                                 </h2>
-                                <p className="mt-1 text-xs text-[#849187]">
+                                <p className="mt-1 text-xs text-[#849187] dark:text-[#9CA3AF]">
                                     View and track your lost and found reports.
                                 </p>
                             </div>
@@ -258,7 +262,7 @@ const MyReports = () => {
                             <div className="relative w-full lg:max-w-xs">
                                 <Search
                                     size={17}
-                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-[#849187]"
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-[#849187] dark:text-[#6B7280]"
                                 />
 
                                 <input
@@ -266,7 +270,7 @@ const MyReports = () => {
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     placeholder="Search reports..."
-                                    className="w-full rounded-xl border border-[#E2E9DF] bg-[#FAFBF8] py-2.5 pl-9 pr-3 text-sm text-[#1A362B] outline-none transition-all duration-200 placeholder:text-[#A0ACA1] focus:border-[#789D7E] focus:bg-white focus:ring-4 focus:ring-[#2D5A46]/10"
+                                    className="w-full rounded-xl border border-[#E2E9DF] dark:border-[#2A2D35] bg-[#FAFBF8] dark:bg-[#181A20] py-2.5 pl-9 pr-3 text-sm text-[#1A362B] dark:text-[#F3F4F6] outline-none transition-all duration-200 placeholder:text-[#A0ACA1] dark:placeholder:text-[#6B7280] focus:border-[#789D7E] dark:focus:border-emerald-600 focus:bg-white dark:focus:bg-[#1E2028] focus:ring-4 focus:ring-[#2D5A46]/10 dark:focus:ring-emerald-500/10"
                                 />
                             </div>
                         </div>
@@ -275,7 +279,7 @@ const MyReports = () => {
                         <div className="mt-5 flex flex-col gap-4">
 
                             <div className="flex flex-wrap items-center gap-2">
-                                <span className="mr-1 flex items-center gap-1.5 text-xs font-semibold text-[#849187]">
+                                <span className="mr-1 flex items-center gap-1.5 text-xs font-semibold text-[#849187] dark:text-[#9CA3AF]">
                                     <Package size={14} />
                                     TYPE
                                 </span>
@@ -285,8 +289,8 @@ const MyReports = () => {
                                         key={type}
                                         onClick={() => setActiveType(type)}
                                         className={`rounded-lg px-3.5 py-2 text-xs font-semibold transition-all duration-200 ${activeType === type
-                                                ? "bg-[#2D5A46] text-white shadow-sm"
-                                                : "bg-[#F4F6F0] text-[#718276] hover:bg-[#E5EDE1] hover:text-[#2D5A46]"
+                                                ? "bg-[#2D5A46] dark:bg-emerald-700 text-white shadow-sm"
+                                                : "bg-[#F4F6F0] dark:bg-[#1E2028] text-[#718276] dark:text-[#9CA3AF] hover:bg-[#E5EDE1] dark:hover:bg-[#2A2D35] hover:text-[#2D5A46] dark:hover:text-emerald-400"
                                             }`}
                                     >
                                         {type === "All"
@@ -299,7 +303,7 @@ const MyReports = () => {
                             </div>
 
                             <div className="flex flex-wrap items-center gap-2">
-                                <span className="mr-1 flex items-center gap-1.5 text-xs font-semibold text-[#849187]">
+                                <span className="mr-1 flex items-center gap-1.5 text-xs font-semibold text-[#849187] dark:text-[#9CA3AF]">
                                     <Filter size={14} />
                                     STATUS
                                 </span>
@@ -310,8 +314,8 @@ const MyReports = () => {
                                             key={status}
                                             onClick={() => setActiveFilter(status)}
                                             className={`rounded-lg px-3 py-2 text-xs font-semibold transition-all duration-200 ${activeFilter === status
-                                                    ? "bg-[#E2EBDF] text-[#2D5A46] ring-1 ring-[#C8D8C5]"
-                                                    : "text-[#849187] hover:bg-[#F4F6F0] hover:text-[#2D5A46]"
+                                                    ? "bg-[#E2EBDF] dark:bg-emerald-950/60 text-[#2D5A46] dark:text-emerald-400 ring-1 ring-[#C8D8C5] dark:ring-emerald-800"
+                                                    : "text-[#849187] dark:text-[#9CA3AF] hover:bg-[#F4F6F0] dark:hover:bg-[#1E2028] hover:text-[#2D5A46] dark:hover:text-emerald-400"
                                                 }`}
                                         >
                                             {status}
@@ -323,10 +327,10 @@ const MyReports = () => {
                     </div>
 
                     {/* Results Count */}
-                    <div className="flex items-center justify-between border-b border-[#F0F2ED] bg-[#FCFDFB] px-4 py-3 sm:px-5">
-                        <p className="text-xs text-[#849187]">
+                    <div className="flex items-center justify-between border-b border-[#F0F2ED] dark:border-[#2A2D35] bg-[#FCFDFB] dark:bg-[#181A20]/60 px-4 py-3 sm:px-5">
+                        <p className="text-xs text-[#849187] dark:text-[#9CA3AF]">
                             Showing{" "}
-                            <span className="font-semibold text-[#40594A]">
+                            <span className="font-semibold text-[#40594A] dark:text-emerald-400">
                                 {filteredReports.length}
                             </span>{" "}
                             of {reports.length} reports
@@ -341,10 +345,10 @@ const MyReports = () => {
                                 <div
                                     key={report.id}
                                     style={{ animationDelay: `${index * 80}ms` }}
-                                    className="group flex flex-col gap-4 rounded-xl border border-[#E9EEE6] bg-white p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#B9CDBB] hover:bg-[#FCFDFB] hover:shadow-md sm:flex-row sm:items-center sm:p-4 animate-[fadeUp_.45s_ease-out_both]"
+                                    className="group flex flex-col gap-4 rounded-xl border border-[#E9EEE6] dark:border-[#2A2D35] bg-white dark:bg-[#181A20]/60 p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#B9CDBB] dark:hover:border-emerald-800 hover:bg-[#FCFDFB] dark:hover:bg-[#1E2028] hover:shadow-md sm:flex-row sm:items-center sm:p-4 animate-[fadeUp_.45s_ease-out_both]"
                                 >
                                     {/* Item Image */}
-                                    <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-lg bg-[#F4F6F0] sm:h-28 sm:w-32">
+                                    <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-lg bg-[#F4F6F0] dark:bg-[#2A2D35] sm:h-28 sm:w-32">
                                         <img
                                             src={report.image}
                                             alt={report.itemName}
@@ -361,10 +365,10 @@ const MyReports = () => {
 
                                         <div className="flex flex-wrap items-center justify-between gap-2">
                                             <div>
-                                                <h3 className="font-bold text-[#1A362B] transition-colors group-hover:text-[#2D5A46]">
+                                                <h3 className="font-bold text-[#1A362B] dark:text-[#F3F4F6] transition-colors group-hover:text-[#2D5A46] dark:group-hover:text-emerald-400">
                                                     {report.itemName}
                                                 </h3>
-                                                <p className="mt-0.5 text-xs text-[#849187]">
+                                                <p className="mt-0.5 text-xs text-[#849187] dark:text-[#9CA3AF]">
                                                     {report.category}
                                                 </p>
                                             </div>
@@ -372,11 +376,11 @@ const MyReports = () => {
                                             <StatusBadge status={report.status} />
                                         </div>
 
-                                        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[#718276]">
+                                        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[#718276] dark:text-[#9CA3AF]">
                                             {report.description}
                                         </p>
 
-                                        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs text-[#849187]">
+                                        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs text-[#849187] dark:text-[#6B7280]">
                                             <span className="flex items-center gap-1.5">
                                                 <MapPin size={13} />
                                                 {report.location}
@@ -393,7 +397,7 @@ const MyReports = () => {
                                     <div className="flex shrink-0 items-center justify-end sm:self-center">
                                         <button
                                             onClick={() => setSelectedReport(report)}
-                                            className="inline-flex items-center gap-2 rounded-lg bg-[#E9F0E6] px-3.5 py-2.5 text-xs font-semibold text-[#2D5A46] transition-all duration-200 hover:bg-[#2D5A46] hover:text-white active:scale-95"
+                                            className="inline-flex items-center gap-2 rounded-lg bg-[#E9F0E6] dark:bg-emerald-950/60 px-3.5 py-2.5 text-xs font-semibold text-[#2D5A46] dark:text-emerald-400 transition-all duration-200 hover:bg-[#2D5A46] dark:hover:bg-emerald-700 hover:text-white active:scale-95"
                                         >
                                             <Eye size={15} />
                                             View Details
@@ -404,15 +408,15 @@ const MyReports = () => {
                             ))
                         ) : (
                             <div className="flex flex-col items-center justify-center py-14 text-center animate-[fadeUp_.3s_ease-out]">
-                                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E9F0E6]">
-                                    <Package size={27} className="text-[#2D5A46]" />
+                                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E9F0E6] dark:bg-emerald-950/60">
+                                    <Package size={27} className="text-[#2D5A46] dark:text-emerald-400" />
                                 </div>
 
-                                <h3 className="font-bold text-[#1A362B]">
+                                <h3 className="font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                                     No reports found
                                 </h3>
 
-                                <p className="mt-1 max-w-xs text-sm text-[#849187]">
+                                <p className="mt-1 max-w-xs text-sm text-[#849187] dark:text-[#9CA3AF]">
                                     Try changing your search or filters to find your reports.
                                 </p>
 
@@ -422,7 +426,7 @@ const MyReports = () => {
                                         setActiveFilter("All");
                                         setActiveType("All");
                                     }}
-                                    className="mt-4 rounded-lg bg-[#2D5A46] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#1A362B]"
+                                    className="mt-4 rounded-lg bg-[#2D5A46] dark:bg-emerald-700 px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#1A362B] dark:hover:bg-emerald-800"
                                 >
                                     Clear Filters
                                 </button>
@@ -431,31 +435,32 @@ const MyReports = () => {
                     </div>
                 </div>
             </div>
+            </div>
 
             {/* Report Details Modal */}
             {selectedReport && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-[#10251D]/55 p-4 backdrop-blur-sm animate-[fadeIn_.2s_ease-out]"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-[#10251D]/55 dark:bg-black/70 p-4 backdrop-blur-sm animate-[fadeIn_.2s_ease-out]"
                     onClick={() => setSelectedReport(null)}
                 >
                     <div
-                        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white shadow-2xl animate-[modalIn_.25s_ease-out]"
+                        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white dark:bg-[#181A20] shadow-2xl animate-[modalIn_.25s_ease-out]"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Modal Header */}
-                        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#EDF0EA] bg-white px-5 py-4">
+                        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#EDF0EA] dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-5 py-4">
                             <div>
-                                <h2 className="font-bold text-[#1A362B]">
+                                <h2 className="font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                                     Report Details
                                 </h2>
-                                <p className="mt-0.5 text-xs text-[#849187]">
+                                <p className="mt-0.5 text-xs text-[#849187] dark:text-[#9CA3AF]">
                                     Report #{selectedReport.id}
                                 </p>
                             </div>
 
                             <button
                                 onClick={() => setSelectedReport(null)}
-                                className="rounded-lg bg-[#F4F6F0] p-2 text-[#718276] transition hover:bg-[#E5EDE1] hover:text-[#2D5A46]"
+                                className="rounded-lg bg-[#F4F6F0] dark:bg-[#2A2D35] p-2 text-[#718276] dark:text-[#9CA3AF] transition hover:bg-[#E5EDE1] dark:hover:bg-[#333740] hover:text-[#2D5A46] dark:hover:text-emerald-400"
                                 aria-label="Close details"
                             >
                                 <X size={18} />
@@ -477,48 +482,48 @@ const MyReports = () => {
                                 </div>
                             </div>
 
-                            <h3 className="text-xl font-bold text-[#1A362B]">
+                            <h3 className="text-xl font-bold text-[#1A362B] dark:text-[#F3F4F6]">
                                 {selectedReport.itemName}
                             </h3>
 
-                            <p className="mt-1 text-sm text-[#849187]">
+                            <p className="mt-1 text-sm text-[#849187] dark:text-[#9CA3AF]">
                                 {selectedReport.category}
                             </p>
 
                             <div className="mt-5 space-y-4">
                                 <div>
-                                    <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#849187]">
+                                    <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#849187] dark:text-[#9CA3AF]">
                                         Description
                                     </p>
-                                    <p className="text-sm leading-relaxed text-[#40594A]">
+                                    <p className="text-sm leading-relaxed text-[#40594A] dark:text-[#D1D5DB]">
                                         {selectedReport.description}
                                     </p>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-3">
-                                    <div className="rounded-xl bg-[#F4F6F0] p-3">
-                                        <MapPin size={16} className="mb-2 text-[#2D5A46]" />
-                                        <p className="text-xs text-[#849187]">Location</p>
-                                        <p className="mt-1 text-sm font-semibold text-[#40594A]">
+                                    <div className="rounded-xl bg-[#F4F6F0] dark:bg-[#2A2D35] p-3">
+                                        <MapPin size={16} className="mb-2 text-[#2D5A46] dark:text-emerald-400" />
+                                        <p className="text-xs text-[#849187] dark:text-[#9CA3AF]">Location</p>
+                                        <p className="mt-1 text-sm font-semibold text-[#40594A] dark:text-[#F3F4F6]">
                                             {selectedReport.location}
                                         </p>
                                     </div>
 
-                                    <div className="rounded-xl bg-[#F4F6F0] p-3">
-                                        <CalendarDays size={16} className="mb-2 text-[#2D5A46]" />
-                                        <p className="text-xs text-[#849187]">Submitted Date</p>
-                                        <p className="mt-1 text-sm font-semibold text-[#40594A]">
+                                    <div className="rounded-xl bg-[#F4F6F0] dark:bg-[#2A2D35] p-3">
+                                        <CalendarDays size={16} className="mb-2 text-[#2D5A46] dark:text-emerald-400" />
+                                        <p className="text-xs text-[#849187] dark:text-[#9CA3AF]">Submitted Date</p>
+                                        <p className="mt-1 text-sm font-semibold text-[#40594A] dark:text-[#F3F4F6]">
                                             {selectedReport.submittedDate}
                                         </p>
                                     </div>
                                 </div>
 
-                                <div className="rounded-xl border border-[#E5EAE2] bg-[#FAFBF8] p-4">
-                                    <p className="text-sm font-semibold text-[#1A362B]">
+                                <div className="rounded-xl border border-[#E5EAE2] dark:border-[#2A2D35] bg-[#FAFBF8] dark:bg-[#1E2028] p-4">
+                                    <p className="text-sm font-semibold text-[#1A362B] dark:text-[#F3F4F6]">
                                         Report Status
                                     </p>
 
-                                    <p className="mt-2 text-sm leading-relaxed text-[#718276]">
+                                    <p className="mt-2 text-sm leading-relaxed text-[#718276] dark:text-[#9CA3AF]">
                                         {selectedReport.status === "Pending" &&
                                             "Your report is waiting for admin review. You will receive an update when its status changes."}
 
@@ -536,10 +541,10 @@ const MyReports = () => {
                         </div>
 
                         {/* Modal Footer */}
-                        <div className="flex justify-end border-t border-[#EDF0EA] px-5 py-4">
+                        <div className="flex justify-end border-t border-[#EDF0EA] dark:border-[#2A2D35] px-5 py-4">
                             <button
                                 onClick={() => setSelectedReport(null)}
-                                className="rounded-lg bg-[#2D5A46] px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-[#1A362B] active:scale-95"
+                                className="rounded-lg bg-[#2D5A46] dark:bg-emerald-700 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-[#1A362B] dark:hover:bg-emerald-800 active:scale-95"
                             >
                                 Close
                             </button>

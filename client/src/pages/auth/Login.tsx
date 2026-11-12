@@ -27,16 +27,25 @@ export default function Login({ onSwitchToSignup }) {
         password: loginData.password,
       });
 
-      // Role-based post-login redirection
+      // Strict Role-based post-login redirection:
+      // Admins are directed strictly to the Admin area; Students to the student home/intended page
       const userRole = authRes?.user?.role ? String(authRes.user.role).trim().toLowerCase() : '';
       const redirectFrom = (location.state as any)?.from;
 
-      if (redirectFrom && redirectFrom !== '/login') {
-        navigate(redirectFrom);
-      } else if (userRole === 'admin') {
-        navigate('/admin');
+      if (userRole === 'admin') {
+        // If an admin had attempted to access an admin route, continue there; otherwise default to /admin
+        if (redirectFrom && redirectFrom.startsWith('/admin')) {
+          navigate(redirectFrom);
+        } else {
+          navigate('/admin');
+        }
       } else {
-        navigate('/');
+        // Student user: never redirect into admin pages
+        if (redirectFrom && !redirectFrom.startsWith('/admin') && redirectFrom !== '/login') {
+          navigate(redirectFrom);
+        } else {
+          navigate('/');
+        }
       }
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check your credentials.');

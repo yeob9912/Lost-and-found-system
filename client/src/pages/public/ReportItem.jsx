@@ -67,7 +67,7 @@ export default function ReportItem() {
     };
 
     return (
-        <main className="min-h-screen bg-[#f7faf7] flex flex-col justify-between">
+        <main className="min-h-screen bg-[#f7faf7] dark:bg-[#0D0E12] flex flex-col justify-between transition-colors">
             <div>
                 <Navbar />
 

@@ -13,17 +13,17 @@ import {
     completeClaim,
 } from "../controllers/claimController";
 
-import { protect, adminOnly } from "../middleware/authMiddleware";
+import { protect, adminOnly, studentOnly } from "../middleware/authMiddleware";
 import upload from "../middleware/uploadMiddleware";
 
 const router = Router();
 
-// User routes
-router.post("/", protect, upload.array("evidence", 5), createClaim);
-router.get("/my-claims", protect, getMyClaims);
+// Student-only claim routes (Admins manage claims via admin routes)
+router.post("/", protect, studentOnly, upload.array("evidence", 5), createClaim);
+router.get("/my-claims", protect, studentOnly, getMyClaims);
 router.get("/:id", protect, getClaimById);
 
-// User replies with additional verification evidence
+// Student replies with additional verification evidence
 router.post(
     "/:id/messages",
     protect,

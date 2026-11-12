@@ -86,3 +86,20 @@ export const adminOnly = (
 
     next();
 };
+
+// Strict Role-Based Access Control: Restrict access strictly to students
+export const studentOnly = (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
+    const role = req.user?.role ? String(req.user.role).trim().toLowerCase() : "";
+    if (role !== "student") {
+        return res.status(403).json({
+            success: false,
+            message: "Access denied. Students only. Administrators cannot perform student actions.",
+        });
+    }
+
+    next();
+};

@@ -291,23 +291,23 @@ const LostItems = () => {
                 <div className="mb-9 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
 
                     <div>
-                        <div className="mb-2 flex items-center gap-2 text-sm font-bold text-emerald-700">
+                        <div className="mb-2 flex items-center gap-2 text-sm font-bold text-emerald-700 dark:text-emerald-400">
                             <span className="h-2 w-2 rounded-full bg-emerald-500" />
                             LOST PROPERTY
                         </div>
 
-                        <h2 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
+                        <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white sm:text-3xl">
                             Recently Reported Lost Items
                         </h2>
 
-                        <p className="mt-2 text-sm text-gray-500">
+                        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                             Find items reported missing around ASTU.
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2 self-start rounded-lg border border-emerald-100 bg-white px-3.5 py-2 sm:self-auto">
-                        <PackageSearch size={20} className="text-emerald-600" />
-                        <span className="text-sm font-semibold text-gray-700">
+                    <div className="flex items-center gap-2 self-start rounded-lg border border-emerald-100 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-3.5 py-2 sm:self-auto shadow-sm">
+                        <PackageSearch size={20} className="text-emerald-600 dark:text-emerald-400" />
+                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
                             {filteredItems.length} Items Found
                         </span>
                     </div>
@@ -318,8 +318,8 @@ const LostItems = () => {
                 <div className="glass-panel mb-6 rounded-2xl p-4 shadow-lg sm:p-5">
 
                     <div className="mb-5 flex items-center gap-2">
-                        <Filter size={19} className="text-emerald-600" />
-                        <h3 className="font-bold text-gray-800">
+                        <Filter size={19} className="text-emerald-600 dark:text-emerald-400" />
+                        <h3 className="font-bold text-gray-800 dark:text-gray-100">
                             Find Your Lost Item
                         </h3>
                     </div>
@@ -330,7 +330,7 @@ const LostItems = () => {
                         <div className="relative md:col-span-2">
                             <Search
                                 size={20}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
                             />
 
                             <input
@@ -338,7 +338,7 @@ const LostItems = () => {
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 placeholder="Search by item name, brand, color, or location..."
-                                className="w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-11 pr-4 text-xs sm:text-sm outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
+                                className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-gray-50 dark:bg-[#181A20] py-2.5 pl-11 pr-4 text-xs sm:text-sm text-gray-900 dark:text-gray-100 outline-none transition placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-emerald-500 focus:bg-white dark:focus:bg-[#1E2028] focus:ring-2 focus:ring-emerald-100 dark:focus:ring-emerald-900/30"
                             />
                         </div>
 
@@ -347,10 +347,10 @@ const LostItems = () => {
                             <select
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-xs sm:text-sm text-gray-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                className="w-full appearance-none rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-gray-50 dark:bg-[#181A20] px-3.5 py-2.5 text-xs sm:text-sm text-gray-700 dark:text-gray-200 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 dark:focus:ring-emerald-900/30"
                             >
                                 {categories.map((category) => (
-                                    <option key={category} value={category}>
+                                    <option key={category} value={category} className="dark:bg-[#181A20] dark:text-gray-200">
                                         {category}
                                     </option>
                                 ))}
@@ -358,21 +358,21 @@ const LostItems = () => {
 
                             <ChevronDown
                                 size={18}
-                                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
                             />
                         </div>
                     </div>
 
                     <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
 
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
                             Search using an item name or select a category to narrow
                             your results.
                         </p>
 
                         <button
                             onClick={clearFilters}
-                            className="text-sm font-semibold text-emerald-700 transition hover:text-emerald-900"
+                            className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 transition hover:text-emerald-900 dark:hover:text-emerald-300"
                         >
                             Clear Filters
                         </button>
@@ -393,7 +393,7 @@ const LostItems = () => {
                             >
 
                                 {/* Item Image */}
-                                <div className="relative h-56 overflow-hidden bg-emerald-50">
+                                <div className="relative h-56 overflow-hidden bg-emerald-50 dark:bg-emerald-950/20">
 
                                     <img
                                         src={item.image}
@@ -409,7 +409,7 @@ const LostItems = () => {
                                     </div>
 
                                     <div className="absolute right-4 top-4">
-                                        <span className="rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-sm">
+                                        <span className="rounded-full bg-white/95 dark:bg-[#181A20]/90 px-3 py-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 shadow-sm border border-transparent dark:border-[#2A2D35]">
                                             {item.category}
                                         </span>
                                     </div>
@@ -421,11 +421,11 @@ const LostItems = () => {
 
                                     <div className="mb-3 flex items-start justify-between gap-3">
 
-                                        <h3 className="text-lg font-bold text-gray-900 transition group-hover:text-emerald-700">
+                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white transition group-hover:text-emerald-700 dark:group-hover:text-emerald-400">
                                             {item.name}
                                         </h3>
 
-                                        <span className="shrink-0 rounded-md bg-red-50 px-2 py-1 text-[10px] font-bold uppercase text-red-600">
+                                        <span className="shrink-0 rounded-md bg-red-50 dark:bg-red-950/50 px-2 py-1 text-[10px] font-bold uppercase text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/50">
                                             {item.status}
                                         </span>
                                     </div>
@@ -433,25 +433,25 @@ const LostItems = () => {
                                     {/* Basic Information */}
                                     <div className="space-y-2.5">
 
-                                        <div className="flex items-center gap-2 text-sm text-gray-500">
-                                            <MapPin size={16} className="shrink-0 text-emerald-600" />
+                                        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                                            <MapPin size={16} className="shrink-0 text-emerald-600 dark:text-emerald-400" />
                                             <span>{item.location}</span>
                                         </div>
 
-                                        <div className="flex items-center gap-2 text-sm text-gray-500">
-                                            <CalendarDays size={16} className="shrink-0 text-emerald-600" />
+                                        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                                            <CalendarDays size={16} className="shrink-0 text-emerald-600 dark:text-emerald-400" />
                                             <span>{formatDate(item.date)}</span>
                                         </div>
 
                                     </div>
 
-                                    <div className="my-5 border-t border-gray-100" />
+                                    <div className="my-5 border-t border-gray-100 dark:border-[#2A2D35]" />
 
                                     {/* Expand Details */}
                                     <button
                                         onClick={() => toggleDetails(item.id || item._id)}
                                         aria-expanded={expandedItem === (item.id || item._id)}
-                                        className="flex w-full items-center justify-between rounded-lg bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800 transition hover:bg-emerald-100"
+                                        className="flex w-full items-center justify-between rounded-lg bg-emerald-50 dark:bg-emerald-950/60 px-4 py-3 text-sm font-bold text-emerald-800 dark:text-emerald-300 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/60"
                                     >
                                         {expandedItem === (item.id || item._id)
                                             ? "Hide Details"
@@ -466,7 +466,7 @@ const LostItems = () => {
 
                                     {/* Expanded Details - Inline, not an overlay */}
                                     {expandedItem === (item.id || item._id) && (
-                                        <div className="mt-4 overflow-hidden rounded-xl border border-gray-100 shadow-sm">
+                                        <div className="mt-4 overflow-hidden rounded-xl border border-gray-100 dark:border-[#2A2D35] shadow-sm">
                                             <ItemDetails item={{ ...item, status: item.status || 'Lost' }} />
                                         </div>
                                     )}
@@ -474,11 +474,11 @@ const LostItems = () => {
                                     {/* Reported Item Footer */}
                                     <div className="mt-5 flex items-center justify-between">
 
-                                        <span className="text-xs font-medium text-gray-400">
+                                        <span className="text-xs font-medium text-gray-400 dark:text-gray-500">
                                             Reported on {formatDisplayDate(item.date)}
                                         </span>
 
-                                        <span className="flex items-center gap-1 text-xs font-semibold text-emerald-700">
+                                        <span className="flex items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
                                             <Eye size={14} />
                                             Public Report
                                         </span>
@@ -495,24 +495,24 @@ const LostItems = () => {
 
                     /* ================= EMPTY STATE ================= */
 
-                    <div className="rounded-2xl border border-dashed border-emerald-200 bg-white px-5 py-16 text-center">
+                    <div className="rounded-2xl border border-dashed border-emerald-200 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] px-5 py-16 text-center">
 
-                        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50">
-                            <PackageSearch size={30} className="text-emerald-600" />
+                        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/60">
+                            <PackageSearch size={30} className="text-emerald-600 dark:text-emerald-400" />
                         </div>
 
-                        <h3 className="text-xl font-bold text-gray-800">
+                        <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">
                             No Lost Items Found
                         </h3>
 
-                        <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
+                        <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500 dark:text-gray-400">
                             We couldn't find any lost items matching your search.
                             Try another keyword or change your selected category.
                         </p>
 
                         <button
                             onClick={clearFilters}
-                            className="mt-6 rounded-lg bg-emerald-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-700"
+                            className="mt-6 rounded-lg bg-emerald-600 dark:bg-emerald-700 px-6 py-3 text-sm font-bold text-white transition hover:bg-emerald-700 dark:hover:bg-emerald-600"
                         >
                             Clear Search
                         </button>

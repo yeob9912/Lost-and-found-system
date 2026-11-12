@@ -16,8 +16,10 @@ import ClaimForm from './components/claims/ClaimForm.tsx';
 import { ThemeProvider } from './context/ThemeContext.tsx';
 import PlexusBackground from './components/common/PlexusBackground.tsx';
 
-// Admin Security Guard
+// Role-Based Security Guards
 import AdminGuard from './components/admin/AdminGuard.tsx';
+import StudentGuard from './components/student/StudentGuard.tsx';
+import GuestOnlyRoute from './components/common/GuestOnlyRoute.tsx';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard.tsx';
@@ -47,27 +49,28 @@ function App() {
       <PlexusBackground />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/lost-items" element={<LostItems />} />
-          <Route path="/found-items" element={<FoundItems />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/report-item" element={<ReportItem />} />
-          <Route path="/registration" element={<AuthPage initialView="signup" />} />
-          <Route path="/signup" element={<AuthPage initialView="signup" />} />
-          <Route path="/login" element={<AuthPage initialView="login" />} />
+          {/* Landing / Public pages: Logged-in admin is redirected directly to /admin, students and guests see the page */}
+          <Route path="/" element={<GuestOnlyRoute allowStudent><Home /></GuestOnlyRoute>} />
+          <Route path="/lost-items" element={<GuestOnlyRoute allowStudent><LostItems /></GuestOnlyRoute>} />
+          <Route path="/found-items" element={<GuestOnlyRoute allowStudent><FoundItems /></GuestOnlyRoute>} />
+          <Route path="/about" element={<GuestOnlyRoute allowStudent><About /></GuestOnlyRoute>} />
+          <Route path="/contact" element={<GuestOnlyRoute allowStudent><Contact /></GuestOnlyRoute>} />
+          <Route path="/registration" element={<GuestOnlyRoute><AuthPage initialView="signup" /></GuestOnlyRoute>} />
+          <Route path="/signup" element={<GuestOnlyRoute><AuthPage initialView="signup" /></GuestOnlyRoute>} />
+          <Route path="/login" element={<GuestOnlyRoute><AuthPage initialView="login" /></GuestOnlyRoute>} />
           
-          {/* Student Dashboard & Activity Routes */}
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/student/profile" element={<Profile />} />
-          <Route path="/my-claims" element={<MyClaims />} />
-          <Route path="/student/my-claims" element={<MyClaims />} />
-          <Route path="/my-reports" element={<MyReports />} />
-          <Route path="/student/my-reports" element={<MyReports />} />
+          {/* Protected Student Routes - Strict Role-Based Access Control */}
+          <Route path="/profile" element={<StudentGuard><Profile /></StudentGuard>} />
+          <Route path="/student/profile" element={<StudentGuard><Profile /></StudentGuard>} />
+          <Route path="/my-claims" element={<StudentGuard><MyClaims /></StudentGuard>} />
+          <Route path="/student/my-claims" element={<StudentGuard><MyClaims /></StudentGuard>} />
+          <Route path="/my-reports" element={<StudentGuard><MyReports /></StudentGuard>} />
+          <Route path="/student/my-reports" element={<StudentGuard><MyReports /></StudentGuard>} />
           <Route path="/notifications" element={<Navigate to="/" replace />} />
           <Route path="/student/notifications" element={<Navigate to="/" replace />} />
-          <Route path="/claim" element={<ClaimForm />} />
-          <Route path="/claim-form" element={<ClaimForm />} />
+          <Route path="/claim" element={<StudentGuard><ClaimForm /></StudentGuard>} />
+          <Route path="/claim-form" element={<StudentGuard><ClaimForm /></StudentGuard>} />
+          <Route path="/report-item" element={<StudentGuard><ReportItem /></StudentGuard>} />
 
           {/* Protected Admin Routes - Strict Role-Based Access Control */}
           <Route path="/admin" element={<AdminGuard><AdminDashboard /></AdminGuard>} />

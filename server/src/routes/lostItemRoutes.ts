@@ -15,7 +15,7 @@ import {
 } from "../controllers/lostItemController";
 
 import upload from "../middleware/uploadMiddleware";
-import { protect, adminOnly } from "../middleware/authMiddleware";
+import { protect, adminOnly, studentOnly } from "../middleware/authMiddleware";
 
 const router = Router();
 
@@ -24,15 +24,16 @@ const router = Router();
 // Get approved Lost Items
 router.get("/", getLostItems);
 
-// AUTHENTICATED USER ROUTES
+// AUTHENTICATED STUDENT ROUTES (Admins manage lost items via admin routes)
 
 // Important: Put /my-items before /:id
-router.get("/my-items", protect, getMyLostItems);
+router.get("/my-items", protect, studentOnly, getMyLostItems);
 
 // Submit a new Lost Item report
 router.post(
     "/",
     protect,
+    studentOnly,
     upload.single("image"),
     createLostItem
 );
@@ -41,12 +42,13 @@ router.post(
 router.put(
     "/:id",
     protect,
+    studentOnly,
     upload.single("image"),
     updateLostItem
 );
 
 // Delete own report
-router.delete("/:id", protect, deleteLostItem);
+router.delete("/:id", protect, studentOnly, deleteLostItem);
 
 // ADMIN ROUTES
 

@@ -159,33 +159,33 @@ export default function FoundItems() {
                     <div className="glass-panel mb-6 space-y-4 rounded-2xl p-4 shadow-lg sm:p-5">
                         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                             <div className="relative flex-1">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={19} />
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" size={19} />
                                 <input
                                     type="text"
                                     placeholder="Search by item name, brand, color, or location..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full rounded-xl border border-gray-200 py-2.5 pl-11 pr-4 text-xs sm:text-sm outline-none transition focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
+                                    className="w-full rounded-xl border border-gray-200 dark:border-[#2A2D35] bg-gray-50 dark:bg-[#181A20] py-2.5 pl-11 pr-4 text-xs sm:text-sm text-gray-900 dark:text-gray-100 outline-none transition placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-emerald-600 focus:bg-white dark:focus:bg-[#1E2028] focus:ring-2 focus:ring-emerald-100 dark:focus:ring-emerald-900/30"
                                 />
                             </div>
 
                             <div className="flex items-center gap-3">
-                                <span className="text-xs font-semibold text-gray-500">
+                                <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
                                     Showing {filteredItems.length} found items
                                 </span>
                             </div>
                         </div>
 
                         {/* Category Badges */}
-                        <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
+                        <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-100 dark:border-[#2A2D35]">
                             {categories.map((cat) => (
                                 <button
                                     key={cat}
                                     onClick={() => setSelectedCategory(cat)}
-                                    className={`rounded-xl px-3 py-1.5 text-xs font-semibold rounded-lg transition ${
+                                    className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition ${
                                         selectedCategory === cat
-                                            ? "bg-emerald-800 text-white shadow-sm"
-                                            : "border border-gray-200 bg-gray-50 text-gray-700 hover:bg-emerald-50 hover:border-emerald-200"
+                                            ? "bg-emerald-800 dark:bg-emerald-700 text-white shadow-sm"
+                                            : "border border-gray-200 dark:border-[#2A2D35] bg-gray-50 dark:bg-[#181A20] text-gray-700 dark:text-gray-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 hover:border-emerald-200 dark:hover:border-emerald-800"
                                     }`}
                                 >
                                     {cat}
@@ -203,46 +203,46 @@ export default function FoundItems() {
                                     className="glass-card group flex flex-col justify-between overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-2xl"
                                 >
                                     <div>
-                                        <div className="relative h-52 w-full overflow-hidden bg-gray-100">
+                                        <div className="relative h-52 w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
                                             <img
                                                 src={item.image}
                                                 alt={item.name}
                                                 className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                                             />
-                                            <span className="absolute left-3 top-3 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800 border border-emerald-200">
+                                            <span className="absolute left-3 top-3 rounded-full bg-emerald-100 dark:bg-emerald-950/80 px-3 py-1 text-xs font-bold text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shadow-sm">
                                                 {item.status}
                                             </span>
                                         </div>
 
                                         <div className="p-6">
-                                            <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800">
+                                            <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800 dark:text-emerald-400">
                                                 <Tag size={13} />
                                                 {item.category}
                                             </div>
 
-                                            <h2 className="mt-2 text-lg font-bold text-gray-900 group-hover:text-emerald-800 transition">
+                                            <h2 className="mt-2 text-lg font-bold text-gray-900 dark:text-white group-hover:text-emerald-800 dark:group-hover:text-emerald-400 transition">
                                                 {item.name}
                                             </h2>
 
-                                            <p className="mt-2 text-sm text-gray-600 line-clamp-2 leading-relaxed">
+                                            <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">
                                                 {item.description}
                                             </p>
 
-                                            <div className="mt-4 space-y-1.5 border-t border-gray-100 pt-4 text-xs text-gray-500">
+                                            <div className="mt-4 space-y-1.5 border-t border-gray-100 dark:border-[#2A2D35] pt-4 text-xs text-gray-500 dark:text-gray-400">
                                                 <div className="flex items-center gap-2">
-                                                    <MapPin size={14} className="text-gray-400" />
+                                                    <MapPin size={14} className="text-gray-400 dark:text-gray-500" />
                                                     <span>Found at {item.location}</span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <CalendarDays size={14} className="text-gray-400" />
+                                                    <CalendarDays size={14} className="text-gray-400 dark:text-gray-500" />
                                                     <span>{formatDisplayDate(item.date)}</span>
                                                 </div>
                                             </div>
 
-                                            <div className="mt-5 border-t border-gray-100 pt-4">
+                                            <div className="mt-5 border-t border-gray-100 dark:border-[#2A2D35] pt-4">
                                                 <button
                                                     onClick={() => toggleDetails(item.id || item._id)}
-                                                    className="flex w-full items-center justify-between text-xs font-semibold text-emerald-900"
+                                                    className="flex w-full items-center justify-between text-xs font-semibold text-emerald-900 dark:text-emerald-400"
                                                 >
                                                     <span>{expandedItem === (item.id || item._id) ? "Hide Details" : "View Item Details"}</span>
                                                     {expandedItem === (item.id || item._id) ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -258,10 +258,10 @@ export default function FoundItems() {
                             ))}
                         </div>
                     ) : (
-                        <div className="rounded-2xl border border-dashed border-gray-300 bg-white py-16 text-center">
-                            <PackageSearch className="mx-auto mb-3 h-12 w-12 text-gray-300" />
-                            <h3 className="font-bold text-gray-800">No found items match your criteria</h3>
-                            <p className="mt-2 text-sm text-gray-500">
+                        <div className="rounded-2xl border border-dashed border-gray-300 dark:border-[#2A2D35] bg-white dark:bg-[#181A20] py-16 text-center">
+                            <PackageSearch className="mx-auto mb-3 h-12 w-12 text-gray-300 dark:text-gray-600" />
+                            <h3 className="font-bold text-gray-800 dark:text-gray-200">No found items match your criteria</h3>
+                            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                                 Try searching with different keywords or choosing another category.
                             </p>
                         </div>
